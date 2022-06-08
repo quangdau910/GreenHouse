@@ -15,11 +15,17 @@ import android.view.ViewGroup;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.quangdau.greenhouse.Adapter.ViewPager2.HomeAdapter;
+import com.quangdau.greenhouse.ApiService.ApiServer;
 import com.quangdau.greenhouse.ChildFragment.fragment_child_home1;
 import com.quangdau.greenhouse.ChildFragment.fragment_child_home2;
 import com.quangdau.greenhouse.R;
+import com.quangdau.greenhouse.modelsAPI.get_RSSI.RSSIData;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class fragment_home extends Fragment {
@@ -65,9 +71,28 @@ public class fragment_home extends Fragment {
             @Override
             public void run() {
                 handler.postDelayed(this, 1000);
-                //Log.e("gh", "tab: " + tabLayout.getSelectedTabPosition());
+                getRSSIData(token, adapter.fragmentTitle.get(tabLayout.getSelectedTabPosition()));
             }
         }, 1000);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                tab.setIcon(null);
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+
+
         return view;
     }
 
@@ -75,5 +100,31 @@ public class fragment_home extends Fragment {
         assert getArguments() != null;
         token = getArguments().getString("token");
         arrAuthority = getArguments().getStringArrayList("arrAuthority");
+    }
+
+    private void getRSSIData(String token, String houseID){
+        ApiServer get = ApiServer.retrofit.create(ApiServer.class);
+        Call<RSSIData> call = get.getRSSIData(token, "GetRSSIData", houseID);
+        call.enqueue(new Callback<RSSIData>() {
+            @Override
+            public void onResponse(Call<RSSIData> call, Response<RSSIData> response) {
+                assert response.body() != null;
+                if (response.body().getResponse().equals("Response RSSI Data")){
+                    updateRSSIUI(response.body().getData().getValue());
+                }else ;
+            }
+
+            @Override
+            public void onFailure(Call<RSSIData> call, Throwable t) {
+
+            }
+        });
+    }
+    private void updateRSSIUI(Integer value){
+        TabLayout.Tab tab = tabLayout.getTabAt(tabLayout.getSelectedTabPosition());
+        if (value >= 0 && value <= 25) tab.setIcon(R.drawable.ic_signal_wifi_1_bar);
+        if (value > 25 && value <= 50) tab.setIcon(R.drawable.ic_signal_wifi_2_bar);
+        if (value > 50 && value <= 75) tab.setIcon(R.drawable.ic_signal_wifi_3_bar);
+        if (value > 75 && value <= 100) tab.setIcon(R.drawable.ic_signal_wifi_4_bar);
     }
 }

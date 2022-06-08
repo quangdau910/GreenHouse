@@ -1,6 +1,7 @@
 package com.quangdau.greenhouse.ApiService;
 
 import com.quangdau.greenhouse.digitalPost;
+import com.quangdau.greenhouse.modelsAPI.get_RSSI.RSSIData;
 import com.quangdau.greenhouse.modelsAPI.get_history.historyLoginData;
 import com.quangdau.greenhouse.modelsAPI.post_authen.authenPost;
 import com.quangdau.greenhouse.modelsAPI.res_authority.authority;
@@ -45,6 +46,10 @@ public interface ApiServer {
     Call <ArrayList<historyLoginData>> getHistoryLogin(@Query("token") String token,
                                                   @Query("cmd") String cmd);
 
+    @GET("pi4Server")
+    Call <RSSIData> getRSSIData(@Query("token") String token,
+                                @Query("cmd") String cmd,
+                                @Query("houseID") String houseID);
 
 
     @POST("pi4Server")
