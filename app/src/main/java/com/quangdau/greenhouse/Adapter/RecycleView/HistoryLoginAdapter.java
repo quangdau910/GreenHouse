@@ -1,0 +1,87 @@
+package com.quangdau.greenhouse.Adapter.RecycleView;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.quangdau.greenhouse.R;
+import com.quangdau.greenhouse.modelsAPI.get_history.historyLoginData;
+
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+
+
+public class HistoryLoginAdapter extends RecyclerView.Adapter<HistoryLoginAdapter.LoginVH> {
+    ArrayList<historyLoginData> loginData;
+    Context context;
+    public HistoryLoginAdapter(Context context, ArrayList<historyLoginData> data) {
+        this.loginData = data;
+        this.context = context;
+    }
+
+
+    @NonNull
+    @Override
+    public LoginVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.cardview_history_login, parent, false);
+        return new LoginVH(view);
+    }
+
+    @SuppressLint("SetTextI18n")
+    @Override
+    public void onBindViewHolder(@NonNull LoginVH holder, int position) {
+        historyLoginData historyLoginData = loginData.get(position);
+        holder.deviceName.setText("Device name: " + historyLoginData.getDevice_name());
+        holder.account.setText("Account: " + historyLoginData.getAccount());
+        holder.ip.setText("Ip: "+ historyLoginData.getIp());
+        holder.loginTime.setText("Login time: " + formatDate(historyLoginData.getLogin_time()));
+
+        boolean isExpanded = loginData.get(position).isExpanded();
+        holder.expandableLayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public int getItemCount() {
+        return loginData.size();
+    }
+
+    class LoginVH extends RecyclerView.ViewHolder{
+        ConstraintLayout expandableLayout;
+        TextView deviceName, account, ip, loginTime;
+
+        public LoginVH(@NonNull View itemView) {
+            super(itemView);
+
+            deviceName = itemView.findViewById(R.id.textViewDeviceNameHistoryLogin);
+            account = itemView.findViewById(R.id.textViewAccountHistoryLogin);
+            ip = itemView.findViewById(R.id.textViewIpHistoryLogin);
+            expandableLayout = itemView.findViewById(R.id.expandableLayoutCardViewHistoryLogin);
+            loginTime = itemView.findViewById(R.id.textViewLoginTimeHistoryLogin);
+
+            deviceName.setOnClickListener(v -> {
+                historyLoginData historyLoginData = loginData.get(getAdapterPosition());
+                historyLoginData.setExpanded(!historyLoginData.isExpanded());
+                notifyItemChanged(getAdapterPosition());
+            });
+        }
+    }
+
+
+    private String formatDate(String date){
+        OffsetDateTime dateTimeWithOffset = Instant.parse(date).atZone(ZoneId.of("Asia/Ho_Chi_Minh")).toOffsetDateTime();
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("HH:mm:ss (dd/MM/yyyy)");
+        return fmt.format(dateTimeWithOffset);
+    }
+
+
+}
