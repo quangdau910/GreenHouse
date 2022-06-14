@@ -1,13 +1,13 @@
 package com.quangdau.greenhouse.ApiService;
 
-import com.quangdau.greenhouse.digitalPost;
+import com.quangdau.greenhouse.modelsAPI.post_writeDigital.writeDigitalPost;
 import com.quangdau.greenhouse.modelsAPI.get_RSSI.RSSIData;
 import com.quangdau.greenhouse.modelsAPI.get_history.historyLoginData;
 import com.quangdau.greenhouse.modelsAPI.post_authen.authenPost;
 import com.quangdau.greenhouse.modelsAPI.res_authority.authority;
 import com.quangdau.greenhouse.modelsAPI.get_data.data;
 import com.quangdau.greenhouse.modelsAPI.get_graph.graphData;
-import com.quangdau.greenhouse.modelsAPI.res_write.resWriteDigital;
+import com.quangdau.greenhouse.modelsAPI.res_writeDigital.resWriteDigital;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import retrofit2.http.Query;
 public interface ApiServer {
 
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://192.168.137.238:1880/")
+            .baseUrl("http://192.168.137.147:1880/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
@@ -53,7 +53,7 @@ public interface ApiServer {
 
 
     @POST("pi4Server")
-    Call <resWriteDigital> postDigital(@Body digitalPost digitalPost);
+    Call <resWriteDigital> postWriteDigital(@Body writeDigitalPost writeDigitalPost);
 
 
 

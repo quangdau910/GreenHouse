@@ -2,13 +2,13 @@ package com.quangdau.greenhouse.modelsAPI.get_RSSI;
 
 public class RSSIData {
     private String response;
-    private ObjData data;
+    private objData data;
 
     public String getResponse() {
         return response;
     }
 
-    public ObjData getData() {
+    public objData getData() {
         return data;
     }
 }

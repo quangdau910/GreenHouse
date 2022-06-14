@@ -8,6 +8,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,10 +109,11 @@ public class fragment_home extends Fragment {
         call.enqueue(new Callback<RSSIData>() {
             @Override
             public void onResponse(Call<RSSIData> call, Response<RSSIData> response) {
-                assert response.body() != null;
-                if (response.body().getResponse().equals("Response RSSI Data")){
-                    updateRSSIUI(response.body().getData().getValue());
-                }else ;
+                if (response.body() != null){
+                    if (response.body().getResponse().equals("Response RSSI Data")){
+                        updateRSSIUI(response.body().getData().getValue());
+                    }else ;
+                }
             }
 
             @Override

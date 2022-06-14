@@ -20,7 +20,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -29,10 +28,11 @@ import android.widget.TextView;
 import com.quangdau.greenhouse.ApiService.ApiServer;
 import com.quangdau.greenhouse.ApiService.ApiWeather;
 import com.quangdau.greenhouse.R;
-import com.quangdau.greenhouse.digitalPost;
+import com.quangdau.greenhouse.modelsAPI.post_writeDigital.writeDigitalPost;
 import com.quangdau.greenhouse.modelsAPI.get_data.data;
-import com.quangdau.greenhouse.modelsAPI.res_write.resWriteDigital;
+import com.quangdau.greenhouse.modelsAPI.res_writeDigital.resWriteDigital;
 import com.quangdau.greenhouse.modelsAPI.weather.weatherDataModel;
+
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,31 +41,33 @@ import retrofit2.Response;
 public class fragment_child_home1 extends Fragment {
     private static final int REQUEST_PERMISSION_CODE = 123;
     //Declare variables
-
     //Location variables
     LocationManager locationManager;
     LocationListener locationListener;
     double latitude, longitude;
+    final String weatherAPPID = "b6b29c45335b731aa126df23c00085e3";
     ImageView imageViewWeatherIcon;
     CardView cardViewWeather;
     TextView textViewWeatherName, textViewWeatherTemp, textViewWeatherHumidity;
+    //Sensor variables
     TextView textViewTemperatureSensor, textViewLightSensor, textViewHumiditySensor, textViewSoilMoistureSensor1, textViewSoilMoistureSensor2, textViewSoilMoistureSensor3, textViewSoilMoistureSensor4;    //Token
+    //Device variables
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     Switch switchLight1, switchFan1, switchValve1, switchValve2, switchValve3, switchValve4;
+    ImageView imageViewLight1, imageViewFan1, imageViewValve1, imageViewValve2, imageViewValve3, imageViewValve4;
+    boolean flagLight1, flagFan1, flagValve1, flagValve2, flagValve3, flagValve4;
+    //Get data through fragment
     Bundle bundle;
     String token, houseID;
+    //Other
+    String dataPort1;
     final Handler handler = new Handler(Looper.getMainLooper());
-    String data = "11110000";
-
-
-    final String APPID = "b6b29c45335b731aa126df23c00085e3";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bundle = this.getArguments();
         parseData(bundle);
-
     }
 
 
@@ -74,11 +76,13 @@ public class fragment_child_home1 extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_child_home1, container, false);
         //link
+        //Location
         imageViewWeatherIcon = view.findViewById(R.id.imageViewWeatherIcon);
         textViewWeatherName = view.findViewById(R.id.textViewWeatherName);
         textViewWeatherTemp = view.findViewById(R.id.textViewWeatherTemp);
         textViewWeatherHumidity = view.findViewById(R.id.textViewWeatherHumidity);
         cardViewWeather = view.findViewById(R.id.cardViewWeather);
+        //Sensor
         textViewTemperatureSensor = view.findViewById(R.id.textViewTemperatureSensor);
         textViewLightSensor = view.findViewById(R.id.textViewLightSensor);
         textViewHumiditySensor = view.findViewById(R.id.textViewHumiditySensor);
@@ -86,32 +90,104 @@ public class fragment_child_home1 extends Fragment {
         textViewSoilMoistureSensor2 = view.findViewById(R.id.textViewSoilMoistureSensor2);
         textViewSoilMoistureSensor3 = view.findViewById(R.id.textViewSoilMoistureSensor3);
         textViewSoilMoistureSensor4 = view.findViewById(R.id.textViewSoilMoistureSensor4);
-
+        //Device
         switchLight1 = view.findViewById(R.id.switchLight1);
-        //Main
+        switchFan1 = view.findViewById(R.id.switchFan1);
+        switchValve1 = view.findViewById(R.id.switchValve1);
+        switchValve2 = view.findViewById(R.id.switchValve2);
+        switchValve3 = view.findViewById(R.id.switchValve3);
+        switchValve4 = view.findViewById(R.id.switchValve4);
+        imageViewLight1 = view.findViewById(R.id.imageViewDeviceLight1);
+        imageViewFan1 = view.findViewById(R.id.imageViewDeviceFan1);
+        imageViewValve1 = view.findViewById(R.id.imageViewDeviceValve1);
+        imageViewValve2 = view.findViewById(R.id.imageViewDeviceValve2);
+        imageViewValve3 = view.findViewById(R.id.imageViewDeviceValve3);
+        imageViewValve4 = view.findViewById(R.id.imageViewDeviceValve4);
+        //DefaultUI
         cardViewWeather.setVisibility(View.GONE);
+        switchLight1.setChecked(false);
+        switchFan1.setChecked(false);
+        switchValve1.setChecked(false);
+        switchValve2.setChecked(false);
+        switchValve3.setChecked(false);
+        switchValve4.setChecked(false);
+        //Main
+
         getDataApi(token);
-        //Update data from server
+        //Do something after 500ms
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                handler.postDelayed(this, 15000);
+                handler.postDelayed(this, 500);
+                //Update data from server
                 getDataApi(token);
 
             }
-        }, 15000);
+        }, 500);
 
-        switchLight1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        switchLight1.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (switchLight1.isPressed()){
+                flagLight1 = true;
+                Log.e("gh", "user pressed!");
                 if (switchLight1.isChecked()){
-                    writeDigital(houseID, "port1", 0, '1');
-                }else writeDigital(houseID, "port1", 0, '0');
+                    writeDigital(houseID, "1", 0, '1');
+                }else {
+                    writeDigital(houseID, "1", 0, '0');
+                }
+            }
+        });
+        switchFan1.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (switchFan1.isPressed()){
+                flagFan1 = true;
+                if (switchFan1.isChecked()){
+                    writeDigital(houseID, "1", 1, '1');
+                }else {
+                    writeDigital(houseID, "1", 1, '0');
+                }
+            }
+        });
+        switchValve1.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (switchValve1.isPressed()){
+                flagValve1 = true;
+                if (switchValve1.isChecked()){
+                    writeDigital(houseID, "1", 2, '1');
+                }else{
+                    writeDigital(houseID, "1", 2, '0');
+                }
+            }
+        });
+        switchValve2.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (switchValve2.isPressed()){
+                flagValve2 = true;
+                if (switchValve2.isChecked()){
+                    writeDigital(houseID, "1", 3, '1');
+                }else{
+                    writeDigital(houseID, "1", 3, '0');
+                }
+            }
+        });
+        switchValve3.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (switchValve3.isPressed()){
+                flagValve3 = true;
+                if (switchValve3.isChecked()){
+                    writeDigital(houseID, "1", 4, '1');
+                }else{
+                    writeDigital(houseID, "1", 4, '0');
+                }
+            }
+        });
+        switchValve4.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (switchValve4.isPressed()){
+                flagValve4 = true;
+                if (switchValve4.isChecked()){
+                    writeDigital(houseID, "1", 5, '1');
+                }else{
+                    writeDigital(houseID, "1", 5, '0');
+                }
             }
         });
 
 
-        Log.e("gh", "houseID: " + houseID);
         return view;
     }
 
@@ -124,12 +200,18 @@ public class fragment_child_home1 extends Fragment {
 
     //Get data
     private void getDataApi(String token) {
+        Switch[] port1 = {switchLight1, switchFan1, switchValve1, switchValve2, switchValve3, switchValve4};
         ApiServer get = ApiServer.retrofit.create(ApiServer.class);
         Call<data> call = get.getData(token, "GetData", houseID);
         call.enqueue(new Callback<data>() {
             @Override
             public void onResponse(Call<data> call, Response<data> response) {
+                Log.e("gh", "port1: " + response.body().getDigitalData().getPort1());
+                //Assign dataPort
+                dataPort1 = response.body().getDigitalData().getPort1();
+                //UpdateUI
                 updateUISensor(response);
+                updateUIDevice(response.body().getDigitalData().getPort1(), port1);
             }
 
             @Override
@@ -139,8 +221,8 @@ public class fragment_child_home1 extends Fragment {
         });
     }
 
+    @SuppressLint("SetTextI18n")
     private void updateUISensor(Response<data> response) {
-        //Temperature
         textViewTemperatureSensor.setText(response.body().getTemperature() + "");
         textViewLightSensor.setText(response.body().getLight() + "");
         textViewHumiditySensor.setText(response.body().getHumidity() + "");
@@ -151,40 +233,89 @@ public class fragment_child_home1 extends Fragment {
     }
 
 
+
+
+
+
+    private void writeDigital(String houseID, String port, Integer locationBit, Character value){
+        Log.e("gh", "write digital " + locationBit);
+        StringBuilder tempData = new StringBuilder(dataPort1);
+        tempData.setCharAt(7 - locationBit, value);
+        //Check Pump
+        String dataSend = tempData.toString();
+        Log.e("gh", "dataSend 1: " + dataSend);
+        dataSend = checkPump(dataSend, 2, 5, 6);
+        Log.e("gh", "dataSend: " + dataSend);
+        //
+        ApiServer post = ApiServer.retrofit.create(ApiServer.class);
+        Call<resWriteDigital> call = post.postWriteDigital(new writeDigitalPost(token, "WriteDigital", houseID, port, dataSend));
+        call.enqueue(new Callback<resWriteDigital>() {
+            @Override
+            public void onResponse(Call<resWriteDigital> call, Response<resWriteDigital> response) {
+                if (response.body() != null){
+                    if (response.body().getResponse().equals("Write Completed!")){
+                        switch (response.body().getPort()){
+                            case "1":
+                                dataPort1 = response.body().getValue();
+                                break;
+                            case "2":
+                                //Do something
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+                if (flagLight1) flagLight1 = false;
+                if (flagFan1) flagFan1 = false;
+                if (flagValve1) flagValve1 = false;
+                if (flagValve2) flagValve2 = false;
+                if (flagValve3) flagValve3 = false;
+                if (flagValve4) flagValve4 = false;
+            }
+
+            @Override
+            public void onFailure(Call<resWriteDigital> call, Throwable t) {
+                Log.e("gh", t.toString());
+                flagLight1 = false;
+            }
+        });
+    }
+
+
+    private void updateUIDevice(String value, Switch[] portDevice){
+        if (!flagLight1 && !flagFan1 && !flagValve1 && !flagValve2 && !flagValve3 && !flagValve4){
+            for (int i = 0; i < portDevice.length; i++){
+                if (value.charAt(7 - i) == '1') portDevice[i].setChecked(true); else portDevice[i].setChecked(false);
+            }
+
+            if (switchLight1.isChecked())imageViewLight1.setImageResource(R.drawable.ic_device_light_on); else imageViewLight1.setImageResource(R.drawable.ic_device_light_off);
+            if (switchFan1.isChecked()) imageViewFan1.setImageResource(R.drawable.ic_device_fan_on); else imageViewFan1.setImageResource(R.drawable.ic_device_fan_off);
+            if (switchValve1.isChecked()) imageViewValve1.setImageResource(R.drawable.ic_device_valve_on); else imageViewValve1.setImageResource(R.drawable.ic_device_valve_off);
+            if (switchValve2.isChecked()) imageViewValve2.setImageResource(R.drawable.ic_device_valve_on); else imageViewValve2.setImageResource(R.drawable.ic_device_valve_off);
+            if (switchValve3.isChecked()) imageViewValve3.setImageResource(R.drawable.ic_device_valve_on); else imageViewValve3.setImageResource(R.drawable.ic_device_valve_off);
+            if (switchValve4.isChecked()) imageViewValve4.setImageResource(R.drawable.ic_device_valve_on); else imageViewValve4.setImageResource(R.drawable.ic_device_valve_off);
+
+        }
+    }
+    private String checkPump(String dataPort, int valveStart, int valveEnd, int locationPump){
+        StringBuilder newDataPort = new StringBuilder(dataPort);
+        for (int i = valveStart; i <= valveEnd; i++){
+            if (dataPort.charAt(7 - i) == '1'){
+                newDataPort.setCharAt(7- locationPump, '1');
+            }
+        }
+        if (dataPort.substring(7 - valveEnd, 7 - valveStart + 1).equals("0000")) newDataPort.setCharAt(7 - locationPump, '0');
+        return  newDataPort.toString();
+    }
+
+
     private void parseData(Bundle bundle) {
         if (bundle != null) {
             token = bundle.getString("token");
             houseID = bundle.getString("houseID");
         } else Log.e("gh", "bundle is null!");
     }
-
-
-
-    private void writeDigital(String houseID, String port, Integer locationBit, Character value){
-        StringBuilder tempValue = new StringBuilder(data);
-        tempValue.setCharAt(7 - locationBit, value);
-
-        ApiServer post = ApiServer.retrofit.create(ApiServer.class);
-        Call<resWriteDigital> call = post.postDigital(new digitalPost(token, "WriteDigital", houseID, port, value));
-        call.enqueue(new Callback<resWriteDigital>() {
-            @Override
-            public void onResponse(Call<resWriteDigital> call, Response<resWriteDigital> response) {
-                if (response.body().getResponse() == "Write completed!"){
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<resWriteDigital> call, Throwable t) {
-
-            }
-        });
-    }
-
-
-
-
-
 
     //Weather
     private void getCurrentLocation() {
@@ -217,11 +348,13 @@ public class fragment_child_home1 extends Fragment {
 
     private void getWeatherApi() {
         ApiWeather getData = ApiWeather.retrofit.create(ApiWeather.class);
-        Call<weatherDataModel> call = getData.getWeather(latitude, longitude, APPID);
+        Call<weatherDataModel> call = getData.getWeather(latitude, longitude, weatherAPPID);
         call.enqueue(new Callback<weatherDataModel>() {
             @Override
             public void onResponse(Call<weatherDataModel> call, Response<weatherDataModel> response) {
-                updateUIWeather(response);
+                if (response.body() != null){
+                    updateUIWeather(response);
+                }
             }
             @Override
             public void onFailure(Call<weatherDataModel> call, Throwable t) {
@@ -230,7 +363,9 @@ public class fragment_child_home1 extends Fragment {
         });
     }
 
+    @SuppressLint("SetTextI18n")
     private void updateUIWeather(Response<weatherDataModel> response){
+        assert response.body() != null;
         //Check Location
         if (response.body().getCoord().getLat() == 0 && response.body().getCoord().getLon() == 0){
             cardViewWeather.setVisibility(View.GONE);
