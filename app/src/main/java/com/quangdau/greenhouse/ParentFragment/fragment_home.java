@@ -8,7 +8,6 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,7 @@ import com.quangdau.greenhouse.Adapter.ViewPager2.HomeAdapter;
 import com.quangdau.greenhouse.ApiService.ApiServer;
 import com.quangdau.greenhouse.ChildFragment.fragment_child_home1;
 import com.quangdau.greenhouse.ChildFragment.fragment_child_home2;
+import com.quangdau.greenhouse.Preferences.UserPreferences;
 import com.quangdau.greenhouse.R;
 import com.quangdau.greenhouse.modelsAPI.get_RSSI.RSSIData;
 
@@ -33,21 +33,25 @@ public class fragment_home extends Fragment {
     //Declare variables
     TabLayout tabLayout;
     ViewPager2 viewPager2;
-    String token;
+    UserPreferences userPreferences;
+    HomeAdapter adapter;
     ArrayList<String> arrAuthority;
     final Handler handler = new Handler(Looper.getMainLooper());
+    final String STATE_FRAGMENT = "HOME_FRAGMENT";
+    final String NULL_STATE_FRAGMENT = "NULL";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_home, container, false);
-        //Link
+        //Assign variables
         tabLayout = view.findViewById(R.id.tabLayoutHome);
         viewPager2 = view.findViewById(R.id.viewPager2Home);
-        //Get data from activity_main (token, arrAuthority)
+        userPreferences = new UserPreferences(getActivity());
+        //Get arrAuthority
         parseData();
         //Setting adapter
-        HomeAdapter adapter = new HomeAdapter(getActivity());
-        adapter.setToken(token);
+        adapter = new HomeAdapter(getActivity());
         viewPager2.setAdapter(adapter);
         for (int i = 0; i < arrAuthority.size(); i++){
             switch (i){
@@ -68,13 +72,6 @@ public class fragment_home extends Fragment {
             }
         }).attach();
 
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                handler.postDelayed(this, 1000);
-                getRSSIData(token, adapter.fragmentTitle.get(tabLayout.getSelectedTabPosition()));
-            }
-        }, 1000);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -92,14 +89,20 @@ public class fragment_home extends Fragment {
             }
         });
 
-
+        //Do something after 1s
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                handler.postDelayed(this, 1000);
+                getRSSIData(userPreferences.getToken(), adapter.fragmentTitle.get(tabLayout.getSelectedTabPosition()));
+            }
+        }, 1000);
 
         return view;
     }
 
     private void parseData(){
         assert getArguments() != null;
-        token = getArguments().getString("token");
         arrAuthority = getArguments().getStringArrayList("arrAuthority");
     }
 
@@ -112,7 +115,7 @@ public class fragment_home extends Fragment {
                 if (response.body() != null){
                     if (response.body().getResponse().equals("Response RSSI Data")){
                         updateRSSIUI(response.body().getData().getValue());
-                    }else ;
+                    }
                 }
             }
 
@@ -124,9 +127,30 @@ public class fragment_home extends Fragment {
     }
     private void updateRSSIUI(Integer value){
         TabLayout.Tab tab = tabLayout.getTabAt(tabLayout.getSelectedTabPosition());
+        assert tab != null;
         if (value >= 0 && value <= 25) tab.setIcon(R.drawable.ic_signal_wifi_1_bar);
         if (value > 25 && value <= 50) tab.setIcon(R.drawable.ic_signal_wifi_2_bar);
         if (value > 50 && value <= 75) tab.setIcon(R.drawable.ic_signal_wifi_3_bar);
         if (value > 75 && value <= 100) tab.setIcon(R.drawable.ic_signal_wifi_4_bar);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        //Log.e("gh", "home paused");
+        userPreferences.setStateFragment(NULL_STATE_FRAGMENT);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //Log.e("gh", "home resume");
+        userPreferences.setStateFragment(STATE_FRAGMENT);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //Log.e("gh", "home destroy");
     }
 }

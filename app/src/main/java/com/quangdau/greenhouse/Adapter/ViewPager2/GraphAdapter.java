@@ -16,12 +16,8 @@ import java.util.ArrayList;
 public class GraphAdapter extends FragmentStateAdapter {
         public final ArrayList<Fragment> fragmentArrayList = new ArrayList<>();
         public final ArrayList<String> fragmentTitle = new ArrayList<>();
-        private String token;
         Bundle bundle;
 
-        public void setToken(String token) {
-                this.token = token;
-        }
 
         public GraphAdapter(@NonNull FragmentActivity fragmentActivity) {
                 super(fragmentActivity);
@@ -33,14 +29,12 @@ public class GraphAdapter extends FragmentStateAdapter {
                         case 0:
                                 fragment_child_graph1 fragment_child_graph1 = new fragment_child_graph1();
                                 bundle = new Bundle();
-                                bundle.putString("token", token);
                                 fragment_child_graph1.setArguments(bundle);
                                 return fragment_child_graph1;
 
                         case 1:
                                 fragment_child_graph2 fragment_child_graph2 = new fragment_child_graph2();
                                 bundle = new Bundle();
-                                bundle.putString("token", token);
                                 fragment_child_graph2.setArguments(bundle);
                                 return fragment_child_graph2;
 

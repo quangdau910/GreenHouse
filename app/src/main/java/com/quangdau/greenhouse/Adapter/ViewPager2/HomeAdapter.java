@@ -1,7 +1,6 @@
 package com.quangdau.greenhouse.Adapter.ViewPager2;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -16,13 +15,8 @@ import java.util.ArrayList;
 public class HomeAdapter extends FragmentStateAdapter {
         public final ArrayList<Fragment> fragmentArrayList = new ArrayList<>();
         public final ArrayList<String> fragmentTitle = new ArrayList<>();
-        private String token;
         Bundle bundle;
 
-
-        public void setToken(String token) {
-                this.token = token;
-        }
 
         public HomeAdapter(@NonNull FragmentActivity fragmentActivity) {
                 super(fragmentActivity);
@@ -34,7 +28,6 @@ public class HomeAdapter extends FragmentStateAdapter {
                         case 0:
                                 fragment_child_home1 fragment_child_home1 = new fragment_child_home1();
                                 bundle = new Bundle();
-                                bundle.putString("token", token);
                                 bundle.putString("houseID", "house1");
                                 fragment_child_home1.setArguments(bundle);
                                 return fragment_child_home1;
@@ -42,13 +35,11 @@ public class HomeAdapter extends FragmentStateAdapter {
                         case 1:
                                 fragment_child_home2 fragment_child_home2= new fragment_child_home2();
                                 bundle = new Bundle();
-                                bundle.putString("token", token);
                                 bundle.putString("houseID", "house2");
                                 fragment_child_home2.setArguments(bundle);
                                 return fragment_child_home2;
 
                         default:
-                                Log.e("gh", "return none!");
                                 return fragmentArrayList.get(position);
                 }
         }
@@ -62,4 +53,6 @@ public class HomeAdapter extends FragmentStateAdapter {
                 fragmentArrayList.add(fragment);
                 fragmentTitle.add(title);
         }
+
+
 }

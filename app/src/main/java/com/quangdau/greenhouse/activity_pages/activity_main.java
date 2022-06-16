@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -17,6 +19,7 @@ import com.quangdau.greenhouse.ParentFragment.fragment_graph;
 import com.quangdau.greenhouse.ParentFragment.fragment_history;
 import com.quangdau.greenhouse.ParentFragment.fragment_home;
 import com.quangdau.greenhouse.ParentFragment.fragment_settings;
+import com.quangdau.greenhouse.Preferences.UserPreferences;
 import com.quangdau.greenhouse.R;
 
 import java.util.ArrayList;
@@ -25,37 +28,40 @@ public class activity_main extends AppCompatActivity {
     //Declare variables
     BottomNavigationView bottomNavigationView;
     FloatingActionButton floatingActionButton;
-
+    //Parent Fragment
     fragment_home fragmentHome = new fragment_home();
     fragment_settings fragmentSettings = new fragment_settings();
     fragment_account fragmentAccount = new fragment_account();
     fragment_history fragmentHistory = new fragment_history();
     fragment_graph fragmentGraph = new fragment_graph();
-
+    //Other
     String token;
     ArrayList<String> arrAuthority;
+    UserPreferences userPreferences;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_page);
-        //Link
+        //Assign variables
         floatingActionButton = findViewById(R.id.fab);
         bottomNavigationView = findViewById(R.id.bottom_nav);
-        //Get token and authority
+        //Get authority
         parseData();
         packedData(fragmentHome);
+        //Get token
+        context = this;
+        userPreferences = new UserPreferences(context);
+        token = userPreferences.getToken();
         //Setting bottom nav
         bottomNavigationView.setBackground(null);
         bottomNavigationView.getMenu().getItem(2).setEnabled(false);
         //Pre-select item in bottom nav
         bottomNavigationView.setSelectedItemId(R.id.home);
-        //default open fragment
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentHome).commit();
-        ////////////////////////
-
-        //bottom nav listener
+        //Open default fragment
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragmentHome).commit();
+        //Bottom nav listener
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @SuppressLint("NonConstantResourceId")
             @Override
@@ -64,29 +70,29 @@ public class activity_main extends AppCompatActivity {
                     case R.id.graph:
                         fragmentGraph = new fragment_graph();
                         packedData(fragmentGraph);
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, activity_main.this.fragmentGraph).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, activity_main.this.fragmentGraph).commit();
                         return true;
                     case R.id.settings:
                         fragmentSettings = new fragment_settings();
                         packedData(fragmentSettings);
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, activity_main.this.fragmentSettings).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, activity_main.this.fragmentSettings).commit();
                         return true;
                     case R.id.history:
                         fragmentHistory = new fragment_history();
                         packedData(fragmentHistory);
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, activity_main.this.fragmentHistory).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, activity_main.this.fragmentHistory).commit();
                         return true;
                     case R.id.account:
                         fragmentAccount = new fragment_account();
                         packedData(fragmentAccount);
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, activity_main.this.fragmentAccount).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, activity_main.this.fragmentAccount).commit();
                         return true;
                     default:
                 }
                 return false;
             }
         });
-        //floating act button listener
+        //Floating act button listener
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,7 +100,7 @@ public class activity_main extends AppCompatActivity {
                 bottomNavigationView.setSelectedItemId(R.id.home);
                 fragmentHome = new fragment_home();
                 packedData(fragmentHome);
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentHome).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragmentHome).commit();
             }
         });
     }
@@ -102,21 +108,14 @@ public class activity_main extends AppCompatActivity {
 
     private void packedData(Fragment fragment){
         Bundle bundle = new Bundle();
-        bundle.putString("token", token);
         bundle.putStringArrayList("arrAuthority",arrAuthority);
         fragment.setArguments(bundle);
     }
     private void parseData(){
-        //Get token and arrAuthority from activity_login
+        //Get arrAuthority from activity_login
         Bundle extras = getIntent().getExtras();
         if (extras != null){
-            token = extras.getString("token");
             arrAuthority = extras.getStringArrayList("authority");
         }
     }
-
-
-
-
-
 }

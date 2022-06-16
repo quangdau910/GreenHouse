@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment;
 import com.quangdau.greenhouse.R;
 
 
-public class fragment_child_settings1 extends Fragment {
+public class fragment_child_mode_setting extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,8 +19,13 @@ public class fragment_child_settings1 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_child_settings, container, false);
-    }
+        View view =  inflater.inflate(R.layout.fragment_child_mode_setting, container, false);
 
+
+
+
+
+        return view;
+    }
 
 }

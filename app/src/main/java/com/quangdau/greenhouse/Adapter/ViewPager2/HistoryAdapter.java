@@ -1,6 +1,5 @@
 package com.quangdau.greenhouse.Adapter.ViewPager2;
 
-import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -12,13 +11,7 @@ import com.quangdau.greenhouse.ChildFragment.fragment_child_history_login;
 
 
 public class HistoryAdapter extends FragmentStateAdapter {
-
-        private String token;
-        Bundle bundle;
-
-        public void setToken(String token) {
-                this.token = token;
-        }
+        //Bundle bundle;
 
         public HistoryAdapter(@NonNull FragmentActivity fragmentActivity) {
                 super(fragmentActivity);
@@ -29,10 +22,12 @@ public class HistoryAdapter extends FragmentStateAdapter {
                 switch (position){
                         case 0:
                                 fragment_child_history_login fragment_child_history_login = new fragment_child_history_login();
-                                bundle = new Bundle();
-                                bundle.putString("token", token);
-                                fragment_child_history_login.setArguments(bundle);
+                                /*bundle = new Bundle();
+                                fragment_child_history_login.setArguments(bundle);*/
                                 return fragment_child_history_login;
+                        case 1:
+                                //Add new fragment
+                                return null;
 
                         default:
                                 return null;

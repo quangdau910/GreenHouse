@@ -15,25 +15,29 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.quangdau.greenhouse.Adapter.ViewPager2.HistoryAdapter;
 
 
+import com.quangdau.greenhouse.Preferences.UserPreferences;
 import com.quangdau.greenhouse.R;
 
 public class fragment_history extends Fragment {
+    //Declare variables
     TabLayout tabLayout;
     ViewPager2 viewPager2;
-    String token;
+    UserPreferences userPreferences;
+    final String STATE_FRAGMENT = "HISTORY_FRAGMENT";
+    final String NULL_STATE_FRAGMENT = "NULL";
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view =  inflater.inflate(R.layout.fragment_history, container, false);
+        //Assign variables
         tabLayout = view.findViewById(R.id.tabLayoutHistory);
         viewPager2 = view.findViewById(R.id.viewPager2History);
-        parseData();
-
+        userPreferences = new UserPreferences(getActivity());
         //Setting adapter
         HistoryAdapter adapter = new HistoryAdapter(getActivity());
-        adapter.setToken(token);
         viewPager2.setAdapter(adapter);
 
         new TabLayoutMediator(tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
@@ -43,6 +47,9 @@ public class fragment_history extends Fragment {
                     case 0:
                         tab.setText("Login");
                         break;
+                    case 1:
+                        tab.setText("Error");
+                        break;
                     default:
                         break;
                 }
@@ -50,8 +57,17 @@ public class fragment_history extends Fragment {
         }).attach();
         return view;
     }
-    private void parseData(){
-        assert getArguments() != null;
-        token = getArguments().getString("token");
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        userPreferences.setStateFragment(STATE_FRAGMENT);
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        userPreferences.setStateFragment(NULL_STATE_FRAGMENT);
     }
 }

@@ -23,7 +23,7 @@ import retrofit2.http.Query;
 public interface ApiServer {
 
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://192.168.137.147:1880/")
+            .baseUrl("http://192.168.0.4:1880/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 

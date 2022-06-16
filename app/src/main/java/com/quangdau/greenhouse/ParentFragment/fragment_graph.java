@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.quangdau.greenhouse.Adapter.ViewPager2.GraphAdapter;
 import com.quangdau.greenhouse.ChildFragment.fragment_child_graph1;
 import com.quangdau.greenhouse.ChildFragment.fragment_child_graph2;
+import com.quangdau.greenhouse.Preferences.UserPreferences;
 import com.quangdau.greenhouse.R;
 
 import java.util.ArrayList;
@@ -24,20 +26,22 @@ public class fragment_graph extends Fragment {
     //Declare variables
     TabLayout tabLayout;
     ViewPager2 viewPager2;
-    String token;
     ArrayList<String> arrAuthority;
+    UserPreferences userPreferences;
+    final String STATE_FRAGMENT = "GRAPH_FRAGMENT";
+    final String NULL_STATE_FRAGMENT = "NULL";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_graph, container, false);
-        //Link
+        //Assign variables
         tabLayout = view.findViewById(R.id.tabLayoutGraph);
         viewPager2 = view.findViewById(R.id.viewPager2Graph);
-        //Get data from activity_main (token, arrAuthority)
+        userPreferences = new UserPreferences(getActivity());
+        //Get arrAuthority
         parseData();
         //Setting adapter
         GraphAdapter adapter = new GraphAdapter(getActivity());
-        adapter.setToken(token);
         viewPager2.setAdapter(adapter);
         for (int i = 0; i < arrAuthority.size(); i++){
             switch (i){
@@ -62,7 +66,18 @@ public class fragment_graph extends Fragment {
 
     private void parseData(){
         assert getArguments() != null;
-        token = getArguments().getString("token");
         arrAuthority = getArguments().getStringArrayList("arrAuthority");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        userPreferences.setStateFragment(STATE_FRAGMENT);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        userPreferences.setStateFragment(NULL_STATE_FRAGMENT);
     }
 }

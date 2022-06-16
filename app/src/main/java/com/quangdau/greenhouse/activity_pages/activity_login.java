@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.quangdau.greenhouse.ApiService.ApiServer;
+import com.quangdau.greenhouse.Preferences.UserPreferences;
 import com.quangdau.greenhouse.R;
 import com.quangdau.greenhouse.modelsAPI.post_authen.authenPost;
 import com.quangdau.greenhouse.modelsAPI.res_authority.authority;
@@ -39,6 +40,8 @@ public class activity_login extends AppCompatActivity {
     //declare variables
     TextInputEditText account,password;
     Button btnLogin;
+    UserPreferences userPreferences;
+    Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,14 +50,54 @@ public class activity_login extends AppCompatActivity {
         account =  findViewById(R.id.account);
         password =  findViewById(R.id.passWord);
         btnLogin =  findViewById(R.id.Login);
+        context = this;
+        userPreferences = new UserPreferences(context);
+        //Check permission
+        checkPermission();
         //Button Listener
         btnLogin.setOnClickListener(view -> login(Objects.requireNonNull(account.getText()).toString(), Objects.requireNonNull(password.getText()).toString()));
-        //
-        checkPermission();
-
-
 
     }
+
+
+    private void login(String account, String password){
+        //Check empty input
+        if (account.length() == 0 && password.length() == 0){
+            toastNew("Account and password must not empty!");
+        }else if(account.length() == 0){
+            toastNew("Account must not empty!");
+        }else if(password.length() == 0){
+            toastNew("Password must not empty!");
+        }else{
+            ApiServer post = ApiServer.retrofit.create(ApiServer.class);
+            String deviceName =  Build.MODEL;
+            authenPost authenPost = new authenPost("Authen", account, password, deviceName, getIpAddress());
+            Call <authority> postAuth = post.postAuth(authenPost);
+            postAuth.enqueue(new Callback<authority>() {
+                @Override
+                public void onResponse(Call<authority> call, Response<authority> response) {
+                    //check response from server
+                    if (response.body() != null){
+                        if (response.body().getResponse() == null){
+                            Intent nextPage= new Intent(activity_login.this, activity_main.class);
+                            userPreferences.setToken(response.body().getToken());
+                            packedData(nextPage, response);
+                            startActivity(nextPage);
+                            finish();
+                        }else{
+                            toastNew("Wrong account or password!");
+                        }
+                    }
+                }
+                @Override
+                public void onFailure(Call<authority> call, Throwable t) {
+                    Log.e("login", "Error Login: "+ t);
+                    toastNew("No response from server!");
+                }
+            });
+        }
+    }
+
     private void toastNew(String textToast){
         Toast toast = new Toast(activity_login.this);
         LayoutInflater inflater = getLayoutInflater();
@@ -67,48 +110,25 @@ public class activity_login extends AppCompatActivity {
         toast.show();
     }
 
-    private void login(String account, String password){
-        //Check empty input
-        if (account.length() == 0 && password.length() == 0){
-            toastNew("Account and password must not empty!");
-        }else if(account.length() == 0){
-            toastNew("Account must not empty!");
-        }else if(password.length() == 0){
-            toastNew("Password must not empty!");
-        }else{
-            ApiServer post = ApiServer.retrofit.create(ApiServer.class);
-            authenPost authenPost = new authenPost("Authen", account, password, Build.MODEL, getIpAddress());
-            Call <authority> postAuth = post.postAuth(authenPost);
-            postAuth.enqueue(new Callback<authority>() {
-                @Override
-                public void onResponse(Call<authority> call, Response<authority> response) {
-                    //check response from server
-                    if (response.body().getResponse() == null){
-                        Intent nextPage= new Intent(activity_login.this, activity_main.class);
-                        //Transfer data to activity_main
-                        packedData(nextPage, response);
-                        startActivity(nextPage);
-                        finish();
-                    }else{
-                        toastNew("Wrong account or password!");
-                    }
-                }
-                @Override
-                public void onFailure(Call<authority> call, Throwable t) {
-                    Log.d("login", "Failed! "+ t);
-                    toastNew("No response from server!");
-                }
-            });
-        }
-    }
-
-
     private String getIpAddress(){
         WifiManager wifiMgr = (WifiManager) getSystemService(WIFI_SERVICE);
         WifiInfo wifiInfo = wifiMgr.getConnectionInfo();
         int ip = wifiInfo.getIpAddress();
-        String ipAddress = Formatter.formatIpAddress(ip);
-        return ipAddress;
+        return Formatter.formatIpAddress(ip);
+    }
+
+    private void checkPermission(){
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+            Log.e("gh", "Permission grated!");
+        }else{
+            String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION};
+            requestPermissions(permissions, REQUEST_PERMISSION_CODE);
+        }
+    }
+
+    private void packedData(Intent intent, Response<authority> response ){
+        assert response.body() != null;
+        intent.putExtra("authority", response.body().getAuthority());
     }
 
     @Override
@@ -119,20 +139,4 @@ public class activity_login extends AppCompatActivity {
         }
         return super.dispatchTouchEvent(ev);
     }
-
-    private void checkPermission(){
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-            return;
-        }else{
-            String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION};
-            requestPermissions(permissions, REQUEST_PERMISSION_CODE);
-        }
-    }
-
-    private void packedData(Intent intent, Response<authority> response ){
-        intent.putExtra("token", response.body().getToken());
-        intent.putExtra("authority", response.body().getAuthority());
-    }
-
-
 }
