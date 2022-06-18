@@ -1,4 +1,4 @@
-package com.quangdau.greenhouse.Preferences;
+package com.quangdau.greenhouse.SharedPreferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;

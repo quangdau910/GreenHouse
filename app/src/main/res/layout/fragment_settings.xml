@@ -13,14 +13,17 @@
     <Button
         android:id="@+id/buttonLimitSetting"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:text="Limit Setting"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
+        android:textSize="@dimen/text_size_18sp"
         android:backgroundTint="@color/white_60"
         android:textColor="@color/blue_30"
+        android:fontFamily="@font/opensans_regular"
+        android:textAllCaps="false"
         />
 
 

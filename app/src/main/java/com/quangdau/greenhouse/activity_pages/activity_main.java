@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -19,7 +18,7 @@ import com.quangdau.greenhouse.ParentFragment.fragment_graph;
 import com.quangdau.greenhouse.ParentFragment.fragment_history;
 import com.quangdau.greenhouse.ParentFragment.fragment_home;
 import com.quangdau.greenhouse.ParentFragment.fragment_settings;
-import com.quangdau.greenhouse.Preferences.UserPreferences;
+import com.quangdau.greenhouse.SharedPreferences.UserPreferences;
 import com.quangdau.greenhouse.R;
 
 import java.util.ArrayList;
@@ -29,11 +28,11 @@ public class activity_main extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     FloatingActionButton floatingActionButton;
     //Parent Fragment
-    fragment_home fragmentHome = new fragment_home();
-    fragment_settings fragmentSettings = new fragment_settings();
-    fragment_account fragmentAccount = new fragment_account();
-    fragment_history fragmentHistory = new fragment_history();
-    fragment_graph fragmentGraph = new fragment_graph();
+    fragment_home fragmentHome;
+    fragment_settings fragmentSettings;
+    fragment_account fragmentAccount;
+    fragment_history fragmentHistory;
+    fragment_graph fragmentGraph;
     //Other
     String token;
     ArrayList<String> arrAuthority;
@@ -44,6 +43,11 @@ public class activity_main extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_page);
+        fragmentHome = new fragment_home();
+        fragmentSettings = new fragment_settings();
+        fragmentAccount = new fragment_account();
+        fragmentHistory = new fragment_history();
+        fragmentGraph = new fragment_graph();
         //Assign variables
         floatingActionButton = findViewById(R.id.fab);
         bottomNavigationView = findViewById(R.id.bottom_nav);

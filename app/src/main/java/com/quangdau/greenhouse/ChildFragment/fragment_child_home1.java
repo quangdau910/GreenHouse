@@ -27,7 +27,7 @@ import android.widget.TextView;
 
 import com.quangdau.greenhouse.ApiService.ApiServer;
 import com.quangdau.greenhouse.ApiService.ApiWeather;
-import com.quangdau.greenhouse.Preferences.UserPreferences;
+import com.quangdau.greenhouse.SharedPreferences.UserPreferences;
 import com.quangdau.greenhouse.R;
 import com.quangdau.greenhouse.modelsAPI.post_writeDigital.writeDigitalPost;
 import com.quangdau.greenhouse.modelsAPI.get_data.data;
@@ -120,7 +120,7 @@ public class fragment_child_home1 extends Fragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                handler.postDelayed(this, 1000);
+                //handler.postDelayed(this, 1000);
                 if (userPreferences.getStateFragment().equals(STATE_FRAGMENT)){
                     //Update data from server
                     getDataApi(userPreferences.getToken());
@@ -223,6 +223,7 @@ public class fragment_child_home1 extends Fragment {
 
     @SuppressLint("SetTextI18n")
     private void updateUISensor(Response<data> response) {
+        Log.e("gh", "update ui sensor");
         textViewTemperatureSensor.setText(response.body().getTemperature() + "");
         textViewLightSensor.setText(response.body().getLight() + "");
         textViewHumiditySensor.setText(response.body().getHumidity() + "");
@@ -428,12 +429,12 @@ public class fragment_child_home1 extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-
+        Log.e("gh", "home1 destroy");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-
+        Log.e("gh", "home1 destroy");
     }
 }

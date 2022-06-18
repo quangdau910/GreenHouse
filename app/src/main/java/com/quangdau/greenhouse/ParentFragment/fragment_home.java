@@ -18,7 +18,7 @@ import com.quangdau.greenhouse.Adapter.ViewPager2.HomeAdapter;
 import com.quangdau.greenhouse.ApiService.ApiServer;
 import com.quangdau.greenhouse.ChildFragment.fragment_child_home1;
 import com.quangdau.greenhouse.ChildFragment.fragment_child_home2;
-import com.quangdau.greenhouse.Preferences.UserPreferences;
+import com.quangdau.greenhouse.SharedPreferences.UserPreferences;
 import com.quangdau.greenhouse.R;
 import com.quangdau.greenhouse.modelsAPI.get_RSSI.RSSIData;
 

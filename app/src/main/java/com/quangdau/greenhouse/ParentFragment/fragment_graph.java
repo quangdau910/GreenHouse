@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.quangdau.greenhouse.Adapter.ViewPager2.GraphAdapter;
 import com.quangdau.greenhouse.ChildFragment.fragment_child_graph1;
 import com.quangdau.greenhouse.ChildFragment.fragment_child_graph2;
-import com.quangdau.greenhouse.Preferences.UserPreferences;
+import com.quangdau.greenhouse.SharedPreferences.UserPreferences;
 import com.quangdau.greenhouse.R;
 
 import java.util.ArrayList;

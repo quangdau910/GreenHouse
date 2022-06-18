@@ -12,7 +12,7 @@ import android.widget.Button;
 import com.quangdau.greenhouse.ChildFragment.fragment_child_limit_setting;
 import com.quangdau.greenhouse.ChildFragment.fragment_child_mode_setting;
 import com.quangdau.greenhouse.ChildFragment.fragment_child_timer_setting;
-import com.quangdau.greenhouse.Preferences.UserPreferences;
+import com.quangdau.greenhouse.SharedPreferences.UserPreferences;
 import com.quangdau.greenhouse.R;
 
 public class fragment_settings extends Fragment {
@@ -36,6 +36,8 @@ public class fragment_settings extends Fragment {
         //Assign variables
         buttonLimitSetting = view.findViewById(R.id.buttonLimitSetting);
         userPreferences = new UserPreferences(getActivity());
+
+
 
         buttonLimitSetting.setOnClickListener(new View.OnClickListener() {
             @Override

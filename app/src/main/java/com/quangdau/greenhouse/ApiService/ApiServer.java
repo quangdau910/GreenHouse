@@ -11,7 +11,9 @@ import com.quangdau.greenhouse.modelsAPI.res_writeDigital.resWriteDigital;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -21,10 +23,15 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface ApiServer {
+    OkHttpClient httpClient = new OkHttpClient.Builder()
+            .readTimeout(5, TimeUnit.SECONDS)
+            .writeTimeout(5, TimeUnit.SECONDS)
+            .build();
 
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://192.168.0.4:1880/")
+            .baseUrl("http://192.168.0.169:1880/")
             .addConverterFactory(GsonConverterFactory.create())
+            .client(httpClient)
             .build();
 
     @POST("pi4Server")
