@@ -64,7 +64,7 @@ public class activity_main extends AppCompatActivity {
         //Pre-select item in bottom nav
         bottomNavigationView.setSelectedItemId(R.id.home);
         //Open default fragment
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragmentHome).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.fragmentContainer, fragmentHome).commit();
         //Bottom nav listener
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @SuppressLint("NonConstantResourceId")
