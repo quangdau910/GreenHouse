@@ -60,15 +60,28 @@ public class fragment_child_home1 extends Fragment {
     //Get data through fragment
     Bundle bundle;
     String houseID, stateFragment;
+    //Handler post delay
+    private Handler mainHandler;
+    final private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            if (userPreferences.getStateFragment().equals(STATE_FRAGMENT)){
+                //Update data from server
+                getDataApi(userPreferences.getToken());
+            }
+            mainHandler.postDelayed(this, 1000);
+        }
+    };
     //Other
     String dataPort1;
-    final Handler handler = new Handler(Looper.getMainLooper());
+    //Handler handler = new Handler(Looper.getMainLooper());
     UserPreferences userPreferences;
     final String STATE_FRAGMENT = "HOME_FRAGMENT";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mainHandler = new Handler(Looper.getMainLooper());
         bundle = this.getArguments();
         parseData(bundle);
     }
@@ -108,25 +121,8 @@ public class fragment_child_home1 extends Fragment {
         imageViewValve4 = view.findViewById(R.id.imageViewDeviceValve4);
         //DefaultUI
         cardViewWeather.setVisibility(View.GONE);
-        switchLight1.setChecked(false);
-        switchFan1.setChecked(false);
-        switchValve1.setChecked(false);
-        switchValve2.setChecked(false);
-        switchValve3.setChecked(false);
-        switchValve4.setChecked(false);
         //Get data
         getDataApi(userPreferences.getToken());
-        //Do something after 500ms
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //handler.postDelayed(this, 1000);
-                if (userPreferences.getStateFragment().equals(STATE_FRAGMENT)){
-                    //Update data from server
-                    getDataApi(userPreferences.getToken());
-                }
-            }
-        }, 1000 );
 
         switchLight1.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (switchLight1.isPressed()){
@@ -211,7 +207,6 @@ public class fragment_child_home1 extends Fragment {
                 //UpdateUI
                 updateUISensor(response);
                 updateUIDevice(response.body().getDigitalData().getPort1(), port1);
-                Log.e("gh", ""+ response.body().getDigitalData().getPort1());
             }
 
             @Override
@@ -314,10 +309,10 @@ public class fragment_child_home1 extends Fragment {
 
 
     private void parseData(Bundle bundle) {
-       if (bundle != null){
-           houseID = bundle.getString("houseID");
-           stateFragment = bundle.getString("stateFragment");
-       }
+        if (bundle != null){
+            houseID = bundle.getString("houseID");
+            stateFragment = bundle.getString("stateFragment");
+        }
     }
 
     //Weather
@@ -422,14 +417,17 @@ public class fragment_child_home1 extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Log.e("gh", "home1 resume");
         getCurrentLocation();
+        mainHandler.post(runnable);
 
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        Log.e("gh", "home1 destroy");
+        Log.e("gh", "home1 pause");
+        mainHandler.removeCallbacks(runnable);
     }
 
     @Override

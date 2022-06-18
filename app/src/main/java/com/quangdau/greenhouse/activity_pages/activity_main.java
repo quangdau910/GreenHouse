@@ -72,22 +72,18 @@ public class activity_main extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.graph:
-                        fragmentGraph = new fragment_graph();
                         packedData(fragmentGraph);
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, activity_main.this.fragmentGraph).commit();
                         return true;
                     case R.id.settings:
-                        fragmentSettings = new fragment_settings();
                         packedData(fragmentSettings);
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, activity_main.this.fragmentSettings).commit();
                         return true;
                     case R.id.history:
-                        fragmentHistory = new fragment_history();
                         packedData(fragmentHistory);
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, activity_main.this.fragmentHistory).commit();
                         return true;
                     case R.id.account:
-                        fragmentAccount = new fragment_account();
                         packedData(fragmentAccount);
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, activity_main.this.fragmentAccount).commit();
                         return true;
@@ -102,7 +98,6 @@ public class activity_main extends AppCompatActivity {
             public void onClick(View view) {
                 //unselect bottom nav item
                 bottomNavigationView.setSelectedItemId(R.id.home);
-                fragmentHome = new fragment_home();
                 packedData(fragmentHome);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragmentHome).commit();
             }
