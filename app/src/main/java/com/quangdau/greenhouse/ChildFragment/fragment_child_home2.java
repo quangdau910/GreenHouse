@@ -68,6 +68,13 @@ public class fragment_child_home2 extends Fragment {
         super.onResume();
         Log.e("gh", "home2 resume");
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.e("gh", "home2 pause");
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();

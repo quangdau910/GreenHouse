@@ -1,5 +1,6 @@
 package com.quangdau.greenhouse.ApiService;
 
+import com.quangdau.greenhouse.modelsAPI.get_limitSettings.limitSettingsData;
 import com.quangdau.greenhouse.modelsAPI.post_writeDigital.writeDigitalPost;
 import com.quangdau.greenhouse.modelsAPI.get_RSSI.RSSIData;
 import com.quangdau.greenhouse.modelsAPI.get_history.historyLoginData;
@@ -24,8 +25,8 @@ import retrofit2.http.Query;
 
 public interface ApiServer {
     OkHttpClient httpClient = new OkHttpClient.Builder()
-            .readTimeout(5, TimeUnit.SECONDS)
-            .writeTimeout(5, TimeUnit.SECONDS)
+            .readTimeout(3, TimeUnit.SECONDS)
+            .writeTimeout(3, TimeUnit.SECONDS)
             .build();
 
     Retrofit retrofit = new Retrofit.Builder()
@@ -33,10 +34,6 @@ public interface ApiServer {
             .addConverterFactory(GsonConverterFactory.create())
             .client(httpClient)
             .build();
-
-    @POST("pi4Server")
-    Call <authority> postAuth(@Body authenPost authenPost);
-
 
     @GET("pi4Server")
     Call <data> getData(@Query("token") String token,
@@ -51,18 +48,22 @@ public interface ApiServer {
                                   @Query("time") Array[] time);
     @GET("pi4Server")
     Call <ArrayList<historyLoginData>> getHistoryLogin(@Query("token") String token,
-                                                  @Query("cmd") String cmd);
+                                                       @Query("cmd") String cmd);
 
     @GET("pi4Server")
     Call <RSSIData> getRSSIData(@Query("token") String token,
                                 @Query("cmd") String cmd,
                                 @Query("houseID") String houseID);
 
-
+    @GET("pi4Server")
+    Call <limitSettingsData> getLimitSettings(@Query("token") String token,
+                                              @Query("request") String request,
+                                              @Query("houseID") String houseID);
     @POST("pi4Server")
     Call <resWriteDigital> postWriteDigital(@Body writeDigitalPost writeDigitalPost);
 
-
+    @POST("pi4Server")
+    Call <authority> postAuth(@Body authenPost authenPost);
 
 
 

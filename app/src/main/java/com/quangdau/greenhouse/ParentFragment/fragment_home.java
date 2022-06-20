@@ -8,6 +8,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -137,20 +138,20 @@ public class fragment_home extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        //Log.e("gh", "home paused");
+        Log.e("gh", "home paused");
         userPreferences.setStateFragment(NULL_STATE_FRAGMENT);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        //Log.e("gh", "home resume");
+        Log.e("gh", "home resume");
         userPreferences.setStateFragment(STATE_FRAGMENT);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //Log.e("gh", "home destroy");
+        Log.e("gh", "home destroy");
     }
 }

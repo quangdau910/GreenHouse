@@ -7,8 +7,10 @@ import androidx.fragment.app.Fragment;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.MenuItem;
-import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -38,19 +40,20 @@ public class activity_main extends AppCompatActivity {
     ArrayList<String> arrAuthority;
     UserPreferences userPreferences;
     Context context;
-
+    boolean backPressCheck;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_page);
+        //Assign variables
         fragmentHome = new fragment_home();
         fragmentSettings = new fragment_settings();
         fragmentAccount = new fragment_account();
         fragmentHistory = new fragment_history();
         fragmentGraph = new fragment_graph();
-        //Assign variables
         floatingActionButton = findViewById(R.id.fab);
         bottomNavigationView = findViewById(R.id.bottom_nav);
+        backPressCheck = false;
         //Get authority
         parseData();
         packedData(fragmentHome);
@@ -93,28 +96,42 @@ public class activity_main extends AppCompatActivity {
             }
         });
         //Floating act button listener
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //unselect bottom nav item
-                bottomNavigationView.setSelectedItemId(R.id.home);
-                packedData(fragmentHome);
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragmentHome).commit();
-            }
+        floatingActionButton.setOnClickListener(view -> {
+            //unselect bottom nav item
+            bottomNavigationView.setSelectedItemId(R.id.home);
+            packedData(fragmentHome);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragmentHome).commit();
         });
     }
 
 
-    private void packedData(Fragment fragment){
-        Bundle bundle = new Bundle();
-        bundle.putStringArrayList("arrAuthority",arrAuthority);
-        fragment.setArguments(bundle);
-    }
+
     private void parseData(){
         //Get arrAuthority from activity_login
         Bundle extras = getIntent().getExtras();
         if (extras != null){
             arrAuthority = extras.getStringArrayList("authority");
         }
+    }
+    private void packedData(Fragment fragment){
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList("arrAuthority",arrAuthority);
+        fragment.setArguments(bundle);
+    }
+    @Override
+    public void onBackPressed() {
+
+        if (backPressCheck){
+            super.onBackPressed();
+            return;
+        }
+        backPressCheck = true;
+        Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                backPressCheck = false;
+            }
+        }, 2000);
     }
 }

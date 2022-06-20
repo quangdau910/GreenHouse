@@ -8,6 +8,8 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.format.Formatter;
 import android.util.Log;
 import android.view.Gravity;
@@ -42,6 +44,7 @@ public class activity_login extends AppCompatActivity {
     Button btnLogin;
     UserPreferences userPreferences;
     Context context;
+    Boolean backPressCheck;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +55,7 @@ public class activity_login extends AppCompatActivity {
         btnLogin =  findViewById(R.id.Login);
         context = this;
         userPreferences = new UserPreferences(context);
+        backPressCheck = false;
         //Check permission
         checkPermission();
         //Button Listener
@@ -138,5 +142,21 @@ public class activity_login extends AppCompatActivity {
             imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
         return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (backPressCheck){
+            super.onBackPressed();
+            return;
+        }
+        backPressCheck = true;
+        Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                backPressCheck = false;
+            }
+        }, 2000);
     }
 }

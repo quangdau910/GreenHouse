@@ -69,7 +69,7 @@ public class fragment_child_home1 extends Fragment {
                 //Update data from server
                 getDataApi(userPreferences.getToken());
             }
-            mainHandler.postDelayed(this, 1000);
+            mainHandler.postDelayed(this, 500);
         }
     };
     //Other
@@ -201,12 +201,13 @@ public class fragment_child_home1 extends Fragment {
         call.enqueue(new Callback<data>() {
             @Override
             public void onResponse(Call<data> call, Response<data> response) {
-                assert response.body() != null;
-                //Assign dataPort
-                dataPort1 = response.body().getDigitalData().getPort1();
-                //UpdateUI
-                updateUISensor(response);
-                updateUIDevice(response.body().getDigitalData().getPort1(), port1);
+                if (response.body() != null){
+                    //Assign dataPort
+                    dataPort1 = response.body().getDigitalData().getPort1();
+                    //UpdateUI
+                    updateUISensor(response);
+                    updateUIDevice(response.body().getDigitalData().getPort1(), port1);
+                }
             }
 
             @Override

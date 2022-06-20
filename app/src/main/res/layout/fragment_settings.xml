@@ -22,8 +22,9 @@
         android:textSize="@dimen/text_size_18sp"
         android:backgroundTint="@color/white_60"
         android:textColor="@color/blue_30"
-        android:fontFamily="@font/opensans_regular"
+        android:fontFamily="@font/open_sans_regular"
         android:textAllCaps="false"
+        android:elevation="10dp"
         />
 
 
