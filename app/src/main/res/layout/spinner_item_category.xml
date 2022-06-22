@@ -3,18 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
     <TextView
+        android:id="@+id/textViewCategorySpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:text="Quang Dau"
-        android:fontFamily="@font/open_sans_regular"
-        android:padding="10dp"
-        />
+        android:textSize="17sp"
+        android:text="test"
+        android:padding="8dp"
+        android:fontFamily="@font/open_sans_regular"/>
     <View
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        />
+        android:layout_height="0.7dp"
+        android:background="@android:color/darker_gray"/>
 
 </LinearLayout>

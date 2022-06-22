@@ -86,7 +86,7 @@ public class activity_main extends AppCompatActivity {
                         packedData(fragmentHistory);
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, activity_main.this.fragmentHistory).commit();
                         return true;
-                    case R.id.account:
+                    case R.id.editTextAccount:
                         packedData(fragmentAccount);
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, activity_main.this.fragmentAccount).commit();
                         return true;

@@ -12,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -26,6 +26,9 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.quangdau.greenhouse.ApiService.ApiServer;
 import com.quangdau.greenhouse.R;
+import com.quangdau.greenhouse.SharedPreferences.UserPreferences;
+import com.quangdau.greenhouse.Spinner.spinnerLimitSetting.CategorySpinner;
+import com.quangdau.greenhouse.Spinner.spinnerLimitSetting.CategorySpinnerAdapter;
 import com.quangdau.greenhouse.modelsAPI.get_limitSettings.limitSettingsData;
 import com.quangdau.greenhouse.modelsAPI.get_limitSettings.objGetLimitSettingData;
 import com.quangdau.greenhouse.modelsAPI.post_limitSettings.limitSettingsPost;
@@ -33,6 +36,7 @@ import com.quangdau.greenhouse.modelsAPI.post_limitSettings.objPostLimitSettingD
 import com.quangdau.greenhouse.modelsAPI.res_limitSettingsPost.resLimitSettingsPost;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -51,12 +55,15 @@ public class fragment_child_limit_setting extends Fragment {
     //Communicate fragment
     final String REQUEST_KEY = "fragmentLimitSetting";
     Bundle bundle;
+    //Spinner
+    List<CategorySpinner> listSpinner;
+    CategorySpinnerAdapter categorySpinnerAdapter;
     //Other
-    Boolean flatCheckChangeDataLimitSettings;
-    ColorStateList cslFABSaveChange;
+    Boolean flagCheckChangeDataLimitSettings;
+    ColorStateList cslFABSaveChangeOn, cslFABSaveChangeOff;
     AlertDialog.Builder builder;
     ArrayList<String> arrAuthority;
-    String token;
+    UserPreferences userPreferences;
 
 
 
@@ -87,15 +94,33 @@ public class fragment_child_limit_setting extends Fragment {
         switchStatusSoilMoisture2 = view.findViewById(R.id.switchLimitStatusSoilMoisture2);
         switchStatusSoilMoisture3 = view.findViewById(R.id.switchLimitStatusSoilMoisture3);
         switchStatusSoilMoisture4 = view.findViewById(R.id.switchLimitStatusSoilMoisture4);
-        flatCheckChangeDataLimitSettings = false;
+        flagCheckChangeDataLimitSettings = false;
         bundle = new Bundle();
-        //Set adapter spinner
-        ArrayAdapter spinnerAdapter = new ArrayAdapter(getActivity(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, arrAuthority);
-        spinnerHouseID.setAdapter(spinnerAdapter);
-        //UpdateUI fabSaveChange
-        fabSaveChange.shrink();
-        cslFABSaveChange = ColorStateList.valueOf(getResources().getColor(R.color.green_10));
-        //Set listener
+        userPreferences = new UserPreferences(getActivity());
+        //Setting adapter spinner
+        listSpinner = new ArrayList<>();
+        for (int i = 0; i < arrAuthority.size(); i++){
+            listSpinner.add(new CategorySpinner(arrAuthority.get(i)));
+        }
+        categorySpinnerAdapter = new CategorySpinnerAdapter(getActivity(), R.layout.spinner_item_selected, listSpinner);
+        spinnerHouseID.setAdapter(categorySpinnerAdapter);
+        spinnerHouseID.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.e("gh", "spinner: " + categorySpinnerAdapter.getItemSelected());
+                getLimitSettingsData();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        //Setting fabSaveChange
+        cslFABSaveChangeOn = ColorStateList.valueOf(getResources().getColor(R.color.green_10));
+        cslFABSaveChangeOff = ColorStateList.valueOf(getResources().getColor(R.color.white_60));
+        updateUIButtonSaveChange(false);
+        //Setting button listener
         editTextMin1.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -103,7 +128,7 @@ public class fragment_child_limit_setting extends Fragment {
                     //Clear focus here from edittext
                     editTextMin1.clearFocus();
                 }
-                if(!flatCheckChangeDataLimitSettings) updateUIButtonSaveChange();
+                if(!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
                 return false;
             }
         });
@@ -114,7 +139,7 @@ public class fragment_child_limit_setting extends Fragment {
                     //Clear focus here from edittext
                     editTextMin2.clearFocus();
                 }
-                if(!flatCheckChangeDataLimitSettings) updateUIButtonSaveChange();
+                if(!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
                 return false;
             }
         });
@@ -125,7 +150,7 @@ public class fragment_child_limit_setting extends Fragment {
                     //Clear focus here from edittext
                     editTextMin3.clearFocus();
                 }
-                if(!flatCheckChangeDataLimitSettings) updateUIButtonSaveChange();
+                if(!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
                 return false;
             }
         });
@@ -136,7 +161,7 @@ public class fragment_child_limit_setting extends Fragment {
                     //Clear focus here from edittext
                     editTextMin4.clearFocus();
                 }
-                if(!flatCheckChangeDataLimitSettings) updateUIButtonSaveChange();
+                if(!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
                 return false;
             }
         });
@@ -147,7 +172,7 @@ public class fragment_child_limit_setting extends Fragment {
                     //Clear focus here from edittext
                     editTextMax1.clearFocus();
                 }
-                if(!flatCheckChangeDataLimitSettings) updateUIButtonSaveChange();
+                if(!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
                 return false;
             }
         });
@@ -158,7 +183,7 @@ public class fragment_child_limit_setting extends Fragment {
                     //Clear focus here from edittext
                     editTextMax2.clearFocus();
                 }
-                if(!flatCheckChangeDataLimitSettings) updateUIButtonSaveChange();
+                if(!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
                 return false;
             }
         });
@@ -169,7 +194,7 @@ public class fragment_child_limit_setting extends Fragment {
                     //Clear focus here from edittext
                     editTextMax3.clearFocus();
                 }
-                if(!flatCheckChangeDataLimitSettings) updateUIButtonSaveChange();
+                if(!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
                 return false;
             }
         });
@@ -180,7 +205,7 @@ public class fragment_child_limit_setting extends Fragment {
                     //Clear focus here from edittext
                     editTextMax4.clearFocus();
                 }
-                if(!flatCheckChangeDataLimitSettings) updateUIButtonSaveChange();
+                if(!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
                 return false;
             }
         });
@@ -188,7 +213,7 @@ public class fragment_child_limit_setting extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (switchStatusSoilMoisture1.isPressed()){
-                    if (!flatCheckChangeDataLimitSettings) updateUIButtonSaveChange();
+                    if (!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
                 }
             }
         });
@@ -196,7 +221,7 @@ public class fragment_child_limit_setting extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (switchStatusSoilMoisture2.isPressed()){
-                    if (!flatCheckChangeDataLimitSettings) updateUIButtonSaveChange();
+                    if (!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
                 }
             }
         });
@@ -204,7 +229,7 @@ public class fragment_child_limit_setting extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (switchStatusSoilMoisture3.isPressed()){
-                    if (!flatCheckChangeDataLimitSettings) updateUIButtonSaveChange();
+                    if (!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
                 }
             }
         });
@@ -212,7 +237,7 @@ public class fragment_child_limit_setting extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (switchStatusSoilMoisture4.isPressed()){
-                    if (!flatCheckChangeDataLimitSettings) updateUIButtonSaveChange();
+                    if (!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
                 }
             }
         });
@@ -224,22 +249,6 @@ public class fragment_child_limit_setting extends Fragment {
                 getActivity().getSupportFragmentManager().setFragmentResult(REQUEST_KEY, bundle);
             }
         });
-
-        fabSaveChange.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (flatCheckChangeDataLimitSettings){
-                    //Creating dialog box
-                    AlertDialog alert = builder.create();
-                    //Setting the title manually
-                    alert.setTitle("AlertDialogExample");
-                    alert.show();
-                }else{
-
-                }
-            }
-        });
-
         //Setting alert dialog
         builder = new AlertDialog.Builder(getActivity());
         builder.setMessage("Do you want to save change?")
@@ -247,101 +256,103 @@ public class fragment_child_limit_setting extends Fragment {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
-
-
-
-
-                        limitSettingsPost mLimitSettingsPost = new limitSettingsPost(getDataSettings(), spinnerHouseID.getSelectedItem().toString(),token, "123");
+                        limitSettingsPost mLimitSettingsPost = new limitSettingsPost(getDataSettingsChange(), categorySpinnerAdapter.getItemSelected(),userPreferences.getToken(), "SetLimitSettingsData");
                         ApiServer post = ApiServer.retrofit.create(ApiServer.class);
                         Call <resLimitSettingsPost> postLimitSettings = post.postLimitSettings(mLimitSettingsPost);
                         postLimitSettings.enqueue(new Callback<resLimitSettingsPost>() {
                             @Override
                             public void onResponse(Call<resLimitSettingsPost> call, Response<resLimitSettingsPost> response) {
-                                if (response.body() != null){
-                                    //Do something
+                                if (response.body() != null && response.body().getResponse().equals("SetLimitSettingsData")){
+                                    updateUIButtonSaveChange(false);
                                 }
                             }
 
                             @Override
                             public void onFailure(Call<resLimitSettingsPost> call, Throwable t) {
-
+                                Log.e("gh", "LimitSetting: "+ t);
+                                Toast.makeText(getActivity(), "No response from server!", Toast.LENGTH_SHORT).show();
                             }
                         });
+                        dialog.dismiss();
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Toast.makeText(getActivity(),"you choose no action for alert box", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }
                 });
 
 
 
+        fabSaveChange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (fabSaveChange.isExtended()){
+                    //Creating dialog box
+                    AlertDialog alert = builder.create();
+                    //Setting the title manually
+                    alert.setTitle("AlertDialogExample");
+                    alert.show();
+                }
+            }
+        });
         //Announce fragmentLimitSetting is created
         bundle.putString("fragmentLimitSetting", "fragmentLimitSettingCreatedView");
         getActivity().getSupportFragmentManager().setFragmentResult(REQUEST_KEY, bundle);
         return view;
     }
 
-
-
-
-
-
     private void getLimitSettingsData(){
         ApiServer get = ApiServer.retrofit.create(ApiServer.class);
-        Call<limitSettingsData> call = get.getLimitSettingsData(token, "GetLimitSettingsData", spinnerHouseID.getSelectedItem().toString());
+        Call<limitSettingsData> call = get.getLimitSettingsData(userPreferences.getToken(), "GetLimitSettingsData", categorySpinnerAdapter.getItemSelected());
         call.enqueue(new Callback<limitSettingsData>() {
             @Override
             public void onResponse(Call<limitSettingsData> call, Response<limitSettingsData> response) {
                 if (response.body() != null){
-                    Log.e("gh", ""+ response.body().getResponse());
-                    Log.e("gh", "objData size: " + response.body().getData().size());
-                    //updateUILimitSettings(response.body().getData());
+                    updateUILimitSettings(response.body().getData());
+                    updateUIButtonSaveChange(false);
                 }
             }
 
             @Override
             public void onFailure(Call<limitSettingsData> call, Throwable t) {
-
+                Log.e("gh", ""+t);
             }
         });
-
-
     }
 
-
+    @SuppressLint("SetTextI18n")
     private void updateUILimitSettings(ArrayList<objGetLimitSettingData> objGetLimitSettingData){
         for (int i = 0; i < objGetLimitSettingData.size(); i++){
             switch(objGetLimitSettingData.get(i).getSensor()){
                 case "soil_moisture1":
-                    editTextMin1.setText(objGetLimitSettingData.get(i).getMin());
-                    editTextMax1.setText(objGetLimitSettingData.get(i).getMax());
+                    editTextMin1.setText(objGetLimitSettingData.get(i).getMin().toString());
+                    editTextMax1.setText(objGetLimitSettingData.get(i).getMax().toString());
                     switchStatusSoilMoisture1.setChecked(objGetLimitSettingData.get(i).getStatus());
                     break;
                 case "soil_moisture2":
-                    editTextMin2.setText(objGetLimitSettingData.get(i).getMin());
-                    editTextMax2.setText(objGetLimitSettingData.get(i).getMax());
+                    editTextMin2.setText(objGetLimitSettingData.get(i).getMin().toString());
+                    editTextMax2.setText(objGetLimitSettingData.get(i).getMax().toString());
                     switchStatusSoilMoisture2.setChecked(objGetLimitSettingData.get(i).getStatus());
                     break;
                 case "soil_moisture3":
-                    editTextMin3.setText(objGetLimitSettingData.get(i).getMin());
-                    editTextMax3.setText(objGetLimitSettingData.get(i).getMax());
+                    editTextMin3.setText(objGetLimitSettingData.get(i).getMin().toString());
+                    editTextMax3.setText(objGetLimitSettingData.get(i).getMax().toString());
                     switchStatusSoilMoisture3.setChecked(objGetLimitSettingData.get(i).getStatus());
                     break;
                 case "soil_moisture4":
-                    editTextMin4.setText(objGetLimitSettingData.get(i).getMin());
-                    editTextMax4.setText(objGetLimitSettingData.get(i).getMax());
+                    editTextMin4.setText(objGetLimitSettingData.get(i).getMin().toString());
+                    editTextMax4.setText(objGetLimitSettingData.get(i).getMax().toString());
                     switchStatusSoilMoisture4.setChecked(objGetLimitSettingData.get(i).getStatus());
+                    break;
+                default:
                     break;
             }
         }
     }
 
 
-    private ArrayList<objPostLimitSettingData> getDataSettings(){
+    private ArrayList<objPostLimitSettingData> getDataSettingsChange(){
         objPostLimitSettingData dataSoilMoisture1 = new objPostLimitSettingData(Integer.parseInt(editTextMin1.getText().toString()), Integer.parseInt(editTextMax1.getText().toString()), switchStatusSoilMoisture1.isChecked(), "soil_moisture1");
         objPostLimitSettingData dataSoilMoisture2 = new objPostLimitSettingData(Integer.parseInt(editTextMin2.getText().toString()), Integer.parseInt(editTextMax2.getText().toString()), switchStatusSoilMoisture2.isChecked(), "soil_moisture2");
         objPostLimitSettingData dataSoilMoisture3 = new objPostLimitSettingData(Integer.parseInt(editTextMin3.getText().toString()), Integer.parseInt(editTextMax3.getText().toString()), switchStatusSoilMoisture3.isChecked(), "soil_moisture3");
@@ -358,10 +369,18 @@ public class fragment_child_limit_setting extends Fragment {
         buttonLimitSetting.setVisibility(View.VISIBLE);
     }
 
-    private void updateUIButtonSaveChange(){
-        fabSaveChange.extend();
-        fabSaveChange.setBackgroundTintList(cslFABSaveChange);
-        flatCheckChangeDataLimitSettings = true;
+    private void updateUIButtonSaveChange(Boolean mode){
+        if (mode){
+            fabSaveChange.extend();
+            fabSaveChange.setBackgroundTintList(cslFABSaveChangeOn);
+            flagCheckChangeDataLimitSettings = true;
+        }else{
+            fabSaveChange.shrink();
+            fabSaveChange.setBackgroundTintList(cslFABSaveChangeOff);
+            flagCheckChangeDataLimitSettings = false;
+
+        }
+
     }
 
     private void parseData(){
@@ -379,12 +398,14 @@ public class fragment_child_limit_setting extends Fragment {
     public void onPause() {
         super.onPause();
         Log.e("gh", "limit pause");
+        spinnerHouseID.setSelection(0);
+
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        updateUIButtonMode();
         Log.e("gh", "limit destroy");
+        updateUIButtonMode();
     }
 }

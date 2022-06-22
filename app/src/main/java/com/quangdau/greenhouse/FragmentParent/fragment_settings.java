@@ -1,20 +1,17 @@
 package com.quangdau.greenhouse.FragmentParent;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentResultListener;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
+
 
 import com.quangdau.greenhouse.FragmentChild.fragment_child_limit_setting;
 import com.quangdau.greenhouse.SharedPreferences.UserPreferences;
@@ -24,7 +21,7 @@ import java.util.ArrayList;
 
 public class fragment_settings extends Fragment {
     //Declare variables
-    Button buttonLimitSetting;
+    AppCompatButton buttonLimitSetting;
     ArrayList<String> arrAuthority;
     //Child Fragment
     fragment_child_limit_setting fragmentChildLimitSetting;
@@ -32,7 +29,6 @@ public class fragment_settings extends Fragment {
     final String REQUEST_KEY_LIMIT_SETTING = "fragmentLimitSetting";
     Bundle bundleLimitSetting;
     //Other
-    View buttonLimitBack;
     UserPreferences userPreferences;
     final String STATE_FRAGMENT = "SETTINGS_FRAGMENT";
     final String NULL_STATE_FRAGMENT = "NULL";
@@ -55,38 +51,17 @@ public class fragment_settings extends Fragment {
         bundleLimitSetting = new Bundle();
         fragmentChildLimitSetting = new fragment_child_limit_setting();
         userPreferences = new UserPreferences(getActivity());
-
-
-
-
-
-
-
-
+        //Setting listener
         buttonLimitSetting.setOnClickListener(v -> {
             packedData(fragmentChildLimitSetting);
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentSettingsContainer, fragmentChildLimitSetting).commit();
-
-
-
             buttonLimitSetting.setVisibility(View.GONE);
 
         });
 
-
-
-        getActivity().getSupportFragmentManager().setFragmentResultListener(REQUEST_KEY_LIMIT_SETTING, this, new FragmentResultListener() {
-            @Override
-            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
-                switch (bundle.getString("fragmentLimitSetting")){
-                    case "buttonLimitBack Pressed":
-                        getActivity().getSupportFragmentManager().beginTransaction().remove(fragmentChildLimitSetting).commit();
-                        break;
-                }
-
-
-
-
+        getActivity().getSupportFragmentManager().setFragmentResultListener(REQUEST_KEY_LIMIT_SETTING, this, (requestKey, bundle) -> {
+            if ("buttonLimitBack Pressed".equals(bundle.getString("fragmentLimitSetting"))) {
+                getActivity().getSupportFragmentManager().beginTransaction().remove(fragmentChildLimitSetting).commit();
             }
         });
 

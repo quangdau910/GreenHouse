@@ -39,22 +39,22 @@ public interface ApiServer {
 
     @GET("pi4Server")
     Call <data> getData(@Query("token") String token,
-                        @Query("cmd") String cmd,
+                        @Query("request") String request,
                         @Query("houseID") String houseID);
 
     @GET("pi4Server")
     Call <graphData> getGraphData(@Query("token") String token,
-                                  @Query("cmd") String cmd,
+                                  @Query("request") String request,
                                   @Query("houseID") String houseID,
                                   @Query("key") String key,
                                   @Query("time") Array[] time);
     @GET("pi4Server")
     Call <ArrayList<historyLoginData>> getHistoryLogin(@Query("token") String token,
-                                                       @Query("cmd") String cmd);
+                                                       @Query("request") String request);
 
     @GET("pi4Server")
     Call <RSSIData> getRSSIData(@Query("token") String token,
-                                @Query("cmd") String cmd,
+                                @Query("request") String request,
                                 @Query("houseID") String houseID);
 
     @GET("pi4Server")

@@ -61,17 +61,8 @@ public class fragment_child_home1 extends Fragment {
     Bundle bundle;
     String houseID, stateFragment;
     //Handler post delay
-    private Handler mainHandler;
-    final private Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            if (userPreferences.getStateFragment().equals(STATE_FRAGMENT)){
-                //Update data from server
-                getDataApi(userPreferences.getToken());
-            }
-            mainHandler.postDelayed(this, 500);
-        }
-    };
+    Handler mainHandler;
+    Runnable runnable;
     //Other
     String dataPort1;
     //Handler handler = new Handler(Looper.getMainLooper());
@@ -81,6 +72,17 @@ public class fragment_child_home1 extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                if (userPreferences.getStateFragment().equals(STATE_FRAGMENT)){
+                    //Update data from server
+                    getDataApi(userPreferences.getToken());
+                    //Log.e("gh", "getDataRunnable");
+                }
+                mainHandler.postDelayed(this, 500);
+            }
+        };
         mainHandler = new Handler(Looper.getMainLooper());
         bundle = this.getArguments();
         parseData(bundle);
@@ -189,9 +191,6 @@ public class fragment_child_home1 extends Fragment {
         return view;
     }
 
-
-
-
     //Get data
     private void getDataApi(String token) {
         bundle = this.getArguments();
@@ -219,7 +218,7 @@ public class fragment_child_home1 extends Fragment {
 
     @SuppressLint("SetTextI18n")
     private void updateUISensor(Response<data> response) {
-        Log.e("gh", "update ui sensor");
+        //Log.e("gh", "update ui sensor");
         textViewTemperatureSensor.setText(response.body().getTemperature() + "");
         textViewLightSensor.setText(response.body().getLight() + "");
         textViewHumiditySensor.setText(response.body().getHumidity() + "");
@@ -269,7 +268,7 @@ public class fragment_child_home1 extends Fragment {
 
             @Override
             public void onFailure(Call<resWriteDigitalPost> call, Throwable t) {
-                Log.e("gh", t.toString());
+                Log.e("gh", "WriteDigital: "+ t);
 
                 if (flagLight1) flagLight1 = false;
                 if (flagFan1) flagFan1 = false;
@@ -287,7 +286,7 @@ public class fragment_child_home1 extends Fragment {
             for (int i = 0; i < portDevice.length; i++){
                 if (value.charAt(7 - i) == '1') portDevice[i].setChecked(true); else portDevice[i].setChecked(false);
             }
-            Log.e("gh", "update ui device");
+            //Log.e("gh", "update ui device");
             if (switchLight1.isChecked())imageViewLight1.setImageResource(R.drawable.ic_device_light_on); else imageViewLight1.setImageResource(R.drawable.ic_device_light_off);
             if (switchFan1.isChecked()) imageViewFan1.setImageResource(R.drawable.ic_device_fan_on); else imageViewFan1.setImageResource(R.drawable.ic_device_fan_off);
             if (switchValve1.isChecked()) imageViewValve1.setImageResource(R.drawable.ic_device_valve_on); else imageViewValve1.setImageResource(R.drawable.ic_device_valve_off);

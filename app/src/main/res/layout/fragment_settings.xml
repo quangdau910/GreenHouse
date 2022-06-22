@@ -3,29 +3,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".FragmentParent.fragment_settings">
+    tools:context=".FragmentParent.fragment_settings"
+    android:background="@color/background_color">
 
     <FrameLayout
         android:id="@+id/fragmentSettingsContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-    <Button
+        android:layout_height="match_parent"
+        />
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonLimitSetting"
-        android:layout_width="wrap_content"
+        android:background="@drawable/custom_button_limit_setting"
+        android:layout_width="130dp"
         android:layout_height="50dp"
-        android:text="Limit Setting"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:text="Limit Setting"
+        android:gravity="center"
         android:textSize="@dimen/text_size_18sp"
-        android:backgroundTint="@color/white_60"
         android:textColor="@color/blue_30"
         android:fontFamily="@font/open_sans_regular"
         android:textAllCaps="false"
-        android:elevation="10dp"
         />
 
 

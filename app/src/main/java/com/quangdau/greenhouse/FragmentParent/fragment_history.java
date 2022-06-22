@@ -2,7 +2,6 @@ package com.quangdau.greenhouse.FragmentParent;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -40,19 +39,16 @@ public class fragment_history extends Fragment {
         HistoryAdapter adapter = new HistoryAdapter(getActivity());
         viewPager2.setAdapter(adapter);
 
-        new TabLayoutMediator(tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
-            @Override
-            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                switch (position){
-                    case 0:
-                        tab.setText("Login");
-                        break;
-                    case 1:
-                        tab.setText("Error");
-                        break;
-                    default:
-                        break;
-                }
+        new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> {
+            switch (position){
+                case 0:
+                    tab.setText("Login");
+                    break;
+                case 1:
+                    tab.setText("Error");
+                    break;
+                default:
+                    break;
             }
         }).attach();
         return view;

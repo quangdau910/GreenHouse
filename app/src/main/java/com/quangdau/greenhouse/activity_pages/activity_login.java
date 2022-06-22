@@ -17,11 +17,11 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.quangdau.greenhouse.ApiService.ApiServer;
@@ -41,7 +41,7 @@ public class activity_login extends AppCompatActivity {
     private static final int REQUEST_PERMISSION_CODE = 123;
     //declare variables
     TextInputEditText account,password;
-    Button btnLogin;
+    AppCompatButton btnLogin;
     UserPreferences userPreferences;
     Context context;
     Boolean backPressCheck;
@@ -50,9 +50,9 @@ public class activity_login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_page);
         //Assign variables
-        account =  findViewById(R.id.account);
-        password =  findViewById(R.id.passWord);
-        btnLogin =  findViewById(R.id.Login);
+        account =  findViewById(R.id.editTextAccount);
+        password =  findViewById(R.id.editTextPassword);
+        btnLogin =  findViewById(R.id.buttonLogin);
         context = this;
         userPreferences = new UserPreferences(context);
         backPressCheck = false;
@@ -152,11 +152,6 @@ public class activity_login extends AppCompatActivity {
         }
         backPressCheck = true;
         Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                backPressCheck = false;
-            }
-        }, 2000);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> backPressCheck = false, 2000);
     }
 }

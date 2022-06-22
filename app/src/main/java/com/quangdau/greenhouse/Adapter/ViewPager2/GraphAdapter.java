@@ -29,12 +29,14 @@ public class GraphAdapter extends FragmentStateAdapter {
                         case 0:
                                 fragment_child_graph1 fragment_child_graph1 = new fragment_child_graph1();
                                 bundle = new Bundle();
+                                bundle.putString("houseID", "house1");
                                 fragment_child_graph1.setArguments(bundle);
                                 return fragment_child_graph1;
 
                         case 1:
                                 fragment_child_graph2 fragment_child_graph2 = new fragment_child_graph2();
                                 bundle = new Bundle();
+                                bundle.putString("houseID", "house2");
                                 fragment_child_graph2.setArguments(bundle);
                                 return fragment_child_graph2;
 

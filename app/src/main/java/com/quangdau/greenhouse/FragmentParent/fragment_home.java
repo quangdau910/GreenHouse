@@ -37,7 +37,9 @@ public class fragment_home extends Fragment {
     UserPreferences userPreferences;
     HomeAdapter adapter;
     ArrayList<String> arrAuthority;
-    final Handler handler = new Handler(Looper.getMainLooper());
+    //Handler post delay
+    Runnable runnable;
+    Handler mainHandler;
     final String STATE_FRAGMENT = "HOME_FRAGMENT";
     final String NULL_STATE_FRAGMENT = "NULL";
 
@@ -91,13 +93,18 @@ public class fragment_home extends Fragment {
         });
 
         //Do something after 1s
-        handler.postDelayed(new Runnable() {
+        runnable = new Runnable() {
             @Override
             public void run() {
-                handler.postDelayed(this, 1000);
-                getRSSIData(userPreferences.getToken(), adapter.fragmentTitle.get(tabLayout.getSelectedTabPosition()));
+                if (userPreferences.getStateFragment().equals(STATE_FRAGMENT)){
+                    //Log.e("gh", "getDataRunnable");
+                    getRSSIData(userPreferences.getToken(), adapter.fragmentTitle.get(tabLayout.getSelectedTabPosition()));
+                }
+                mainHandler.postDelayed(this, 1000);
             }
-        }, 1000);
+        };
+        mainHandler = new Handler(Looper.getMainLooper());
+
 
         return view;
     }
@@ -113,10 +120,8 @@ public class fragment_home extends Fragment {
         call.enqueue(new Callback<RSSIData>() {
             @Override
             public void onResponse(Call<RSSIData> call, Response<RSSIData> response) {
-                if (response.body() != null){
-                    if (response.body().getResponse().equals("Response RSSI Data")){
-                        updateRSSIUI(response.body().getData().getValue());
-                    }
+                if (response.body() != null && response.body().getResponse().equals("Response RSSI Data") ){
+                    updateRSSIUI(response.body().getData().getValue());
                 }
             }
 
@@ -140,6 +145,7 @@ public class fragment_home extends Fragment {
         super.onPause();
         Log.e("gh", "home paused");
         userPreferences.setStateFragment(NULL_STATE_FRAGMENT);
+        mainHandler.post(runnable);
     }
 
     @Override
@@ -147,6 +153,7 @@ public class fragment_home extends Fragment {
         super.onResume();
         Log.e("gh", "home resume");
         userPreferences.setStateFragment(STATE_FRAGMENT);
+        mainHandler.removeCallbacks(runnable);
     }
 
     @Override

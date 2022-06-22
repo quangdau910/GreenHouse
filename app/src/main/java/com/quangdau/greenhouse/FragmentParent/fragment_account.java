@@ -29,6 +29,19 @@ public class fragment_account extends Fragment {
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
     @Override
     public void onResume() {
         super.onResume();
@@ -39,5 +52,10 @@ public class fragment_account extends Fragment {
     public void onPause() {
         super.onPause();
         userPreferences.setStateFragment(NULL_STATE_FRAGMENT);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 }
