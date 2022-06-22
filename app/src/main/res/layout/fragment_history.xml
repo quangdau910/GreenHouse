@@ -3,9 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_color"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ParentFragment.fragment_history">
+    tools:context=".FragmentParent.fragment_history">
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayoutHistory"
         android:layout_width="match_parent"

@@ -1,6 +1,6 @@
 package com.quangdau.greenhouse.modelsAPI.get_RSSI;
 
-public class objData {
+public class objRSSIData {
     private String houseID, time;
 
     public String getHouseID() {

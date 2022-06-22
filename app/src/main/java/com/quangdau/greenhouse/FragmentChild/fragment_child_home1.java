@@ -1,4 +1,4 @@
-package com.quangdau.greenhouse.ChildFragment;
+package com.quangdau.greenhouse.FragmentChild;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -31,7 +31,7 @@ import com.quangdau.greenhouse.SharedPreferences.UserPreferences;
 import com.quangdau.greenhouse.R;
 import com.quangdau.greenhouse.modelsAPI.post_writeDigital.writeDigitalPost;
 import com.quangdau.greenhouse.modelsAPI.get_data.data;
-import com.quangdau.greenhouse.modelsAPI.res_writeDigital.resWriteDigital;
+import com.quangdau.greenhouse.modelsAPI.res_writeDigitalPost.resWriteDigitalPost;
 import com.quangdau.greenhouse.modelsAPI.weather.weatherDataModel;
 
 
@@ -240,10 +240,10 @@ public class fragment_child_home1 extends Fragment {
         Log.e("gh", "dataSend: " + dataSend);
         //
         ApiServer post = ApiServer.retrofit.create(ApiServer.class);
-        Call<resWriteDigital> call = post.postWriteDigital(new writeDigitalPost(userPreferences.getToken(), "WriteDigital", houseID, port, dataSend));
-        call.enqueue(new Callback<resWriteDigital>() {
+        Call<resWriteDigitalPost> call = post.postWriteDigital(new writeDigitalPost(userPreferences.getToken(), "WriteDigital", houseID, port, dataSend));
+        call.enqueue(new Callback<resWriteDigitalPost>() {
             @Override
-            public void onResponse(Call<resWriteDigital> call, Response<resWriteDigital> response) {
+            public void onResponse(Call<resWriteDigitalPost> call, Response<resWriteDigitalPost> response) {
                 if (response.body() != null){
                     if (response.body().getResponse().equals("Write Completed!")){
                         switch (response.body().getPort()){
@@ -268,7 +268,7 @@ public class fragment_child_home1 extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<resWriteDigital> call, Throwable t) {
+            public void onFailure(Call<resWriteDigitalPost> call, Throwable t) {
                 Log.e("gh", t.toString());
 
                 if (flagLight1) flagLight1 = false;

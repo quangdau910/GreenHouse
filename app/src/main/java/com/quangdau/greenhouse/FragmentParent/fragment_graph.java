@@ -1,4 +1,4 @@
-package com.quangdau.greenhouse.ParentFragment;
+package com.quangdau.greenhouse.FragmentParent;
 
 import android.os.Bundle;
 
@@ -13,8 +13,8 @@ import android.view.ViewGroup;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.quangdau.greenhouse.Adapter.ViewPager2.GraphAdapter;
-import com.quangdau.greenhouse.ChildFragment.fragment_child_graph1;
-import com.quangdau.greenhouse.ChildFragment.fragment_child_graph2;
+import com.quangdau.greenhouse.FragmentChild.fragment_child_graph1;
+import com.quangdau.greenhouse.FragmentChild.fragment_child_graph2;
 import com.quangdau.greenhouse.SharedPreferences.UserPreferences;
 import com.quangdau.greenhouse.R;
 

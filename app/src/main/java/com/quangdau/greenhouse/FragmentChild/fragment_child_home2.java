@@ -1,4 +1,4 @@
-package com.quangdau.greenhouse.ChildFragment;
+package com.quangdau.greenhouse.FragmentChild;
 
 import android.os.Bundle;
 import android.util.Log;

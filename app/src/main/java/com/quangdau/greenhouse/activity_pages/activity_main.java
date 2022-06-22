@@ -15,11 +15,11 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
-import com.quangdau.greenhouse.ParentFragment.fragment_account;
-import com.quangdau.greenhouse.ParentFragment.fragment_graph;
-import com.quangdau.greenhouse.ParentFragment.fragment_history;
-import com.quangdau.greenhouse.ParentFragment.fragment_home;
-import com.quangdau.greenhouse.ParentFragment.fragment_settings;
+import com.quangdau.greenhouse.FragmentParent.fragment_account;
+import com.quangdau.greenhouse.FragmentParent.fragment_graph;
+import com.quangdau.greenhouse.FragmentParent.fragment_history;
+import com.quangdau.greenhouse.FragmentParent.fragment_home;
+import com.quangdau.greenhouse.FragmentParent.fragment_settings;
 import com.quangdau.greenhouse.SharedPreferences.UserPreferences;
 import com.quangdau.greenhouse.R;
 

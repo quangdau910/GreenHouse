@@ -1,8 +1,8 @@
-package com.quangdau.greenhouse.modelsAPI.res_authority;
+package com.quangdau.greenhouse.modelsAPI.res_authenPost;
 
 import java.util.ArrayList;
 
-public class authority {
+public class resAuthorityPost {
     private String account, cmd, token, response;
     private ArrayList<String> authority;
 

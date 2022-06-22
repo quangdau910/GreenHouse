@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.quangdau.greenhouse.ChildFragment.fragment_child_graph1;
-import com.quangdau.greenhouse.ChildFragment.fragment_child_graph2;
+import com.quangdau.greenhouse.FragmentChild.fragment_child_graph1;
+import com.quangdau.greenhouse.FragmentChild.fragment_child_graph2;
 
 import java.util.ArrayList;
 

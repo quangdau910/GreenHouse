@@ -1,7 +1,6 @@
-package com.quangdau.greenhouse.ChildFragment;
+package com.quangdau.greenhouse.FragmentChild;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,7 @@ import androidx.fragment.app.Fragment;
 import com.quangdau.greenhouse.R;
 
 
-public class fragment_child_graph1 extends Fragment {
+public class fragment_child_graph2 extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,15 +22,6 @@ public class fragment_child_graph1 extends Fragment {
         return inflater.inflate(R.layout.fragment_child_graph1, container, false);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.e("gh", "graph1 resume");
-    }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.e("gh", "graph1 paused");
-    }
+
 }

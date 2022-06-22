@@ -1,14 +1,16 @@
 package com.quangdau.greenhouse.ApiService;
 
 import com.quangdau.greenhouse.modelsAPI.get_limitSettings.limitSettingsData;
+import com.quangdau.greenhouse.modelsAPI.post_limitSettings.limitSettingsPost;
 import com.quangdau.greenhouse.modelsAPI.post_writeDigital.writeDigitalPost;
 import com.quangdau.greenhouse.modelsAPI.get_RSSI.RSSIData;
 import com.quangdau.greenhouse.modelsAPI.get_history.historyLoginData;
 import com.quangdau.greenhouse.modelsAPI.post_authen.authenPost;
-import com.quangdau.greenhouse.modelsAPI.res_authority.authority;
+import com.quangdau.greenhouse.modelsAPI.res_authenPost.resAuthorityPost;
 import com.quangdau.greenhouse.modelsAPI.get_data.data;
 import com.quangdau.greenhouse.modelsAPI.get_graph.graphData;
-import com.quangdau.greenhouse.modelsAPI.res_writeDigital.resWriteDigital;
+import com.quangdau.greenhouse.modelsAPI.res_limitSettingsPost.resLimitSettingsPost;
+import com.quangdau.greenhouse.modelsAPI.res_writeDigitalPost.resWriteDigitalPost;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -56,14 +58,17 @@ public interface ApiServer {
                                 @Query("houseID") String houseID);
 
     @GET("pi4Server")
-    Call <limitSettingsData> getLimitSettings(@Query("token") String token,
-                                              @Query("request") String request,
-                                              @Query("houseID") String houseID);
+    Call <limitSettingsData> getLimitSettingsData(@Query("token") String token,
+                                                  @Query("request") String request,
+                                                  @Query("houseID") String houseID);
     @POST("pi4Server")
-    Call <resWriteDigital> postWriteDigital(@Body writeDigitalPost writeDigitalPost);
+    Call <resWriteDigitalPost> postWriteDigital(@Body writeDigitalPost writeDigitalPost);
 
     @POST("pi4Server")
-    Call <authority> postAuth(@Body authenPost authenPost);
+    Call <resAuthorityPost> postAuth(@Body authenPost authenPost);
+
+    @POST("pi4Server")
+    Call <resLimitSettingsPost> postLimitSettings(@Body limitSettingsPost limitSettingsPost);
 
 
 

@@ -28,7 +28,7 @@ import com.quangdau.greenhouse.ApiService.ApiServer;
 import com.quangdau.greenhouse.SharedPreferences.UserPreferences;
 import com.quangdau.greenhouse.R;
 import com.quangdau.greenhouse.modelsAPI.post_authen.authenPost;
-import com.quangdau.greenhouse.modelsAPI.res_authority.authority;
+import com.quangdau.greenhouse.modelsAPI.res_authenPost.resAuthorityPost;
 
 import java.util.Objects;
 
@@ -76,10 +76,10 @@ public class activity_login extends AppCompatActivity {
             ApiServer post = ApiServer.retrofit.create(ApiServer.class);
             String deviceName =  Build.MODEL;
             authenPost authenPost = new authenPost("Authen", account, password, deviceName, getIpAddress());
-            Call <authority> postAuth = post.postAuth(authenPost);
-            postAuth.enqueue(new Callback<authority>() {
+            Call <resAuthorityPost> postAuth = post.postAuth(authenPost);
+            postAuth.enqueue(new Callback<resAuthorityPost>() {
                 @Override
-                public void onResponse(Call<authority> call, Response<authority> response) {
+                public void onResponse(Call<resAuthorityPost> call, Response<resAuthorityPost> response) {
                     //check response from server
                     if (response.body() != null){
                         if (response.body().getResponse() == null){
@@ -94,7 +94,7 @@ public class activity_login extends AppCompatActivity {
                     }
                 }
                 @Override
-                public void onFailure(Call<authority> call, Throwable t) {
+                public void onFailure(Call<resAuthorityPost> call, Throwable t) {
                     Log.e("login", "Error Login: "+ t);
                     toastNew("No response from server!");
                 }
@@ -130,7 +130,7 @@ public class activity_login extends AppCompatActivity {
         }
     }
 
-    private void packedData(Intent intent, Response<authority> response ){
+    private void packedData(Intent intent, Response<resAuthorityPost> response ){
         assert response.body() != null;
         intent.putExtra("authority", response.body().getAuthority());
     }

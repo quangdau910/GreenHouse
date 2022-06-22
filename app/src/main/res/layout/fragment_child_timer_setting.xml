@@ -4,4 +4,4 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ChildFragment.fragment_child_timer_setting"/>
+    tools:context=".FragmentChild.fragment_child_timer_setting"/>

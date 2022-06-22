@@ -1,6 +1,6 @@
-package com.quangdau.greenhouse.modelsAPI.res_writeDigital;
+package com.quangdau.greenhouse.modelsAPI.res_writeDigitalPost;
 
-public class resWriteDigital {
+public class resWriteDigitalPost {
     private String response, port, value;
 
     public String getPort() {
