@@ -97,7 +97,7 @@ public class fragment_home extends Fragment {
             @Override
             public void run() {
                 if (userPreferences.getStateFragment().equals(STATE_FRAGMENT)){
-                    //Log.e("gh", "getDataRunnable");
+                    Log.e("gh", "getDataRunnable Home");
                     getRSSIData(userPreferences.getToken(), adapter.fragmentTitle.get(tabLayout.getSelectedTabPosition()));
                 }
                 mainHandler.postDelayed(this, 1000);
@@ -140,19 +140,21 @@ public class fragment_home extends Fragment {
         if (value > 75 && value <= 100) tab.setIcon(R.drawable.ic_signal_wifi_4_bar);
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.e("gh", "home paused");
-        userPreferences.setStateFragment(NULL_STATE_FRAGMENT);
-        mainHandler.post(runnable);
-    }
+
 
     @Override
     public void onResume() {
         super.onResume();
         Log.e("gh", "home resume");
         userPreferences.setStateFragment(STATE_FRAGMENT);
+        mainHandler.post(runnable);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.e("gh", "home paused");
+        userPreferences.setStateFragment(NULL_STATE_FRAGMENT);
         mainHandler.removeCallbacks(runnable);
     }
 

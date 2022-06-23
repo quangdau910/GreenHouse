@@ -105,8 +105,8 @@ public class activity_login extends AppCompatActivity {
     private void toastNew(String textToast){
         Toast toast = new Toast(activity_login.this);
         LayoutInflater inflater = getLayoutInflater();
-        View view = inflater.inflate(R.layout.toast_error_login, findViewById(R.id.custom_toast));
-        TextView txt = view.findViewById(R.id.text_custom_toast);
+        View view = inflater.inflate(R.layout.toast_error_login, findViewById(R.id.customToast));
+        TextView txt = view.findViewById(R.id.textViewToast);
         txt.setText(textToast);
         toast.setView(view);
         toast.setGravity(Gravity.BOTTOM,0,100);

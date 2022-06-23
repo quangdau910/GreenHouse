@@ -291,7 +291,7 @@ public class fragment_child_limit_setting extends Fragment {
                     //Creating dialog box
                     AlertDialog alert = builder.create();
                     //Setting the title manually
-                    alert.setTitle("AlertDialogExample");
+                    alert.setTitle("Alert");
                     alert.show();
                 }
             }
@@ -316,7 +316,7 @@ public class fragment_child_limit_setting extends Fragment {
 
             @Override
             public void onFailure(Call<limitSettingsData> call, Throwable t) {
-                Log.e("gh", ""+t);
+                Toast.makeText(getActivity(), "No response from server!", Toast.LENGTH_SHORT).show();
             }
         });
     }
