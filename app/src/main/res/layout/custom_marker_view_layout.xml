@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="40dp"
+    android:background="@drawable/round_title_graph"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/XValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:ellipsize="end"
+        android:fontFamily="@font/open_sans_regular"
+        android:singleLine="true"
+        android:text="kakakakkaka"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#A4ED8A"
+        android:textSize="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:fontFamily="@font/open_sans_regular"
+        android:text="Value:"
+        android:textColor="#A4ED8A"
+        android:textSize="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/XValue" />
+
+    <TextView
+        android:id="@+id/YValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/XValue"
+        android:layout_centerHorizontal="true"
+        android:ellipsize="end"
+        android:fontFamily="@font/open_sans_regular"
+        android:singleLine="true"
+        android:text="ka"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#A4ED8A"
+        android:textSize="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/XValue" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

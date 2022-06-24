@@ -1,5 +1,6 @@
 package com.quangdau.greenhouse.ApiService;
 
+import com.quangdau.greenhouse.modelsAPI.get_graph.dataGraph;
 import com.quangdau.greenhouse.modelsAPI.get_limitSettings.limitSettingsData;
 import com.quangdau.greenhouse.modelsAPI.post_limitSettings.limitSettingsPost;
 import com.quangdau.greenhouse.modelsAPI.post_writeDigital.writeDigitalPost;
@@ -8,11 +9,9 @@ import com.quangdau.greenhouse.modelsAPI.get_history.historyLoginData;
 import com.quangdau.greenhouse.modelsAPI.post_authen.authenPost;
 import com.quangdau.greenhouse.modelsAPI.res_authenPost.resAuthorityPost;
 import com.quangdau.greenhouse.modelsAPI.get_data.data;
-import com.quangdau.greenhouse.modelsAPI.get_graph.graphData;
 import com.quangdau.greenhouse.modelsAPI.res_limitSettingsPost.resLimitSettingsPost;
 import com.quangdau.greenhouse.modelsAPI.res_writeDigitalPost.resWriteDigitalPost;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -43,11 +42,11 @@ public interface ApiServer {
                         @Query("houseID") String houseID);
 
     @GET("pi4Server")
-    Call <graphData> getGraphData(@Query("token") String token,
+    Call <dataGraph> getGraphData(@Query("token") String token,
                                   @Query("request") String request,
                                   @Query("houseID") String houseID,
-                                  @Query("key") String key,
-                                  @Query("time") Array[] time);
+                                  @Query("sensor") String sensor,
+                                  @Query("time") String time);
     @GET("pi4Server")
     Call <ArrayList<historyLoginData>> getHistoryLogin(@Query("token") String token,
                                                        @Query("request") String request);

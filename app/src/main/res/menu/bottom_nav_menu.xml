@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/graph"
-        android:title="Graph"
+        android:title="@string/nav_graph"
         android:icon="@drawable/ic_main_graph"/>
     <item
         android:id="@+id/settings"
-        android:title="Settings"
+        android:title="@string/nav_setting"
         android:icon="@drawable/ic_main_settings"/>
     <!-- Invisible item -->
     <item
@@ -15,10 +15,10 @@
     <!--###########-->
     <item
         android:id="@+id/history"
-        android:title="History"
+        android:title="@string/nav_history"
         android:icon="@drawable/ic_main_history"/>
     <item
         android:id="@+id/editTextAccount"
-        android:title="Account"
+        android:title="@string/nav_account"
         android:icon="@drawable/ic_main_account"/>
 </menu>

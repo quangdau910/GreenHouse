@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:layout_gravity="center">
+
+    <TextView
+        android:id="@+id/tv_selecter_language"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableRight="@drawable/button_right_show"
+        android:fontFamily="@font/open_sans_extra_bold"
+        android:gravity="center"
+        android:padding="4dp"
+        android:text="Test"
+        android:textSize="17sp" />
+
+
+</RelativeLayout>

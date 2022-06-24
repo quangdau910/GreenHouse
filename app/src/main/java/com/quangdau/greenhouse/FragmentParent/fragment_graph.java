@@ -57,7 +57,17 @@ public class fragment_graph extends Fragment {
         new TabLayoutMediator(tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                tab.setText(adapter.fragmentTitle.get(position));
+                switch (adapter.fragmentTitle.get(position)){
+                    case "house1":
+                    {
+                        tab.setText(getResources().getString(R.string.HOUSE_1));
+                    }break;
+                    case "house2":
+                    {
+                        tab.setText(getResources().getString(R.string.HOUSE_2));
+                    }break;
+                    default:
+                }
             }
         }).attach();
         return view;

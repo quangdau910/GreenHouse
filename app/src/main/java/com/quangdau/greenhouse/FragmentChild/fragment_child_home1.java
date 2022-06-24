@@ -379,10 +379,10 @@ public class fragment_child_home1 extends Fragment {
         textViewWeatherName.setText(response.body().getName());
         //Weather Temp
         int tempWeather = (int) Math.rint(response.body().getMain().getTemp() - 273.15);
-        textViewWeatherTemp.setText("Temperature: " + tempWeather + " \u2103");
+        textViewWeatherTemp.setText(getResources().getString(R.string.Temperature)+": " + tempWeather + " \u2103");
         //Humidity
         int humidityWeather = response.body().getMain().getHumidity();
-        textViewWeatherHumidity.setText("Humidity: " + humidityWeather + "%");
+        textViewWeatherHumidity.setText(getResources().getString(R.string.Humidity)+": " + humidityWeather + "%");
     }
 
     private static String getWeatherIcon(int id){

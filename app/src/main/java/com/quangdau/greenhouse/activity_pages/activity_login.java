@@ -17,6 +17,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,12 +26,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.quangdau.greenhouse.ApiService.ApiServer;
 import com.quangdau.greenhouse.SharedPreferences.UserPreferences;
 import com.quangdau.greenhouse.R;
+import com.quangdau.greenhouse.Spinner.spinnerLimitSetting.CategorySpinner;
+import com.quangdau.greenhouse.Spinner.spinnerLimitSetting.CategorySpinnerAdapter;
+import com.quangdau.greenhouse.language.Language;
 import com.quangdau.greenhouse.modelsAPI.post_authen.authenPost;
 import com.quangdau.greenhouse.modelsAPI.res_authenPost.resAuthorityPost;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -42,6 +50,13 @@ public class activity_login extends AppCompatActivity {
     //declare variables
     TextInputEditText account,password;
     AppCompatButton btnLogin;
+
+    private Spinner spinnerLanguage;
+    private CategorySpinnerAdapter categoryLanguageAdapter;
+    public int NextLanguage=0;
+    TextInputLayout hintAccount;
+    TextInputLayout hintPassword;
+
     UserPreferences userPreferences;
     Context context;
     Boolean backPressCheck;
@@ -53,25 +68,66 @@ public class activity_login extends AppCompatActivity {
         account =  findViewById(R.id.editTextAccount);
         password =  findViewById(R.id.editTextPassword);
         btnLogin =  findViewById(R.id.buttonLogin);
+
+        hintAccount = findViewById(R.id.textInputLayoutAccount);
+        hintPassword = findViewById(R.id.textInputLayoutPassword);
+
         context = this;
         userPreferences = new UserPreferences(context);
         backPressCheck = false;
         //Check permission
         checkPermission();
+        //spinner Language
+        Language language = new Language(this);
+        spinnerLanguage = findViewById(R.id.spinner_Language);
+        List<CategorySpinner> list = new ArrayList<>();
+        list.add(new CategorySpinner("Việt Nam"));
+        list.add(new CategorySpinner("English"));
+
+        categoryLanguageAdapter = new CategorySpinnerAdapter(this,R.layout.item_selected_language,list);
+        spinnerLanguage.setAdapter(categoryLanguageAdapter);
+        spinnerLanguage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position){
+                    case 0:{
+
+                        language.updateLanguage("vi");
+                        hintAccount.setHint(getResources().getString(R.string.Hint_account));
+                        hintPassword.setHint(getResources().getString(R.string.Hint_password));
+                        btnLogin.setText(getResources().getString(R.string.Text_Btn_Login));
+                    }break;
+                    case 1:{
+
+                        language.updateLanguage("en");
+                        hintAccount.setHint(getResources().getString(R.string.Hint_account));
+                        hintPassword.setHint(getResources().getString(R.string.Hint_password));
+                        btnLogin.setText(getResources().getString(R.string.Text_Btn_Login));
+                    }break;
+                    default:
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
         //Button Listener
         btnLogin.setOnClickListener(view -> login(Objects.requireNonNull(account.getText()).toString(), Objects.requireNonNull(password.getText()).toString()));
-        //test commit
     }
 
 
     private void login(String account, String password){
         //Check empty input
         if (account.length() == 0 && password.length() == 0){
-            toastNew("Account and password must not empty!");
+            toastNew(getResources().getString(R.string.Account_password_not_empty));
         }else if(account.length() == 0){
-            toastNew("Account must not empty!");
+            toastNew(getResources().getString(R.string.Account_not_empty));
         }else if(password.length() == 0){
-            toastNew("Password must not empty!");
+            toastNew(getResources().getString(R.string.Password_not_empty));
         }else{
             ApiServer post = ApiServer.retrofit.create(ApiServer.class);
             String deviceName =  Build.MODEL;
@@ -89,14 +145,14 @@ public class activity_login extends AppCompatActivity {
                             startActivity(nextPage);
                             finish();
                         }else{
-                            toastNew("Wrong account or password!");
+                            toastNew(getResources().getString(R.string.Wrong_account_or_password));
                         }
                     }
                 }
                 @Override
                 public void onFailure(Call<resAuthorityPost> call, Throwable t) {
                     Log.e("login", "Error Login: "+ t);
-                    toastNew("No response from server!");
+                    toastNew(getResources().getString(R.string.No_response_from_server));
                 }
             });
         }

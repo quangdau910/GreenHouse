@@ -42,7 +42,7 @@ public class fragment_history extends Fragment {
         new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> {
             switch (position){
                 case 0:
-                    tab.setText("Login");
+                    tab.setText(getResources().getString(R.string.Login_History));
                     break;
                 case 1:
                     tab.setText("Error");

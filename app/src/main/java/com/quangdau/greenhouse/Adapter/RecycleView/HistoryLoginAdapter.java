@@ -41,10 +41,10 @@ public class HistoryLoginAdapter extends RecyclerView.Adapter<HistoryLoginAdapte
     @Override
     public void onBindViewHolder(@NonNull LoginVH holder, int position) {
         historyLoginData historyLoginData = loginData.get(position);
-        holder.deviceName.setText("Device name: " + historyLoginData.getDevice_name());
-        holder.account.setText("Account: " + historyLoginData.getAccount());
+        holder.deviceName.setText(""+ context.getResources().getString(R.string.Device_Name)+":" + historyLoginData.getDevice_name());
+        holder.account.setText(""+context.getResources().getString(R.string.account_History)+":"+ historyLoginData.getAccount());
         holder.ip.setText("Ip: "+ historyLoginData.getIp());
-        holder.loginTime.setText("Login time: " + formatDate(historyLoginData.getLogin_time()));
+        holder.loginTime.setText(""+context.getResources().getString(R.string.Login_time)+":" + formatDate(historyLoginData.getLogin_time()));
 
         boolean isExpanded = loginData.get(position).isExpanded();
         holder.expandableLayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);

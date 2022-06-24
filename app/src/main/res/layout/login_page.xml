@@ -10,76 +10,79 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayoutLoginUpper"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent">
+        android:layout_width="406dp"
+        android:layout_height="261dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
 
         <ImageView
             android:id="@+id/imageViewLogoIUH"
             android:layout_width="148dp"
             android:layout_height="127dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
-            app:srcCompat="@drawable/logo_iuh"/>
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/logo_iuh" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayoutLoginBottom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/constraintLayoutLoginUpper"
+        android:layout_width="413dp"
+        android:layout_height="460dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        >
+        app:layout_constraintTop_toBottomOf="@id/constraintLayoutLoginUpper">
 
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayoutAccount"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            android:layout_height="70dp"
             android:layout_marginTop="70dp"
-            android:hint="Tài Khoản"
+            android:hint="Tài khoản"
+            app:boxCollapsedPaddingTop="4dp"
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
-            >
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editTextAccount"
-                android:outlineAmbientShadowColor="@color/blue_30"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/edittext_login"
                 android:drawableStart="@drawable/ic_login_account"
-                android:textSize="20sp"
-                app:counterMaxLength="20"
+                android:drawablePadding="10dp"
+                android:inputType="text"
                 android:maxLength="20"
                 android:maxLines="1"
-                android:drawablePadding="10dp"
-                android:paddingTop="18dp"
-                android:inputType="text"/>
+                android:outlineAmbientShadowColor="@color/blue_30"
+                android:paddingTop="17dp"
+                android:textSize="20sp"
+                app:counterMaxLength="20" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayoutPassword"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:layout_marginTop="40dp"
             android:hint="Mật khẩu"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayoutAccount"
+            app:boxCollapsedPaddingTop="4dp"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:passwordToggleEnabled="true"
-            app:boxStrokeWidthFocused="0dp"
-            app:boxStrokeWidth="0dp">
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayoutAccount"
+            app:passwordToggleEnabled="true">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editTextPassword"
                 android:layout_width="match_parent"
@@ -88,27 +91,39 @@
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/edittext_login"
                 android:drawableStart="@drawable/ic_login_password"
-                android:textSize="20sp"
-                app:counterMaxLength="20"
+                android:drawablePadding="17dp"
+                android:inputType="textPassword"
                 android:maxLength="20"
                 android:maxLines="1"
-                android:drawablePadding="10dp"
-                android:paddingTop="20dp"
-                android:inputType="textPassword"/>
+                android:paddingTop="17dp"
+                android:textSize="20sp"
+                app:counterMaxLength="20" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonLogin"
             android:layout_width="200dp"
             android:layout_height="50dp"
+            android:layout_marginTop="40dp"
             android:background="@drawable/button_login"
-            android:text="Đăng Nhập"
-            android:textSize="25sp"
+            android:text="@string/Text_Btn_Login"
             android:textAllCaps="false"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPassword"
+            android:textSize="22sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginTop="40dp"/>
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPassword" />
+
+        <Spinner
+            android:id="@+id/spinner_Language"
+            android:layout_width="160dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/custom_round_language"
+            android:gravity="end"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonLogin" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

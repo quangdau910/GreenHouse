@@ -51,4 +51,7 @@ dependencies {
     //SeekArc
     implementation 'com.github.marcinmoskala:ArcSeekBar:0.31'
 
+    //Spinkit
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+
 }

@@ -72,7 +72,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/open_sans_bold"
-                android:text="Soil Moisture 1"
+                android:text="@string/Soil_Moisture_1"
                 android:textSize="20sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -82,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/open_sans_regular"
-                android:text="Min:"
+                android:text="@string/Min_Setting"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="@+id/textViewLimitSoilMoisture1"
@@ -124,7 +124,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:fontFamily="@font/open_sans_regular"
-                android:text="Max:"
+                android:text="@string/Max_Setting"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@+id/textViewLimitPercent1Min1"
@@ -210,7 +210,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp"
-                android:text="Soil Moisture 2"
+                android:text="@string/Soil_Moisture_2"
                 android:fontFamily="@font/open_sans_bold"
                 android:textSize="20sp"
                 />
@@ -222,7 +222,7 @@
                 app:layout_constraintLeft_toLeftOf="@+id/textViewLimitSoilMoisture2"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:textSize="20sp"
-                android:text="Min:"
+                android:text="@string/Min_Setting"
                 android:fontFamily="@font/open_sans_regular"/>
             <EditText
                 android:id="@+id/editTextLimitMin2"
@@ -263,7 +263,7 @@
                 app:layout_constraintLeft_toRightOf="@+id/textViewLimitPercent1Min2"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:textSize="20sp"
-                android:text="Max:"
+                android:text="@string/Max_Setting"
                 android:layout_marginStart="20dp"
                 android:fontFamily="@font/open_sans_regular"
                 />
@@ -347,7 +347,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp"
-                android:text="Soil Moisture 3"
+                android:text="@string/Soil_Moisture_3"
                 android:fontFamily="@font/open_sans_bold"
                 android:textSize="20sp"
                 />
@@ -359,7 +359,7 @@
                 app:layout_constraintLeft_toLeftOf="@+id/textViewLimitSoilMoisture3"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:textSize="20sp"
-                android:text="Min:"
+                android:text="@string/Min_Setting"
                 android:fontFamily="@font/open_sans_regular"/>
             <EditText
                 android:id="@+id/editTextLimitMin3"
@@ -400,7 +400,7 @@
                 app:layout_constraintLeft_toRightOf="@+id/textViewLimitPercent1Min3"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:textSize="20sp"
-                android:text="Max:"
+                android:text="@string/Max_Setting"
                 android:layout_marginStart="20dp"
                 android:fontFamily="@font/open_sans_regular"
                 />
@@ -484,7 +484,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp"
-                android:text="Soil Moisture 4"
+                android:text="@string/Soil_Moisture_4"
                 android:fontFamily="@font/open_sans_bold"
                 android:textSize="20sp"
                 />
@@ -496,7 +496,7 @@
                 app:layout_constraintLeft_toLeftOf="@+id/textViewLimitSoilMoisture4"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:textSize="20sp"
-                android:text="Min:"
+                android:text="@string/Min_Setting"
                 android:fontFamily="@font/open_sans_regular"/>
             <EditText
                 android:id="@+id/editTextLimitMin4"
@@ -537,7 +537,7 @@
                 app:layout_constraintLeft_toRightOf="@+id/textViewLimitPercent1Min4"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:textSize="20sp"
-                android:text="Max:"
+                android:text="@string/Max_Setting"
                 android:layout_marginStart="20dp"
                 android:fontFamily="@font/open_sans_regular"
                 />
@@ -606,7 +606,7 @@
         android:layout_marginBottom="120dp"
         android:layout_marginEnd="10dp"
         android:fontFamily="@font/open_sans_bold"
-        android:text="Save Change"
+        android:text="@string/Save_change"
         app:icon="@drawable/ic_save_on"
         android:backgroundTint="@color/white_60"
         app:borderWidth="30dp"
