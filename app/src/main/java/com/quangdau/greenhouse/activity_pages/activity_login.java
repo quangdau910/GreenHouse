@@ -51,8 +51,8 @@ public class activity_login extends AppCompatActivity {
     TextInputEditText account,password;
     AppCompatButton btnLogin;
 
-    private Spinner spinnerLanguage;
-    private CategorySpinnerAdapter categoryLanguageAdapter;
+    Spinner spinnerLanguage;
+    CategorySpinnerAdapter categoryLanguageAdapter;
     public int NextLanguage=0;
     TextInputLayout hintAccount;
     TextInputLayout hintPassword;
@@ -91,14 +91,12 @@ public class activity_login extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 switch (position){
                     case 0:{
-
                         language.updateLanguage("vi");
                         hintAccount.setHint(getResources().getString(R.string.Hint_account));
                         hintPassword.setHint(getResources().getString(R.string.Hint_password));
                         btnLogin.setText(getResources().getString(R.string.Text_Btn_Login));
                     }break;
                     case 1:{
-
                         language.updateLanguage("en");
                         hintAccount.setHint(getResources().getString(R.string.Hint_account));
                         hintPassword.setHint(getResources().getString(R.string.Hint_password));

@@ -5,12 +5,14 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 
 import com.quangdau.greenhouse.FragmentChild.fragment_child_limit_setting;
@@ -23,6 +25,8 @@ public class fragment_settings extends Fragment {
     //Declare variables
     AppCompatButton buttonLimitSetting;
     ArrayList<String> arrAuthority;
+    TextView textViewTabLayoutSettings;
+    ConstraintLayout tabLayoutSettings;
     //Child Fragment
     fragment_child_limit_setting fragmentChildLimitSetting;
     //Communicate to fragments
@@ -32,8 +36,6 @@ public class fragment_settings extends Fragment {
     UserPreferences userPreferences;
     final String STATE_FRAGMENT = "SETTINGS_FRAGMENT";
     final String NULL_STATE_FRAGMENT = "NULL";
-
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,6 +50,8 @@ public class fragment_settings extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_settings, container, false);
         //Assign variables
         buttonLimitSetting = view.findViewById(R.id.buttonLimitSetting);
+        textViewTabLayoutSettings = view.findViewById(R.id.textViewTabLayoutSettings);
+        tabLayoutSettings = view.findViewById(R.id.tabLayoutSetting);
         bundleLimitSetting = new Bundle();
         fragmentChildLimitSetting = new fragment_child_limit_setting();
         userPreferences = new UserPreferences(getActivity());
@@ -55,7 +59,7 @@ public class fragment_settings extends Fragment {
         buttonLimitSetting.setOnClickListener(v -> {
             packedData(fragmentChildLimitSetting);
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentSettingsContainer, fragmentChildLimitSetting).commit();
-            buttonLimitSetting.setVisibility(View.GONE);
+            updateUIFragmentSettings(false);
 
         });
 
@@ -76,6 +80,18 @@ public class fragment_settings extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putStringArrayList("arrAuthority", arrAuthority);
         fragment.setArguments(bundle);
+    }
+
+    private void updateUIFragmentSettings(boolean mode){
+        if (mode){
+            tabLayoutSettings.setVisibility(View.VISIBLE);
+            textViewTabLayoutSettings.setVisibility(View.VISIBLE);
+            buttonLimitSetting.setVisibility(View.VISIBLE);
+        }else{
+            tabLayoutSettings.setVisibility(View.GONE);
+            textViewTabLayoutSettings.setVisibility(View.GONE);
+            buttonLimitSetting.setVisibility(View.GONE);
+        }
     }
 
     @Override

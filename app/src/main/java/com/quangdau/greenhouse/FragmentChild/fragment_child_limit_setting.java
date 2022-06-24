@@ -51,7 +51,7 @@ public class fragment_child_limit_setting extends Fragment {
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     Switch switchStatusSoilMoisture1, switchStatusSoilMoisture2, switchStatusSoilMoisture3, switchStatusSoilMoisture4;
     Spinner spinnerHouseID;
-    View buttonLimitSetting;
+    View buttonLimitSetting, tabLayoutSettings, textViewTabLayoutSettings;
     //Communicate fragment
     final String REQUEST_KEY = "fragmentLimitSetting";
     Bundle bundle;
@@ -78,7 +78,7 @@ public class fragment_child_limit_setting extends Fragment {
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_child_limit_setting, container, false);
         //Assign variables
-        buttonLimitSetting = getActivity().findViewById(R.id.buttonLimitSetting);
+
         spinnerHouseID = view.findViewById(R.id.spinnerLimitHouseID);
         buttonLimitBack = view.findViewById(R.id.buttonLimitBack);
         fabSaveChange = view.findViewById(R.id.fabLimitSaveChange);
@@ -97,6 +97,10 @@ public class fragment_child_limit_setting extends Fragment {
         flagCheckChangeDataLimitSettings = false;
         bundle = new Bundle();
         userPreferences = new UserPreferences(getActivity());
+        //View Fragment Settings
+        buttonLimitSetting = getActivity().findViewById(R.id.buttonLimitSetting);
+        tabLayoutSettings = getActivity().findViewById(R.id.tabLayoutSetting);
+        textViewTabLayoutSettings = getActivity().findViewById(R.id.textViewTabLayoutSettings);
         //Setting adapter spinner
         listSpinner = new ArrayList<>();
         for (int i = 0; i < arrAuthority.size(); i++){
@@ -365,8 +369,10 @@ public class fragment_child_limit_setting extends Fragment {
         return data;
     }
 
-    private void updateUIButtonMode(){
+    private void updateUIFragmentSettings(){
         buttonLimitSetting.setVisibility(View.VISIBLE);
+        tabLayoutSettings.setVisibility(View.VISIBLE);
+        textViewTabLayoutSettings.setVisibility(View.VISIBLE);
     }
 
     private void updateUIButtonSaveChange(Boolean mode){
@@ -406,6 +412,6 @@ public class fragment_child_limit_setting extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         Log.e("gh", "limit destroy");
-        updateUIButtonMode();
+        updateUIFragmentSettings();
     }
 }
