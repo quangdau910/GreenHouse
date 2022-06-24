@@ -60,7 +60,7 @@ public class activity_login extends AppCompatActivity {
         checkPermission();
         //Button Listener
         btnLogin.setOnClickListener(view -> login(Objects.requireNonNull(account.getText()).toString(), Objects.requireNonNull(password.getText()).toString()));
-
+        //test commit
     }
 
 
