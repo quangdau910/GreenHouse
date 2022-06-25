@@ -98,7 +98,8 @@
                 android:layout_height="match_parent"
                 android:layout_marginBottom="25dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                >
             </com.github.mikephil.charting.charts.LineChart>
             <LinearLayout
                 android:layout_width="20dp"

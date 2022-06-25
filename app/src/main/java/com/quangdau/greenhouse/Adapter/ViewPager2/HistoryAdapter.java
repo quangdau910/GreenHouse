@@ -11,7 +11,6 @@ import com.quangdau.greenhouse.FragmentChild.fragment_child_history_login;
 
 
 public class HistoryAdapter extends FragmentStateAdapter {
-        //Bundle bundle;
 
         public HistoryAdapter(@NonNull FragmentActivity fragmentActivity) {
                 super(fragmentActivity);
@@ -22,8 +21,6 @@ public class HistoryAdapter extends FragmentStateAdapter {
                 switch (position){
                         case 0:
                                 fragment_child_history_login fragment_child_history_login = new fragment_child_history_login();
-                                /*bundle = new Bundle();
-                                fragment_child_history_login.setArguments(bundle);*/
                                 return fragment_child_history_login;
                         case 1:
                                 //Add new fragment

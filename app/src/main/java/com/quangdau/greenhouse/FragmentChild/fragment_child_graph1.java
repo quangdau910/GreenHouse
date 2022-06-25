@@ -1,25 +1,19 @@
 package com.quangdau.greenhouse.FragmentChild;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.RotateDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.PopupMenu;
-import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -48,7 +42,6 @@ import com.quangdau.greenhouse.R;
 import com.quangdau.greenhouse.SharedPreferences.UserPreferences;
 import com.quangdau.greenhouse.Spinner.spinnerLimitSetting.CategorySpinner;
 import com.quangdau.greenhouse.Spinner.spinnerLimitSetting.CategorySpinnerAdapter;
-import com.quangdau.greenhouse.language.Language;
 import com.quangdau.greenhouse.modelsAPI.get_graph.dataReal;
 import com.quangdau.greenhouse.modelsAPI.get_graph.dataGraph;
 
@@ -69,24 +62,21 @@ public class fragment_child_graph1 extends Fragment {
     RadioGroup radioGroup1;
     LineChart graph;
     TextView txtYaxisTitle;
-    public ArrayList<Entry> dataVals;
-    public ArrayList<ILineDataSet> dataSets;
-    public dataGraph  mdataGraph;
-    public List<dataReal> mdata;
+    ArrayList<Entry> dataVals;
+    ArrayList<ILineDataSet> dataSets;
+    dataGraph  mdataGraph;
+    List<dataReal> mdata;
     UserPreferences userPreferences;
     String houseID;
 
-    //sipiner
-    private Spinner spinnerTypeChart;
-    private CategorySpinnerAdapter categoryTypeAdapter;
-
-
+    //Spinner
+    Spinner spinnerTypeChart;
+    CategorySpinnerAdapter categoryTypeAdapter;
     //spinKet
     Dialog dialog;
-
     //variable arraylist get data api
-    public List<dataReal> getApi7D;
-    public List<dataReal> getApi1M;
+    List<dataReal> getApi7D;
+    List<dataReal> getApi1M;
 //    public List<dataReal> getApi7DLand;
 //    public List<dataReal> getApi1MLand;
 //    public List<dataReal> getApi7DLand2;
@@ -113,7 +103,6 @@ public class fragment_child_graph1 extends Fragment {
 
     //variable value first array
     public long valueFirstArray =0;
-
     //check button radio set time graph
     public final String setTime1H = "1h";
     public final String setTime1D = "1d";
@@ -132,19 +121,14 @@ public class fragment_child_graph1 extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_child_graph1,container,false);
-
-
-
-
+        //Assign variables
         radioGroup1 = (RadioGroup) view.findViewById(R.id.time_check_graph);
         txtYaxisTitle = (TextView) view.findViewById(R.id.text_tile_yAxis);
         txtYaxisTitle.setText(getResources().getString(R.string.yAxis_air_humidity));
         graph = (LineChart) view.findViewById(R.id.graph);
         graph.setTouchEnabled(true);
-
         userPreferences = new UserPreferences(getActivity());
-
-        //spiner view
+        //Spinner view
         spinnerTypeChart =(Spinner) view.findViewById(R.id.typeChart1);
         List<CategorySpinner> list = new ArrayList<>();
         list.add(new CategorySpinner(getResources().getString(R.string.graph_air_humidity)));
@@ -213,25 +197,21 @@ public class fragment_child_graph1 extends Fragment {
             }
         });
 
-
-
-        //even click value Chart
+        //Event click value Chart
         graph.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
                 IMarker marker = new YourMarkerView(getContext(), R.layout.custom_marker_view_layout);
                 graph.setMarker(marker);
             }
-
             @Override
             public void onNothingSelected() {
             }
         });
 
-
-
         dataVals = new ArrayList<>();
         radioGroup1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @SuppressLint("NonConstantResourceId")
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId){
@@ -267,15 +247,11 @@ public class fragment_child_graph1 extends Fragment {
                     break;
                     default:
                         break;
-
                 }
             }
         });
 
-
-        Log.e("gh", "token"+ userPreferences.getToken());
         return view;
-
     }
 
     @Override
@@ -284,14 +260,8 @@ public class fragment_child_graph1 extends Fragment {
         super.onStart();
     }
 
-
-
-
-
-
-
     public class LineChartXAxisValueFormatter implements IAxisValueFormatter {
-
+        @SuppressLint("SimpleDateFormat")
         @Override
         public String getFormattedValue(float value, AxisBase axis) {
             long realTime =(long) value+ valueFirstArray;
@@ -339,13 +309,9 @@ public class fragment_child_graph1 extends Fragment {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         //lock window layout
         dialog.setCancelable(false);
-
         SpinKitView progressBar = dialog.findViewById(R.id.progressBar);
         //progressBar.setIndeterminateDrawable(new RotatingPlane());
         dialog.show();
-
-
-
         ApiServer get = ApiServer.retrofit.create(ApiServer.class);
         Call<dataGraph> call = get.getGraphData(token,"GetGraphData","house1",typeGraph,setTime);
         call.enqueue(new Callback<dataGraph>() {
@@ -355,7 +321,6 @@ public class fragment_child_graph1 extends Fragment {
                 mdataGraph = response.body();
                 long timeMdata;
                 float valueMdata;
-
                 for (int i=0; i< mdataGraph.getData().size();i++){
                     String dateString = mdataGraph.getData().get(i).getTime();
                     valueMdata = mdataGraph.getData().get(i).getFirst();
@@ -371,11 +336,11 @@ public class fragment_child_graph1 extends Fragment {
                     mdata.add(new dataReal(timeMdata,valueMdata));
 
                 }
-                if(setTime == setTime7D && data7D == false){
+                if(setTime.equals(setTime7D) && !data7D){
                         getApi7D = mdata;
                         data7D =true;
                 }
-                if(setTime == setTime1M && data1M ==false){
+                if(setTime == setTime1M && !data1M){
                         getApi1M =mdata;
                         data1M =true;
                 }
@@ -388,19 +353,13 @@ public class fragment_child_graph1 extends Fragment {
 
             }
         });
-
-
     }
-
-
-
     private void setDataGraph() {
         if (mdata == null) {
             Log.e("gh","vẽ thất bại");
             return;
-
         }
-        if(mdata !=null) {
+        if(mdata!=null) {
             dataVals.clear();
             valueFirstArray = mdata.get(0).getTime();
             for (int i = 0; i < mdata.size(); i++) {
@@ -408,32 +367,22 @@ public class fragment_child_graph1 extends Fragment {
                 float yAxis = mdata.get(i).getValue();
                 dataVals.add(new Entry(xAxis, yAxis));
             }
-
-
             XAxis xAxis = graph.getXAxis();
-
             //xAxis.setLabelCount(3,true);
             xAxis.setValueFormatter(new LineChartXAxisValueFormatter());
             xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
             xAxis.setTextSize(12);
             xAxis.setLabelCount(5,true);
-
-
-
-
             LineDataSet lineDataSet1 = new LineDataSet(dataVals,"");
             dataSets = new ArrayList<>();
             dataSets.add(lineDataSet1);
             LineData data = new LineData(dataSets);
-
-
             data.setValueFormatter(new ValueFormat());
             graph.setData(data);
             graph.invalidate();
             graph.setDrawGridBackground(false);
             graph.setDrawBorders(true);
             graph.setBorderColor(R.color.blue_30);
-
             Description description = new Description();
             description.setText("");
             graph.setDescription(description);
@@ -467,20 +416,10 @@ public class fragment_child_graph1 extends Fragment {
             graph.fitScreen();
             dialog.dismiss();
 
-            Log.e("gh",""+data7D);
-
-
-
-
-
-
-
-
         }
     }
 
     public class YourMarkerView extends MarkerView {
-
         private TextView tvYValue;
         private TextView tvXValue;
         public YourMarkerView(Context context, int layoutResource) {
@@ -509,28 +448,17 @@ public class fragment_child_graph1 extends Fragment {
 
         @Override
         public MPPointF getOffset() {
-
             if(mOffset == null) {
                 // center the marker horizontally and vertically
-                mOffset = new MPPointF(-(getWidth() / 2), -getHeight());
+                mOffset = new MPPointF(-(getWidth()/2), -getHeight());
             }
-
             return mOffset;
         }
     }
     private class ValueFormat implements IValueFormatter{
-
-
         @Override
         public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-
             return "" ;
         }
     }
-
-
-
-
 }
-
-
