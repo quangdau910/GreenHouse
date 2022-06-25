@@ -79,7 +79,7 @@
             app:layout_constraintTop_toBottomOf="@+id/cardViewWeather"
             app:layout_constraintLeft_toLeftOf="@id/cardViewTemperatureSensor"
             android:layout_marginTop="10dp"
-           />
+            />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewTemperatureSensor"

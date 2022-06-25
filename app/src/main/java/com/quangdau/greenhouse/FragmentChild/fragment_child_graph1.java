@@ -85,31 +85,31 @@ public class fragment_child_graph1 extends Fragment {
     Dialog dialog;
 
     //variable arraylist get data api
-    public List<dataReal> getApi7DAir;
-    public List<dataReal> getApi1MAir;
-    public List<dataReal> getApi7DLand;
-    public List<dataReal> getApi1MLand;
-    public List<dataReal> getApi7DLand2;
-    public List<dataReal> getApi1MLand2;
-    public List<dataReal> getApi7DLand3;
-    public List<dataReal> getApi1MLand3;
-    public List<dataReal> getApi7DLand4;
-    public List<dataReal> getApi1MLand4;
-    public List<dataReal> getApi7DTemperature;
-    public List<dataReal> getApi1MTemperature;
+    public List<dataReal> getApi7D;
+    public List<dataReal> getApi1M;
+//    public List<dataReal> getApi7DLand;
+//    public List<dataReal> getApi1MLand;
+//    public List<dataReal> getApi7DLand2;
+//    public List<dataReal> getApi1MLand2;
+//    public List<dataReal> getApi7DLand3;
+//    public List<dataReal> getApi1MLand3;
+//    public List<dataReal> getApi7DLand4;
+//    public List<dataReal> getApi1MLand4;
+//    public List<dataReal> getApi7DTemperature;
+//    public List<dataReal> getApi1MTemperature;
     //boolean data graph 7d 1m
-    public Boolean data7DAir = false;
-    public Boolean data1MAir =false;
-    public Boolean data7DLand = false;
-    public Boolean data1MLand = false;
-    public Boolean data7DLand2 = false;
-    public Boolean data1MLand2 = false;
-    public Boolean data7DLand3 = false;
-    public Boolean data1MLand3 = false;
-    public Boolean data7DLand4 = false;
-    public Boolean data1MLand4 = false;
-    public Boolean data7DTemperature = false;
-    public Boolean data1MTemperature =false;
+    public Boolean data7D = false;
+    public Boolean data1M =false;
+//    public Boolean data7DLand = false;
+//    public Boolean data1MLand = false;
+//    public Boolean data7DLand2 = false;
+//    public Boolean data1MLand2 = false;
+//    public Boolean data7DLand3 = false;
+//    public Boolean data1MLand3 = false;
+//    public Boolean data7DLand4 = false;
+//    public Boolean data1MLand4 = false;
+//    public Boolean data7DTemperature = false;
+//    public Boolean data1MTemperature =false;
 
     //variable value first array
     public long valueFirstArray =0;
@@ -161,31 +161,43 @@ public class fragment_child_graph1 extends Fragment {
                 switch (position){
                     case 0:{
                         typeGraph = graphAir;
+                        data1M =false;
+                        data7D =false;
                         txtYaxisTitle.setText(getResources().getString(R.string.yAxis_air_humidity));
                         getArrayDataGraph(userPreferences.getToken());
                     }break;
                     case 1:{
                         typeGraph = graphTemperature;
+                        data1M =false;
+                        data7D =false;
                         txtYaxisTitle.setText(getResources().getString(R.string.yAxis_temperature));
                         getArrayDataGraph(userPreferences.getToken());
                     }break;
                     case 2:{
                         typeGraph = graphLand;
+                        data1M =false;
+                        data7D =false;
                         txtYaxisTitle.setText(getResources().getString(R.string.yAxis_land_humidity));
                         getArrayDataGraph(userPreferences.getToken());
                     }break;
                     case 3:{
                         typeGraph = graphLand2;
+                        data1M =false;
+                        data7D =false;
                         txtYaxisTitle.setText(getResources().getString(R.string.yAxis_land_humidity));
                         getArrayDataGraph(userPreferences.getToken());
                     }break;
                     case 4:{
                         typeGraph = graphLand3;
+                        data1M =false;
+                        data7D =false;
                         txtYaxisTitle.setText(getResources().getString(R.string.yAxis_land_humidity));
                         getArrayDataGraph(userPreferences.getToken());
                     }break;
                     case 5:{
                         typeGraph = graphLand4;
+                        data1M =false;
+                        data7D =false;
                         txtYaxisTitle.setText(getResources().getString(R.string.yAxis_land_humidity));
                         getArrayDataGraph(userPreferences.getToken());
                     }break;
@@ -235,107 +247,21 @@ public class fragment_child_graph1 extends Fragment {
                     break;
                     case R.id.graph_7D:{
                         setTime= setTime7D;
-                        switch (typeGraph){
-                            case graphAir: {
-                                if (data7DAir) {
-                                    mdata = getApi7DAir;
-                                    setDataGraph();
-                                } else {
-                                    getArrayDataGraph(userPreferences.getToken());
-                                }
-                            }   break;
-                            case graphLand:{
-                                if (data7DLand){
-                                    mdata = getApi7DLand;
-                                    setDataGraph();
-                                }else {
-                                    getArrayDataGraph(userPreferences.getToken());
-                                }
-                            }break;
-                            case graphLand2:{
-                                if (data7DLand2){
-                                    mdata = getApi7DLand2;
-                                    setDataGraph();
-                                }else {
-                                    getArrayDataGraph(userPreferences.getToken());
-                                }
-                            }break;
-                            case graphLand3:{
-                                if (data7DLand3){
-                                    mdata = getApi7DLand3;
-                                    setDataGraph();
-                                }else {
-                                    getArrayDataGraph(userPreferences.getToken());
-                                }
-                            }break;
-                            case graphLand4:{
-                                if (data7DLand4){
-                                    mdata = getApi7DLand4;
-                                    setDataGraph();
-                                }else {
-                                    getArrayDataGraph(userPreferences.getToken());
-                                }
-                            }break;
-                            case graphTemperature:{
-                                if (data7DTemperature){
-                                    mdata = getApi7DTemperature;
-                                    setDataGraph();
-                                }else {
-                                    getArrayDataGraph(userPreferences.getToken());
-                                }
-                            }break;
-                            default:
-                                break;
+                        if(data7D) {
+                            mdata = getApi7D;
+                            setDataGraph();
+                        }else{
+                            getArrayDataGraph(userPreferences.getToken());
                         }
-
                     }
                     break;
                     case R.id.graph_1M:{
-
                         setTime= setTime1M;
-                        switch (typeGraph){
-                            case graphAir:
-                                if (data1MAir){
-                                    mdata = getApi1MAir;
-                                    setDataGraph();
-                                }else {
-                                    getArrayDataGraph(userPreferences.getToken());
-                                }break;
-                            case graphLand:
-                                if (data1MLand){
-                                    mdata = getApi1MLand;
-                                    setDataGraph();
-                                }else {
-                                    getArrayDataGraph(userPreferences.getToken());
-                                }break;
-                            case graphLand2:
-                                if (data1MLand2){
-                                    mdata = getApi1MLand;
-                                    setDataGraph();
-                                }else {
-                                    getArrayDataGraph(userPreferences.getToken());
-                                }break;
-                            case graphLand3:
-                                if (data1MLand3){
-                                    mdata = getApi1MLand;
-                                    setDataGraph();
-                                }else {
-                                    getArrayDataGraph(userPreferences.getToken());
-                                }break;
-                            case graphLand4:
-                                if (data1MLand4){
-                                    mdata = getApi1MLand;
-                                    setDataGraph();
-                                }else {
-                                    getArrayDataGraph(userPreferences.getToken());
-                                }break;
-                            case graphTemperature:
-                                if (data1MTemperature){
-                                    mdata = getApi1MTemperature;
-                                    setDataGraph();
-                                }else {
-                                    getArrayDataGraph(userPreferences.getToken());
-                                }break;
+                        if(data1M){
+                            mdata = getApi1M;
+                            setDataGraph();
+                        }else{
+                            getArrayDataGraph(userPreferences.getToken());
                         }
                     }
                     break;
@@ -445,64 +371,15 @@ public class fragment_child_graph1 extends Fragment {
                     mdata.add(new dataReal(timeMdata,valueMdata));
 
                 }
-
-
-
-                if(setTime == setTime7D)
-                    if(typeGraph == graphAir && data7DAir == false){
-                        getApi7DAir = mdata;
-                        data7DAir = true;
-                    }else if( typeGraph == graphLand && data7DLand== false){
-                        getApi7DLand = mdata;
-                        data7DLand = true;
-                    }
-                    else if( typeGraph == graphLand2 && data7DLand2== false){
-                        getApi7DLand2 = mdata;
-                        data7DLand2 = true;
-                    }
-                    else if( typeGraph == graphLand3 && data7DLand3== false){
-                        getApi7DLand3 = mdata;
-                        data7DLand3 = true;
-                    }
-                    else if( typeGraph == graphLand4 && data7DLand4== false){
-                        getApi7DLand4 = mdata;
-                        data7DLand4 = true;
-                    }
-                    else if(typeGraph == graphTemperature && data1MTemperature == false){
-                        getApi7DTemperature = mdata;
-                        data7DTemperature = true;
-                    }
-                if(setTime == setTime1M)
-                    if(typeGraph == graphAir && data1MAir ==false){
-                        getApi1MAir = mdata;
-                        data1MAir =true;
-                    }
-                    else if(typeGraph == graphLand && data1MLand ==false){
-                        getApi1MLand = mdata;
-                        data1MLand = true;
-                    }
-                    else if(typeGraph == graphLand2 && data1MLand2 ==false){
-                        getApi1MLand2 = mdata;
-                        data1MLand2 = true;
-                    }
-                    else if(typeGraph == graphLand3 && data1MLand3 ==false){
-                        getApi1MLand3 = mdata;
-                        data1MLand3 = true;
-                    }
-                    else if(typeGraph == graphLand4 && data1MLand4 ==false){
-                        getApi1MLand4 = mdata;
-                        data1MLand4 = true;
-                    }
-
-                    else if(typeGraph == graphTemperature && data1MTemperature ==false){
-                        getApi1MTemperature = mdata;
-                        data1MTemperature = true;
-                    }
+                if(setTime == setTime7D && data7D == false){
+                        getApi7D = mdata;
+                        data7D =true;
+                }
+                if(setTime == setTime1M && data1M ==false){
+                        getApi1M =mdata;
+                        data1M =true;
+                }
                 setDataGraph();
-
-
-
-
             }
 
             @Override
@@ -555,7 +432,7 @@ public class fragment_child_graph1 extends Fragment {
             graph.invalidate();
             graph.setDrawGridBackground(false);
             graph.setDrawBorders(true);
-            graph.setBorderColor(Color.RED);
+            graph.setBorderColor(R.color.blue_30);
 
             Description description = new Description();
             description.setText("");
@@ -567,7 +444,7 @@ public class fragment_child_graph1 extends Fragment {
             legend.setEnabled(false);
             lineDataSet1.setLineWidth(3);
             lineDataSet1.setColor(Color.RED);
-            lineDataSet1.setDrawFilled(true);
+            //  lineDataSet1.setDrawFilled(true);
             int colorArray[] = {R.color.green_10};
             lineDataSet1.setColors(colorArray,getActivity());
 
@@ -587,9 +464,10 @@ public class fragment_child_graph1 extends Fragment {
             graph.setNoDataTextColor(Color.BLUE);
             graph.getXAxis().setTextColor(Color.BLACK);
             graph.setScaleYEnabled(false);
+            graph.fitScreen();
             dialog.dismiss();
 
-            Log.e("gh",""+data7DAir);
+            Log.e("gh",""+data7D);
 
 
 
@@ -610,8 +488,6 @@ public class fragment_child_graph1 extends Fragment {
             tvYValue = (TextView) findViewById(R.id.YValue);
             tvXValue = (TextView) findViewById(R.id.XValue);
         }
-
-        // callbacks everytime the MarkerView is redrawn, can be used to update the
         // content (user-interface)
         @Override
         public void refreshContent(Entry e, Highlight highlight) {
@@ -625,7 +501,7 @@ public class fragment_child_graph1 extends Fragment {
             tvYValue.setText(""+e.getY());
             tvXValue.setText(formatTime.format(time));
 
-            // this will perform necessary layouting
+            // this will perform necessary layout
             super.refreshContent(e, highlight);
         }
 

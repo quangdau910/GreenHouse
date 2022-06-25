@@ -11,70 +11,77 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="130dp"
-        android:gravity="center|bottom"
-        android:paddingBottom="20dp">
+        android:gravity="center|bottom">
+
         <RadioGroup
             android:background="@drawable/back_ground_radio_btn"
             android:id="@+id/time_check_graph"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:gravity="center_horizontal"
             android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             android:layout_weight="4">
+
             <RadioButton
-                android:layout_weight="1"
                 android:id="@+id/graph_1H"
                 android:layout_width="70dp"
                 android:layout_height="40dp"
+                android:layout_weight="1"
                 android:background="@drawable/radio_flat_selector"
                 android:button="@android:color/transparent"
                 android:checked="true"
+                android:fontFamily="@font/open_sans_bold"
                 android:gravity="center"
                 android:paddingTop="10dp"
                 android:text="1H"
-                android:fontFamily="@font/open_sans_bold"
-                android:textStyle="bold"
-                android:textColor="@color/radio_flat_text_selector" />
+                android:textColor="@color/radio_flat_text_selector"
+                android:textStyle="bold" />
+
             <RadioButton
-                android:layout_weight="1"
                 android:id="@+id/graph_1D"
                 android:layout_width="70dp"
                 android:layout_height="40dp"
+                android:layout_weight="1"
                 android:background="@drawable/radio_flat_selector"
                 android:button="@android:color/transparent"
-                android:gravity="center"
-                android:text="1D"
                 android:fontFamily="@font/open_sans_bold"
-                android:textStyle="bold"
+                android:gravity="center"
                 android:paddingTop="10dp"
-                android:textColor="@color/radio_flat_text_selector" />
+                android:text="1D"
+                android:textColor="@color/radio_flat_text_selector"
+                android:textStyle="bold" />
+
             <RadioButton
-                android:layout_weight="1"
                 android:id="@+id/graph_7D"
                 android:layout_width="70dp"
                 android:layout_height="40dp"
+                android:layout_weight="1"
                 android:background="@drawable/radio_flat_selector"
                 android:button="@android:color/transparent"
-                android:gravity="center"
-                android:text="7D"
                 android:fontFamily="@font/open_sans_bold"
-                android:textStyle="bold"
+                android:gravity="center"
                 android:paddingTop="10dp"
-                android:textColor="@color/radio_flat_text_selector" />
+                android:text="7D"
+                android:textColor="@color/radio_flat_text_selector"
+                android:textStyle="bold" />
+
             <RadioButton
-                android:layout_weight="1"
                 android:id="@+id/graph_1M"
                 android:layout_width="70dp"
                 android:layout_height="40dp"
+                android:layout_weight="1"
                 android:background="@drawable/radio_flat_selector"
                 android:button="@android:color/transparent"
-                android:gravity="center"
-                android:text="1M"
                 android:fontFamily="@font/open_sans_bold"
-                android:textStyle="bold"
+                android:gravity="center"
                 android:paddingTop="10dp"
-                android:textColor="@color/radio_flat_text_selector" />
+                android:text="1M"
+                android:textColor="@color/radio_flat_text_selector"
+                android:textStyle="bold" />
         </RadioGroup>
     </LinearLayout>
 

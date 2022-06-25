@@ -57,9 +57,12 @@ public class activity_login extends AppCompatActivity {
     TextInputLayout hintAccount;
     TextInputLayout hintPassword;
 
+
     UserPreferences userPreferences;
     Context context;
     Boolean backPressCheck;
+
+    Language language;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,33 +81,46 @@ public class activity_login extends AppCompatActivity {
         //Check permission
         checkPermission();
         //spinner Language
-        Language language = new Language(this);
+        language = new Language(this);
         spinnerLanguage = findViewById(R.id.spinner_Language);
         List<CategorySpinner> list = new ArrayList<>();
         list.add(new CategorySpinner("Việt Nam"));
         list.add(new CategorySpinner("English"));
 
+
         categoryLanguageAdapter = new CategorySpinnerAdapter(this,R.layout.item_selected_language,list);
         spinnerLanguage.setAdapter(categoryLanguageAdapter);
+        if(language.getLang().equals("en")){
+            spinnerLanguage.setSelection(1);
+
+        }
+        if(language.getLang().equals("vi")){
+            spinnerLanguage.setSelection(0);
+
+        }
         spinnerLanguage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                switch (position){
-                    case 0:{
-                        language.updateLanguage("vi");
-                        hintAccount.setHint(getResources().getString(R.string.Hint_account));
-                        hintPassword.setHint(getResources().getString(R.string.Hint_password));
-                        btnLogin.setText(getResources().getString(R.string.Text_Btn_Login));
-                    }break;
-                    case 1:{
-                        language.updateLanguage("en");
-                        hintAccount.setHint(getResources().getString(R.string.Hint_account));
-                        hintPassword.setHint(getResources().getString(R.string.Hint_password));
-                        btnLogin.setText(getResources().getString(R.string.Text_Btn_Login));
-                    }break;
-                    default:
+
+                    switch (position) {
+                        case 0: {
+                            language.updateLanguage("vi");
+                            hintAccount.setHint(getResources().getString(R.string.Hint_account));
+                            hintPassword.setHint(getResources().getString(R.string.Hint_password));
+                            btnLogin.setText(getResources().getString(R.string.Text_Btn_Login));
+                        }
+                        break;
+                        case 1: {
+                            language.updateLanguage("en");
+                            hintAccount.setHint(getResources().getString(R.string.Hint_account));
+                            hintPassword.setHint(getResources().getString(R.string.Hint_password));
+                            btnLogin.setText(getResources().getString(R.string.Text_Btn_Login));
+                        }
+                        break;
+                        default:
+                    }
                 }
-            }
+
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -208,4 +224,5 @@ public class activity_login extends AppCompatActivity {
         Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();
         new Handler(Looper.getMainLooper()).postDelayed(() -> backPressCheck = false, 2000);
     }
+
 }

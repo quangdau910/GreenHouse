@@ -81,7 +81,7 @@
 
 
     <!-- String-->
-    <string name="Setting">Cài đặt</string>
+    <string name="Setting">Setting</string>
     <string name="Button_Limit_Setting">Limit Setting</string>
     <string name="Save_change">Save change</string>
     <string name="Min_Setting">Min:</string>
