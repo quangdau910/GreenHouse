@@ -8,7 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-
+    <color name="buttonLogout">#FF4757</color>
     <color name ="white_60">#FEFEFE</color>
     <color name ="blue_30">#121138</color>
     <color name ="green_10">#49B193</color>

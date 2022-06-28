@@ -55,11 +55,20 @@
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/drawable-v24/edittext_login.xml" value="0.198" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/drawable-v24/spinner_button_drop.xml" value="0.124" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/drawable/button_login.xml" value="0.198" />
+        <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/drawable/button_logout.xml" value="0.2285" />
+        <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/drawable/button_right_show.xml" value="0.2285" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/drawable/button_ui.xml" value="0.14" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/drawable/custom_edittext_limit.xml" value="0.176" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/drawable/custom_spinner_limit_setting.xml" value="0.196" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/drawable/ic_login_account.xml" value="0.198" />
+        <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/drawable/ic_logo_fiot_notext.xml" value="0.184" />
+        <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/drawable/ic_logo_fiot_text.xml" value="0.2285" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/drawable/ic_signal_wifi_2_bar.xml" value="0.1935" />
+        <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/drawable/ic_svgcochu.xml" value="0.2285" />
+        <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/drawable/layout_information.xml" value="0.2285" />
+        <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/drawable/logo_fiot_notext.xml" value="0.184" />
+        <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/drawable/logo_fiot_text.xml" value="0.184" />
+        <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/drawable/ogo_fiot_text.xml" value="0.184" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/drawable/round_edt.xml" value="0.198" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/drawable/round_layout.xml" value="0.198" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/drawable/switch_limit_thumb.xml" value="0.185" />
@@ -78,19 +87,22 @@
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/layout/fragment_child_mode_setting.xml" value="0.2" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/layout/fragment_child_settings.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/layout/fragment_child_timer_setting.xml" value="0.2" />
-        <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/layout/fragment_graph.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/layout/fragment_graph.xml" value="0.1" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/layout/fragment_history.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/layout/fragment_home.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/layout/fragment_settings.xml" value="0.264" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/layout/item_selected_spinner.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/layout/login_page.xml" value="0.2" />
+        <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/layout/login_page.xml" value="0.4" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/layout/main_page.xml" value="0.1" />
+        <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/layout/page_login.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/layout/page_main.xml" value="0.16" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/layout/spinner_item_category.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/layout/spinner_item_selected.xml" value="0.11302083333333333" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/layout/spinner_limit_item_category.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/layout/spinner_limit_item_selected.xml" value="0.24010416666666667" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/layout/spinner_style.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/layout/toast_error_login.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/layout/win_layout_spinkit.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse5/app/src/main/res/layout/fragment_graph.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/hihi/Desktop/Android/GreenHouse10/app/src/main/res/drawable/round_title_graph.xml" value="0.134" />
         <entry key="..\:/Users/hihi/Desktop/Android/GreenHouse10/app/src/main/res/layout/cardview_history_login.xml" value="0.5" />

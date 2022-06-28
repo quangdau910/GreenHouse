@@ -28,12 +28,13 @@ import androidx.appcompat.widget.AppCompatButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.quangdau.greenhouse.ApiService.ApiServer;
+import com.quangdau.greenhouse.Other.NetworkConnection;
 import com.quangdau.greenhouse.SharedPreferences.UserPreferences;
 import com.quangdau.greenhouse.R;
 import com.quangdau.greenhouse.Spinner.spinnerLimitSetting.CategorySpinner;
 import com.quangdau.greenhouse.Spinner.spinnerLimitSetting.CategorySpinnerAdapter;
 import com.quangdau.greenhouse.language.Language;
-import com.quangdau.greenhouse.modelsAPI.post_authen.authenPost;
+import com.quangdau.greenhouse.modelsAPI.post_authen.AuthenPost;
 import com.quangdau.greenhouse.modelsAPI.res_authenPost.resAuthorityPost;
 
 import java.util.ArrayList;
@@ -47,34 +48,33 @@ import retrofit2.Response;
 
 public class activity_login extends AppCompatActivity {
     private static final int REQUEST_PERMISSION_CODE = 123;
-    //declare variables
-    TextInputEditText account,password;
+    //Declare variables
+    TextInputEditText editTextAccount, editTextPassword;
     AppCompatButton btnLogin;
-
-    Spinner spinnerLanguage;
-    CategorySpinnerAdapter categoryLanguageAdapter;
-    public int NextLanguage=0;
     TextInputLayout hintAccount;
     TextInputLayout hintPassword;
-
-
+    //Shared preferences
     UserPreferences userPreferences;
     Context context;
     Boolean backPressCheck;
-
+    //Language
+    Spinner spinnerLanguage;
+    CategorySpinnerAdapter categoryLanguageAdapter;
     Language language;
+    //Other
+    NetworkConnection networkConnection;
+    public int NextLanguage=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_page);
+        setContentView(R.layout.page_login);
         //Assign variables
-        account =  findViewById(R.id.editTextAccount);
-        password =  findViewById(R.id.editTextPassword);
+        editTextAccount =  findViewById(R.id.editTextAccount);
+        editTextPassword =  findViewById(R.id.editTextPassword);
         btnLogin =  findViewById(R.id.buttonLogin);
-
         hintAccount = findViewById(R.id.textInputLayoutAccount);
         hintPassword = findViewById(R.id.textInputLayoutPassword);
-
+        //Shared preferences
         context = this;
         userPreferences = new UserPreferences(context);
         backPressCheck = false;
@@ -86,88 +86,91 @@ public class activity_login extends AppCompatActivity {
         List<CategorySpinner> list = new ArrayList<>();
         list.add(new CategorySpinner("Việt Nam"));
         list.add(new CategorySpinner("English"));
-
+        //Network connection
+        networkConnection = new NetworkConnection(this);
 
         categoryLanguageAdapter = new CategorySpinnerAdapter(this,R.layout.item_selected_language,list);
         spinnerLanguage.setAdapter(categoryLanguageAdapter);
         if(language.getLang().equals("en")){
             spinnerLanguage.setSelection(1);
-
         }
         if(language.getLang().equals("vi")){
             spinnerLanguage.setSelection(0);
-
         }
         spinnerLanguage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
                     switch (position) {
-                        case 0: {
+                        case 0:
                             language.updateLanguage("vi");
                             hintAccount.setHint(getResources().getString(R.string.Hint_account));
                             hintPassword.setHint(getResources().getString(R.string.Hint_password));
                             btnLogin.setText(getResources().getString(R.string.Text_Btn_Login));
-                        }
-                        break;
-                        case 1: {
+                            break;
+                        case 1:
                             language.updateLanguage("en");
                             hintAccount.setHint(getResources().getString(R.string.Hint_account));
                             hintPassword.setHint(getResources().getString(R.string.Hint_password));
                             btnLogin.setText(getResources().getString(R.string.Text_Btn_Login));
-                        }
-                        break;
-                        default:
+                            break;
                     }
                 }
-
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
         //Button Listener
-        btnLogin.setOnClickListener(view -> login(Objects.requireNonNull(account.getText()).toString(), Objects.requireNonNull(password.getText()).toString()));
+        btnLogin.setOnClickListener(view -> login(Objects.requireNonNull(editTextAccount.getText()).toString(), Objects.requireNonNull(editTextPassword.getText()).toString()));
     }
 
-
     private void login(String account, String password){
+        editTextPassword.clearFocus();
+        editTextAccount.clearFocus();
         //Check empty input
-        if (account.length() == 0 && password.length() == 0){
-            toastNew(getResources().getString(R.string.Account_password_not_empty));
-        }else if(account.length() == 0){
-            toastNew(getResources().getString(R.string.Account_not_empty));
-        }else if(password.length() == 0){
-            toastNew(getResources().getString(R.string.Password_not_empty));
-        }else{
-            ApiServer post = ApiServer.retrofit.create(ApiServer.class);
-            String deviceName =  Build.MODEL;
-            authenPost authenPost = new authenPost("Authen", account, password, deviceName, getIpAddress());
-            Call <resAuthorityPost> postAuth = post.postAuth(authenPost);
-            postAuth.enqueue(new Callback<resAuthorityPost>() {
-                @Override
-                public void onResponse(Call<resAuthorityPost> call, Response<resAuthorityPost> response) {
-                    //check response from server
-                    if (response.body() != null){
-                        if (response.body().getResponse() == null){
-                            Intent nextPage= new Intent(activity_login.this, activity_main.class);
+        if (networkConnection.isNetworkConnected()) {
+            if (account.length() == 0 && password.length() == 0) {
+                toastNew(getResources().getString(R.string.Account_password_not_empty));
+            } else if (account.length() == 0) {
+                toastNew(getResources().getString(R.string.Account_not_empty));
+            } else if (password.length() == 0) {
+                toastNew(getResources().getString(R.string.Password_not_empty));
+            } else {
+                btnLogin.setEnabled(false);
+                ApiServer post = ApiServer.retrofit.create(ApiServer.class);
+                String deviceName = Build.MODEL;
+                AuthenPost authenPost = new AuthenPost("Authen", account, password, deviceName, getIpAddress());
+                Call<resAuthorityPost> postAuth = post.postAuth(authenPost);
+                postAuth.enqueue(new Callback<resAuthorityPost>() {
+                    @Override
+                    public void onResponse(Call<resAuthorityPost> call, Response<resAuthorityPost> response) {
+                        //Check response from server
+                        if (response.body() != null && response.body().getResponse().equals("Author")) {
+                            Intent nextPage = new Intent(activity_login.this, activity_main.class);
                             userPreferences.setToken(response.body().getToken());
                             packedData(nextPage, response);
                             startActivity(nextPage);
                             finish();
-                        }else{
+                        } else {
                             toastNew(getResources().getString(R.string.Wrong_account_or_password));
                         }
+                        btnLogin.setEnabled(true);
                     }
-                }
-                @Override
-                public void onFailure(Call<resAuthorityPost> call, Throwable t) {
-                    Log.e("login", "Error Login: "+ t);
-                    toastNew(getResources().getString(R.string.No_response_from_server));
-                }
-            });
+
+                    @Override
+                    public void onFailure(Call<resAuthorityPost> call, Throwable t) {
+                        Log.e("login", "Error Login: " + t);
+                        toastNew(getResources().getString(R.string.No_response_from_server));
+                        btnLogin.setEnabled(true);
+                    }
+                });
+            }
+        }else {
+            toastNew("No connection!");
+            btnLogin.setEnabled(true);
+            editTextAccount.setFocusable(true);
+            editTextPassword.setFocusable(true);
         }
+
     }
 
     private void toastNew(String textToast){
@@ -201,6 +204,7 @@ public class activity_login extends AppCompatActivity {
     private void packedData(Intent intent, Response<resAuthorityPost> response ){
         assert response.body() != null;
         intent.putExtra("authority", response.body().getAuthority());
+        intent.putExtra("expTime", response.body().getExpTime());
     }
 
     @Override
@@ -222,5 +226,4 @@ public class activity_login extends AppCompatActivity {
         Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();
         new Handler(Looper.getMainLooper()).postDelayed(() -> backPressCheck = false, 2000);
     }
-
 }

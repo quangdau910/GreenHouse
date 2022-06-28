@@ -3,22 +3,18 @@ package com.quangdau.greenhouse.FragmentChild;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -31,8 +27,8 @@ import com.quangdau.greenhouse.Spinner.spinnerLimitSetting.CategorySpinner;
 import com.quangdau.greenhouse.Spinner.spinnerLimitSetting.CategorySpinnerAdapter;
 import com.quangdau.greenhouse.modelsAPI.get_limitSettings.limitSettingsData;
 import com.quangdau.greenhouse.modelsAPI.get_limitSettings.objGetLimitSettingData;
-import com.quangdau.greenhouse.modelsAPI.post_limitSettings.limitSettingsPost;
-import com.quangdau.greenhouse.modelsAPI.post_limitSettings.objPostLimitSettingData;
+import com.quangdau.greenhouse.modelsAPI.post_limitSettings.LimitSettingsPost;
+import com.quangdau.greenhouse.modelsAPI.post_limitSettings.ObjPostLimitSettingData;
 import com.quangdau.greenhouse.modelsAPI.res_limitSettingsPost.resLimitSettingsPost;
 
 import java.util.ArrayList;
@@ -125,179 +121,131 @@ public class fragment_child_limit_setting extends Fragment {
         cslFABSaveChangeOff = ColorStateList.valueOf(getResources().getColor(R.color.white_60));
         updateUIButtonSaveChange(false);
         //Setting button listener
-        editTextMin1.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(actionId== EditorInfo.IME_ACTION_DONE){
-                    //Clear focus here from edittext
-                    editTextMin1.clearFocus();
-                }
-                if(!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
-                return false;
+        editTextMin1.setOnEditorActionListener((v, actionId, event) -> {
+            if(actionId== EditorInfo.IME_ACTION_DONE){
+                //Clear focus here from edittext
+                editTextMin1.clearFocus();
+            }
+            if(!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
+            return false;
+        });
+        editTextMin2.setOnEditorActionListener((v, actionId, event) -> {
+            if(actionId== EditorInfo.IME_ACTION_DONE){
+                //Clear focus here from edittext
+                editTextMin2.clearFocus();
+            }
+            if(!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
+            return false;
+        });
+        editTextMin3.setOnEditorActionListener((v, actionId, event) -> {
+            if(actionId== EditorInfo.IME_ACTION_DONE){
+                //Clear focus here from edittext
+                editTextMin3.clearFocus();
+            }
+            if(!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
+            return false;
+        });
+        editTextMin4.setOnEditorActionListener((v, actionId, event) -> {
+            if(actionId== EditorInfo.IME_ACTION_DONE){
+                //Clear focus here from edittext
+                editTextMin4.clearFocus();
+            }
+            if(!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
+            return false;
+        });
+        editTextMax1.setOnEditorActionListener((v, actionId, event) -> {
+            if(actionId== EditorInfo.IME_ACTION_DONE){
+                //Clear focus here from edittext
+                editTextMax1.clearFocus();
+            }
+            if(!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
+            return false;
+        });
+        editTextMax2.setOnEditorActionListener((v, actionId, event) -> {
+            if(actionId== EditorInfo.IME_ACTION_DONE){
+                //Clear focus here from edittext
+                editTextMax2.clearFocus();
+            }
+            if(!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
+            return false;
+        });
+        editTextMax3.setOnEditorActionListener((v, actionId, event) -> {
+            if(actionId== EditorInfo.IME_ACTION_DONE){
+                //Clear focus here from edittext
+                editTextMax3.clearFocus();
+            }
+            if(!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
+            return false;
+        });
+        editTextMax4.setOnEditorActionListener((v, actionId, event) -> {
+            if(actionId== EditorInfo.IME_ACTION_DONE){
+                //Clear focus here from edittext
+                editTextMax4.clearFocus();
+            }
+            if(!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
+            return false;
+        });
+        switchStatusSoilMoisture1.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (switchStatusSoilMoisture1.isPressed()){
+                if (!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
             }
         });
-        editTextMin2.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(actionId== EditorInfo.IME_ACTION_DONE){
-                    //Clear focus here from edittext
-                    editTextMin2.clearFocus();
-                }
-                if(!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
-                return false;
+        switchStatusSoilMoisture2.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (switchStatusSoilMoisture2.isPressed()){
+                if (!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
             }
         });
-        editTextMin3.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(actionId== EditorInfo.IME_ACTION_DONE){
-                    //Clear focus here from edittext
-                    editTextMin3.clearFocus();
-                }
-                if(!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
-                return false;
+        switchStatusSoilMoisture3.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (switchStatusSoilMoisture3.isPressed()){
+                if (!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
             }
         });
-        editTextMin4.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(actionId== EditorInfo.IME_ACTION_DONE){
-                    //Clear focus here from edittext
-                    editTextMin4.clearFocus();
-                }
-                if(!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
-                return false;
-            }
-        });
-        editTextMax1.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(actionId== EditorInfo.IME_ACTION_DONE){
-                    //Clear focus here from edittext
-                    editTextMax1.clearFocus();
-                }
-                if(!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
-                return false;
-            }
-        });
-        editTextMax2.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(actionId== EditorInfo.IME_ACTION_DONE){
-                    //Clear focus here from edittext
-                    editTextMax2.clearFocus();
-                }
-                if(!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
-                return false;
-            }
-        });
-        editTextMax3.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(actionId== EditorInfo.IME_ACTION_DONE){
-                    //Clear focus here from edittext
-                    editTextMax3.clearFocus();
-                }
-                if(!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
-                return false;
-            }
-        });
-        editTextMax4.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(actionId== EditorInfo.IME_ACTION_DONE){
-                    //Clear focus here from edittext
-                    editTextMax4.clearFocus();
-                }
-                if(!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
-                return false;
-            }
-        });
-        switchStatusSoilMoisture1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (switchStatusSoilMoisture1.isPressed()){
-                    if (!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
-                }
-            }
-        });
-        switchStatusSoilMoisture2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (switchStatusSoilMoisture2.isPressed()){
-                    if (!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
-                }
-            }
-        });
-        switchStatusSoilMoisture3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (switchStatusSoilMoisture3.isPressed()){
-                    if (!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
-                }
-            }
-        });
-        switchStatusSoilMoisture4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (switchStatusSoilMoisture4.isPressed()){
-                    if (!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
-                }
+        switchStatusSoilMoisture4.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (switchStatusSoilMoisture4.isPressed()){
+                if (!flagCheckChangeDataLimitSettings) updateUIButtonSaveChange(true);
             }
         });
 
-        buttonLimitBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bundle.putString("fragmentLimitSetting", "buttonLimitBack Pressed");
-                getActivity().getSupportFragmentManager().setFragmentResult(REQUEST_KEY, bundle);
-            }
+        buttonLimitBack.setOnClickListener(v -> {
+            bundle.putString("fragmentLimitSetting", "buttonLimitBack Pressed");
+            getActivity().getSupportFragmentManager().setFragmentResult(REQUEST_KEY, bundle);
         });
         //Setting alert dialog
         builder = new AlertDialog.Builder(getActivity());
         builder.setMessage("Do you want to save change?")
                 .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        limitSettingsPost mLimitSettingsPost = new limitSettingsPost(getDataSettingsChange(), categorySpinnerAdapter.getItemSelected(),userPreferences.getToken(), "SetLimitSettingsData");
-                        ApiServer post = ApiServer.retrofit.create(ApiServer.class);
-                        Call <resLimitSettingsPost> postLimitSettings = post.postLimitSettings(mLimitSettingsPost);
-                        postLimitSettings.enqueue(new Callback<resLimitSettingsPost>() {
-                            @Override
-                            public void onResponse(Call<resLimitSettingsPost> call, Response<resLimitSettingsPost> response) {
-                                if (response.body() != null && response.body().getResponse().equals("SetLimitSettingsData")){
-                                    updateUIButtonSaveChange(false);
-                                }
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    LimitSettingsPost mLimitSettingsPost = new LimitSettingsPost(getDataSettingsChange(), categorySpinnerAdapter.getItemSelected(),userPreferences.getToken(), "SetLimitSettingsData");
+                    ApiServer post = ApiServer.retrofit.create(ApiServer.class);
+                    Call <resLimitSettingsPost> postLimitSettings = post.postLimitSettings(mLimitSettingsPost);
+                    postLimitSettings.enqueue(new Callback<resLimitSettingsPost>() {
+                        @Override
+                        public void onResponse(Call<resLimitSettingsPost> call, Response<resLimitSettingsPost> response) {
+                            if (response.body() != null && response.body().getResponse().equals("Setting Limit Completed!")){
+                                updateUIButtonSaveChange(false);
+                                Toast.makeText(getActivity(), "Data save changed!", Toast.LENGTH_SHORT).show();
                             }
+                        }
 
-                            @Override
-                            public void onFailure(Call<resLimitSettingsPost> call, Throwable t) {
-                                Log.e("gh", "LimitSetting: "+ t);
-                                Toast.makeText(getActivity(), "No response from server!", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        dialog.dismiss();
-                    }
+                        @Override
+                        public void onFailure(Call<resLimitSettingsPost> call, Throwable t) {
+                            Log.e("gh", "LimitSetting: "+ t);
+                            Toast.makeText(getActivity(), "No response from server!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    dialog.dismiss();
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-                });
+                .setNegativeButton("No", (dialog, id) -> dialog.dismiss());
 
 
 
-        fabSaveChange.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (fabSaveChange.isExtended()){
-                    //Creating dialog box
-                    AlertDialog alert = builder.create();
-                    //Setting the title manually
-                    alert.setTitle("Alert");
-                    alert.show();
-                }
+        fabSaveChange.setOnClickListener(v -> {
+            if (fabSaveChange.isExtended()){
+                //Creating dialog box
+                AlertDialog alert = builder.create();
+                //Setting the title manually
+                alert.setTitle("Alert");
+                alert.show();
             }
         });
         //Announce fragmentLimitSetting is created
@@ -356,12 +304,12 @@ public class fragment_child_limit_setting extends Fragment {
     }
 
 
-    private ArrayList<objPostLimitSettingData> getDataSettingsChange(){
-        objPostLimitSettingData dataSoilMoisture1 = new objPostLimitSettingData(Integer.parseInt(editTextMin1.getText().toString()), Integer.parseInt(editTextMax1.getText().toString()), switchStatusSoilMoisture1.isChecked(), "soil_moisture1");
-        objPostLimitSettingData dataSoilMoisture2 = new objPostLimitSettingData(Integer.parseInt(editTextMin2.getText().toString()), Integer.parseInt(editTextMax2.getText().toString()), switchStatusSoilMoisture2.isChecked(), "soil_moisture2");
-        objPostLimitSettingData dataSoilMoisture3 = new objPostLimitSettingData(Integer.parseInt(editTextMin3.getText().toString()), Integer.parseInt(editTextMax3.getText().toString()), switchStatusSoilMoisture3.isChecked(), "soil_moisture3");
-        objPostLimitSettingData dataSoilMoisture4 = new objPostLimitSettingData(Integer.parseInt(editTextMin4.getText().toString()), Integer.parseInt(editTextMax4.getText().toString()), switchStatusSoilMoisture4.isChecked(), "soil_moisture4");
-        ArrayList<objPostLimitSettingData> data = new ArrayList<>();
+    private ArrayList<ObjPostLimitSettingData> getDataSettingsChange(){
+        ObjPostLimitSettingData dataSoilMoisture1 = new ObjPostLimitSettingData(Integer.parseInt(editTextMin1.getText().toString()), Integer.parseInt(editTextMax1.getText().toString()), switchStatusSoilMoisture1.isChecked(), "soil_moisture1");
+        ObjPostLimitSettingData dataSoilMoisture2 = new ObjPostLimitSettingData(Integer.parseInt(editTextMin2.getText().toString()), Integer.parseInt(editTextMax2.getText().toString()), switchStatusSoilMoisture2.isChecked(), "soil_moisture2");
+        ObjPostLimitSettingData dataSoilMoisture3 = new ObjPostLimitSettingData(Integer.parseInt(editTextMin3.getText().toString()), Integer.parseInt(editTextMax3.getText().toString()), switchStatusSoilMoisture3.isChecked(), "soil_moisture3");
+        ObjPostLimitSettingData dataSoilMoisture4 = new ObjPostLimitSettingData(Integer.parseInt(editTextMin4.getText().toString()), Integer.parseInt(editTextMax4.getText().toString()), switchStatusSoilMoisture4.isChecked(), "soil_moisture4");
+        ArrayList<ObjPostLimitSettingData> data = new ArrayList<>();
         data.add(dataSoilMoisture1);
         data.add(dataSoilMoisture2);
         data.add(dataSoilMoisture3);

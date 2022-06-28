@@ -12,9 +12,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.quangdau.greenhouse.Adapter.RecycleView.HistoryLoginAdapter;
 import com.quangdau.greenhouse.ApiService.ApiServer;
+import com.quangdau.greenhouse.Other.NetworkConnection;
 import com.quangdau.greenhouse.SharedPreferences.UserPreferences;
 import com.quangdau.greenhouse.R;
 import com.quangdau.greenhouse.modelsAPI.get_history.historyLoginData;
@@ -31,6 +33,7 @@ public class fragment_child_history_login extends Fragment {
     //Declare variables
     RecyclerView recyclerView;
     UserPreferences userPreferences;
+    NetworkConnection networkConnection;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,25 +47,31 @@ public class fragment_child_history_login extends Fragment {
         //Assign variables
         recyclerView = view.findViewById(R.id.recycleViewHistoryLogin);
         userPreferences = new UserPreferences(getActivity());
+        networkConnection = new NetworkConnection(getActivity());
         getDataHistoryLogin();
         return view;
     }
 
 
     private void getDataHistoryLogin(){
-        ApiServer getData = ApiServer.retrofit.create(ApiServer.class);
-        Call<ArrayList<historyLoginData>> call = getData.getHistoryLogin(userPreferences.getToken(), "GetHistoryLogin");
-        call.enqueue(new Callback<ArrayList<historyLoginData>>() {
-            @Override
-            public void onResponse(Call<ArrayList<historyLoginData>> call, Response<ArrayList<historyLoginData>> response) {
-                settingRecycleView(response);
-            }
+        if (networkConnection.isNetworkConnected()){
+            ApiServer getData = ApiServer.retrofit.create(ApiServer.class);
+            Call<ArrayList<historyLoginData>> call = getData.getHistoryLogin(userPreferences.getToken(), "GetHistoryLogin");
+            call.enqueue(new Callback<ArrayList<historyLoginData>>() {
+                @Override
+                public void onResponse(Call<ArrayList<historyLoginData>> call, Response<ArrayList<historyLoginData>> response) {
+                    settingRecycleView(response);
+                }
 
-            @Override
-            public void onFailure(Call<ArrayList<historyLoginData>> call, Throwable t) {
-                Log.e("gh", t.toString());
-            }
-        });
+                @Override
+                public void onFailure(Call<ArrayList<historyLoginData>> call, Throwable t) {
+                    Log.e("gh", t.toString());
+                }
+            });
+        }else {
+            Toast.makeText(getActivity(), "No connection!", Toast.LENGTH_SHORT).show();
+        }
+
     }
     @SuppressLint("NotifyDataSetChanged")
     private void settingRecycleView(Response<ArrayList<historyLoginData>> response){

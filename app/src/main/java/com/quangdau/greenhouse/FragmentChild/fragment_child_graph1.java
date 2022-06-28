@@ -77,29 +77,9 @@ public class fragment_child_graph1 extends Fragment {
     //variable arraylist get data api
     List<dataReal> getApi7D;
     List<dataReal> getApi1M;
-//    public List<dataReal> getApi7DLand;
-//    public List<dataReal> getApi1MLand;
-//    public List<dataReal> getApi7DLand2;
-//    public List<dataReal> getApi1MLand2;
-//    public List<dataReal> getApi7DLand3;
-//    public List<dataReal> getApi1MLand3;
-//    public List<dataReal> getApi7DLand4;
-//    public List<dataReal> getApi1MLand4;
-//    public List<dataReal> getApi7DTemperature;
-//    public List<dataReal> getApi1MTemperature;
     //boolean data graph 7d 1m
     public Boolean data7D = false;
     public Boolean data1M =false;
-//    public Boolean data7DLand = false;
-//    public Boolean data1MLand = false;
-//    public Boolean data7DLand2 = false;
-//    public Boolean data1MLand2 = false;
-//    public Boolean data7DLand3 = false;
-//    public Boolean data1MLand3 = false;
-//    public Boolean data7DLand4 = false;
-//    public Boolean data1MLand4 = false;
-//    public Boolean data7DTemperature = false;
-//    public Boolean data1MTemperature =false;
 
     //variable value first array
     public long valueFirstArray =0;
@@ -278,8 +258,6 @@ public class fragment_child_graph1 extends Fragment {
                 case setTime1D: {
                     formatTime = new SimpleDateFormat("HH:mm");
                     formatTime.setTimeZone(TimeZone.getTimeZone("GMT+7"));
-
-
                 }
                 break;
                 case setTime7D: {

@@ -2,14 +2,16 @@ package com.quangdau.greenhouse.ApiService;
 
 import com.quangdau.greenhouse.modelsAPI.get_graph.dataGraph;
 import com.quangdau.greenhouse.modelsAPI.get_limitSettings.limitSettingsData;
-import com.quangdau.greenhouse.modelsAPI.post_limitSettings.limitSettingsPost;
-import com.quangdau.greenhouse.modelsAPI.post_writeDigital.writeDigitalPost;
+import com.quangdau.greenhouse.modelsAPI.post_limitSettings.LimitSettingsPost;
+import com.quangdau.greenhouse.modelsAPI.post_renewToken.RenewTokenPost;
+import com.quangdau.greenhouse.modelsAPI.post_writeDigital.WriteDigitalPost;
 import com.quangdau.greenhouse.modelsAPI.get_RSSI.RSSIData;
 import com.quangdau.greenhouse.modelsAPI.get_history.historyLoginData;
-import com.quangdau.greenhouse.modelsAPI.post_authen.authenPost;
+import com.quangdau.greenhouse.modelsAPI.post_authen.AuthenPost;
 import com.quangdau.greenhouse.modelsAPI.res_authenPost.resAuthorityPost;
 import com.quangdau.greenhouse.modelsAPI.get_data.data;
 import com.quangdau.greenhouse.modelsAPI.res_limitSettingsPost.resLimitSettingsPost;
+import com.quangdau.greenhouse.modelsAPI.res_renewTokenPost.resRenewTokenPost;
 import com.quangdau.greenhouse.modelsAPI.res_writeDigitalPost.resWriteDigitalPost;
 
 import java.util.ArrayList;
@@ -56,14 +58,16 @@ public interface ApiServer {
                                                   @Query("request") String request,
                                                   @Query("houseID") String houseID);
     @POST("pi4Server")
-    Call <resWriteDigitalPost> postWriteDigital(@Body writeDigitalPost writeDigitalPost);
+    Call <resWriteDigitalPost> postWriteDigital(@Body WriteDigitalPost writeDigitalPost);
 
     @POST("pi4Server")
-    Call <resAuthorityPost> postAuth(@Body authenPost authenPost);
+    Call <resAuthorityPost> postAuth(@Body AuthenPost authenPost);
 
     @POST("pi4Server")
-    Call <resLimitSettingsPost> postLimitSettings(@Body limitSettingsPost limitSettingsPost);
+    Call <resLimitSettingsPost> postLimitSettings(@Body LimitSettingsPost limitSettingsPost);
 
+    @POST("pi4Server")
+    Call  <resRenewTokenPost> postRenewToken(@Body RenewTokenPost renewTokenPost);
 
 
 

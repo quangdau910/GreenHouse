@@ -68,6 +68,7 @@ public class fragment_home extends Fragment {
                     break;
             }
         }
+        viewPager2.setOffscreenPageLimit(2);
         new TabLayoutMediator(tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
@@ -108,7 +109,7 @@ public class fragment_home extends Fragment {
             @Override
             public void run() {
                 if (userPreferences.getStateFragment().equals(STATE_FRAGMENT)){
-                    Log.e("gh", "getDataRunnable Home");
+                    //Log.e("gh", "getDataRunnable Home");
                     getRSSIData(userPreferences.getToken(), adapter.fragmentTitle.get(tabLayout.getSelectedTabPosition()));
                 }
                 mainHandler.postDelayed(this, 1000);
@@ -138,6 +139,7 @@ public class fragment_home extends Fragment {
 
             @Override
             public void onFailure(Call<RSSIData> call, Throwable t) {
+                Log.e("gh", "Error Home: "+ t);
 
             }
         });

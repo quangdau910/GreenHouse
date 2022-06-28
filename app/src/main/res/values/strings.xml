@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GreenHouse</string>
+    <string name="app_name">Farm-IOT</string>
     <string name="nav_home">Nhà Kính</string>
     <string name="nav_home1">Nhà Kính 1</string>
     <string name="nav_home2">Nhà Kính 2</string>
@@ -65,7 +65,7 @@
     <string name="HOUSE_3">Nhà Kính 3</string>
     <string name="HOUSE_4">Nhà Kính 4</string>
 
-    <string name="VietNamese">Tiếng Việt</string>
+    <string name="Vietnamese">Tiếng Việt</string>
     <string name="English">Tiếng Anh</string>
 
     <!-- History-->
@@ -83,6 +83,8 @@
     <string name="Max_Setting">Trên:</string>
     <string name="Status_Setting">Trạng thái:</string>
 
+    <!-- fragmentAccount-->
+    <string name="About_We">Về Chúng Tôi </string>
 
 
 
