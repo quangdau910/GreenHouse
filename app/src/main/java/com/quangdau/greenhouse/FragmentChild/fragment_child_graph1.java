@@ -66,6 +66,7 @@ public class fragment_child_graph1 extends Fragment {
     UserPreferences userPreferences;
     String houseID;
     SimpleDateFormat formatTime = null;
+    NetworkConnection networkConnection;
     //Spinner
     Spinner spinnerTypeChart;
     CategorySpinnerAdapter categoryTypeAdapter;
@@ -114,6 +115,7 @@ public class fragment_child_graph1 extends Fragment {
         graph = view.findViewById(R.id.graph);
         graph.setTouchEnabled(true);
         userPreferences = new UserPreferences(getActivity());
+        networkConnection = new NetworkConnection(getActivity());
         //Spinner view
         spinnerTypeChart = view.findViewById(R.id.typeChart1);
         List<CategorySpinner> list = new ArrayList<>();
@@ -235,80 +237,76 @@ public class fragment_child_graph1 extends Fragment {
             long timeXAxis = realTime*1000L;
             Date timeMilliseconds = new Date(timeXAxis);
             switch (setTime) {
-                case setTime1H: {
-                    setFormatTime("HH:mm:ss","GMT+7");
-                }
-                break;
-                case setTime1D: {
-                    setFormatTime("HH:mm","GMT+7");
-                }
-                break;
-                case setTime7D: {
-                    setFormatTime("dd/MM","GMT+7");
-                }
-                break;
-                case setTime1M: {
-                    setFormatTime("dd/MM","GMT+7");
-                }break;
+                case setTime1H:
+                    setFormatTime("HH:mm:ss");
+                    break;
+                case setTime1D:
+                    setFormatTime("HH:mm");
+                    break;
+                case setTime7D:
+                case setTime1M:
+                    setFormatTime("dd/MM");
+                    break;
             }
             return formatTime.format(timeMilliseconds);
         }
     }
     private void getArrayDataGraph(String token){
-        dialog = new Dialog(getActivity());
-        dialog.setContentView(R.layout.win_layout_spinkit);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        //lock window layout
-        dialog.setCancelable(false);
-        NetworkConnection networkConnection = new NetworkConnection(getActivity());
         if(networkConnection.isNetworkConnected()){
+            dialog = new Dialog(getActivity());
+            dialog.setContentView(R.layout.win_layout_spinkit);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dialog.show();
-        }
-        ApiServer get = ApiServer.retrofit.create(ApiServer.class);
-        Call<dataGraph> call = get.getGraphData(token,"GetGraphData",houseID,typeGraph,setTime);
-        call.enqueue(new Callback<dataGraph>() {
-            @Override
-            public void onResponse(Call<dataGraph> call, Response<dataGraph> response) {
-                if (response.body() != null){
-                    mData = new ArrayList<>();
-                    mDataGraph = response.body();
-                    long timeData;
-                    float valueData;
-                    for (int i = 0; i< mDataGraph.getData().size(); i++){
-                        String dateString = mDataGraph.getData().get(i).getTime();
-                        valueData = mDataGraph.getData().get(i).getFirst();
-                        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'");
-                        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+0"));
-                        Date date = null;
-                        try {
-                            date = dateFormat.parse(dateString);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                        timeData = date.getTime()/1000L;
-                        mData.add(new dataReal(timeData,valueData));
+            //Lock window layout
+            dialog.setCancelable(false);
+            ApiServer get = ApiServer.retrofit.create(ApiServer.class);
+            Call<dataGraph> call = get.getGraphData(token,"GetGraphData",houseID,typeGraph,setTime);
+            call.enqueue(new Callback<dataGraph>() {
+                @Override
+                public void onResponse(Call<dataGraph> call, Response<dataGraph> response) {
+                    if (response.body() != null){
+                        mData = new ArrayList<>();
+                        mDataGraph = response.body();
+                        long timeData;
+                        float valueData;
+                        for (int i = 0; i< mDataGraph.getData().size(); i++){
+                            String dateString = mDataGraph.getData().get(i).getTime();
+                            valueData = mDataGraph.getData().get(i).getFirst();
+                            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'");
+                            dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+0"));
+                            Date date = null;
+                            try {
+                                date = dateFormat.parse(dateString);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            timeData = date.getTime()/1000L;
+                            mData.add(new dataReal(timeData,valueData));
 
+                        }
+                        if(setTime.equals(setTime7D) && !flagData7D){
+                            getApi7D = mData;
+                            flagData7D =true;
+                        }
+                        if(setTime.equals(setTime1M) && !flagData1M){
+                            getApi1M = mData;
+                            flagData1M =true;
+                        }
+                        setDataGraph();
+                        dialog.dismiss();
                     }
-                    if(setTime.equals(setTime7D) && !flagData7D){
-                        getApi7D = mData;
-                        flagData7D =true;
-                    }
-                    if(setTime.equals(setTime1M) && !flagData1M){
-                        getApi1M = mData;
-                        flagData1M =true;
-                    }
-                    setDataGraph();
-                    dialog.dismiss();
                 }
 
-            }
+                @Override
+                public void onFailure(Call<dataGraph> call, Throwable t) {
+                    Log.e("gh", "Error: " + t);
+                    dialog.dismiss();
+                }
+            });
+        }else {
 
-            @Override
-            public void onFailure(Call<dataGraph> call, Throwable t) {
-                Log.e("gh", "Error: " + t);
-                dialog.dismiss();
-            }
-        });
+        }
+
 
     }
     private void setDataGraph() {
@@ -339,22 +337,20 @@ public class fragment_child_graph1 extends Fragment {
             graph.setDescription(description);
             graph.setExtraLeftOffset(20);
             graph.setExtraRightOffset(10);
-            //set style line
+            //Set style line
             Legend legend = graph.getLegend();
             legend.setEnabled(false);
             lineDataSet1.setLineWidth(3);
-            int colorArray[] = {R.color.green_10};
+            int[] colorArray = {R.color.green_10};
             lineDataSet1.setColors(colorArray,getActivity());
             lineDataSet1.setDrawCircles(false);
-            //hide grid
+            //Hide grid
             graph.getXAxis().setDrawGridLines(false);
             graph.getAxisLeft().setDrawGridLines(false);
             graph.getAxisRight().setDrawGridLines(false);
-            //set point
-
+            //Set point
             graph.setScaleYEnabled(false);
             graph.fitScreen();
-
     }
 
     public class YourMarkerView extends MarkerView {
@@ -393,10 +389,9 @@ public class fragment_child_graph1 extends Fragment {
             return "" ;
         }
     }
-
-    private void setFormatTime(String dateFormat, String timeZone){
+    private void setFormatTime(String dateFormat){
         formatTime = new SimpleDateFormat(dateFormat);
-        formatTime.setTimeZone(TimeZone.getTimeZone(timeZone));
+        formatTime.setTimeZone(TimeZone.getTimeZone("GMT+7"));
     }
     private void parseData(Bundle bundle) {
         if (bundle != null){

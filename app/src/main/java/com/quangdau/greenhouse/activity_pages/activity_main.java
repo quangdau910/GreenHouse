@@ -27,7 +27,9 @@ import com.quangdau.greenhouse.FragmentParent.fragment_settings;
 import com.quangdau.greenhouse.Other.BroadcastReceiver;
 import com.quangdau.greenhouse.SharedPreferences.UserPreferences;
 import com.quangdau.greenhouse.R;
+import com.quangdau.greenhouse.modelsAPI.post_logout.LogoutPost;
 import com.quangdau.greenhouse.modelsAPI.post_renewToken.RenewTokenPost;
+import com.quangdau.greenhouse.modelsAPI.res_logoutPost.resLogoutPost;
 import com.quangdau.greenhouse.modelsAPI.res_renewTokenPost.resRenewTokenPost;
 
 import java.time.Instant;
@@ -104,7 +106,7 @@ public class activity_main extends AppCompatActivity {
                 });
             }
         };
-        handler.postAtTime(runnable, expTime - 5*60);
+        handler.postAtTime(runnable, expTime - 5*60); // Set timer to renew token before 5 min
         //Setting bottom nav
         bottomNavigationView.setBackground(null);
         bottomNavigationView.getMenu().getItem(2).setEnabled(false);
@@ -134,21 +136,18 @@ public class activity_main extends AppCompatActivity {
                         packedData(fragmentAccount);
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, activity_main.this.fragmentAccount).commit();
                         return true;
-                    default:
                 }
                 return false;
             }
         });
         //Floating act button listener
         floatingActionButton.setOnClickListener(view -> {
-            //unselect bottom nav item
+            //Unselect bottom nav item
             bottomNavigationView.setSelectedItemId(R.id.home);
             packedData(fragmentHome);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragmentHome).commit();
         });
     }
-
-
 
     private void parseData(){
         //Get arrAuthority from activity_login
@@ -182,6 +181,23 @@ public class activity_main extends AppCompatActivity {
             }
         }, 2000);
     }
+    private void removeToken(String token){
+        userPreferences.setToken("NULL");
+        ApiServer post = ApiServer.retrofit.create(ApiServer.class);
+        LogoutPost logoutPost = new LogoutPost(token);
+        Call<resLogoutPost> postLogout = post.postLogout(logoutPost);
+        postLogout.enqueue(new Callback<resLogoutPost>() {
+            @Override
+            public void onResponse(Call<resLogoutPost> call, Response<resLogoutPost> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<resLogoutPost> call, Throwable t) {
+
+            }
+        });
+    }
 
     @Override
     protected void onStart() {
@@ -194,5 +210,24 @@ public class activity_main extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         unregisterReceiver(broadcastReceiver);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e("gh", "Main: resume");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.e("gh", "Main: destroy");
+        handler.removeCallbacks(runnable);
+        removeToken(userPreferences.getToken());
     }
 }

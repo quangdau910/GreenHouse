@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:backgroundTintMode="add"
     android:orientation="vertical">
-
-
     <RadioGroup
         android:id="@+id/time_check_graph"
         android:layout_width="match_parent"
@@ -113,8 +110,7 @@
                 android:layout_gravity="center"
                 android:fontFamily="@font/open_sans_bold"
                 android:gravity="center"
-                android:rotation="-90"
-                android:text="Biểu đồ nhiệt độ(0c)" />
+                android:rotation="-90" />
         </LinearLayout>
 
         <TextView
@@ -131,11 +127,10 @@
         android:id="@+id/typeChart1"
         android:layout_width="250dp"
         android:layout_height="40dp"
-        android:layout_marginTop="188dp"
+        android:layout_marginTop="150dp"
         android:background="@drawable/custom_round_language"
         android:gravity="center"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

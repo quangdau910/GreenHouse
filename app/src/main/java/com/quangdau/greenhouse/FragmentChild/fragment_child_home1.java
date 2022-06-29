@@ -236,7 +236,7 @@ public class fragment_child_home1 extends Fragment {
 
 
     private void writeDigital(String houseID, String port, Integer locationBit, Character value){
-        if (networkConnection.isNetworkConnected()){
+        if (networkConnection.isNetworkConnected()) {
             Switch[] port1 = {switchLight1, switchFan1, switchValve1, switchValve2, switchValve3, switchValve4};
             StringBuilder tempData = new StringBuilder(dataPort1);
             tempData.setCharAt(7 - locationBit, value);
@@ -250,9 +250,9 @@ public class fragment_child_home1 extends Fragment {
             call.enqueue(new Callback<resWriteDigitalPost>() {
                 @Override
                 public void onResponse(Call<resWriteDigitalPost> call, Response<resWriteDigitalPost> response) {
-                    if (response.body() != null){
-                        if (response.body().getResponse().equals("Write Completed!")){
-                            switch (response.body().getPort()){
+                    if (response.body() != null) {
+                        if (response.body().getResponse().equals("Write Completed!")) {
+                            switch (response.body().getPort()) {
                                 case "1":
                                     dataPort1 = response.body().getValue();
                                     break;
@@ -273,7 +273,7 @@ public class fragment_child_home1 extends Fragment {
 
                 @Override
                 public void onFailure(Call<resWriteDigitalPost> call, Throwable t) {
-                    Log.e("gh", "WriteDigital: "+ t);
+                    Log.e("gh", "WriteDigital: " + t);
                     if (flagLight1) flagLight1 = false;
                     if (flagFan1) flagFan1 = false;
                     if (flagValve1) flagValve1 = false;
@@ -282,8 +282,6 @@ public class fragment_child_home1 extends Fragment {
                     if (flagValve4) flagValve4 = false;
                 }
             });
-        }else {
-            Toast.makeText(getActivity(), "No connection!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -348,24 +346,25 @@ public class fragment_child_home1 extends Fragment {
         }
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 5000, locationListener);
         getWeatherApi();
-
     }
 
     private void getWeatherApi() {
-        ApiWeather getData = ApiWeather.retrofit.create(ApiWeather.class);
-        Call<weatherDataModel> call = getData.getWeather(latitude, longitude, weatherAPPID);
-        call.enqueue(new Callback<weatherDataModel>() {
-            @Override
-            public void onResponse(Call<weatherDataModel> call, Response<weatherDataModel> response) {
-                if (response.body() != null){
-                    updateUIWeather(response);
+        if (networkConnection.isNetworkConnected()){
+            ApiWeather getData = ApiWeather.retrofit.create(ApiWeather.class);
+            Call<weatherDataModel> call = getData.getWeather(latitude, longitude, weatherAPPID);
+            call.enqueue(new Callback<weatherDataModel>() {
+                @Override
+                public void onResponse(Call<weatherDataModel> call, Response<weatherDataModel> response) {
+                    if (response.body() != null){
+                        updateUIWeather(response);
+                    }
                 }
-            }
-            @Override
-            public void onFailure(Call<weatherDataModel> call, Throwable t) {
-                Log.e("gh", "Error get api: " + t);
-            }
-        });
+                @Override
+                public void onFailure(Call<weatherDataModel> call, Throwable t) {
+                    Log.e("gh", "Error get api: " + t);
+                }
+            });
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -432,7 +431,6 @@ public class fragment_child_home1 extends Fragment {
         Log.e("gh", "home1 resume");
         getCurrentLocation();
         mainHandler.post(runnable);
-
     }
 
     @Override

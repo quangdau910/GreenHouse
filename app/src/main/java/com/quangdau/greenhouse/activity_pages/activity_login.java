@@ -136,8 +136,7 @@ public class activity_login extends AppCompatActivity {
             } else {
                 btnLogin.setEnabled(false);
                 ApiServer post = ApiServer.retrofit.create(ApiServer.class);
-                String deviceName = Build.MODEL;
-                AuthenPost authenPost = new AuthenPost("Authen", account, password, deviceName, getIpAddress());
+                AuthenPost authenPost = new AuthenPost("Authen", account, password, Build.MODEL, getIpAddress());
                 Call<resAuthorityPost> postAuth = post.postAuth(authenPost);
                 postAuth.enqueue(new Callback<resAuthorityPost>() {
                     @Override
@@ -224,5 +223,11 @@ public class activity_login extends AppCompatActivity {
         backPressCheck = true;
         Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();
         new Handler(Looper.getMainLooper()).postDelayed(() -> backPressCheck = false, 2000);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e("gh", "Login: token "+ userPreferences.getToken());
     }
 }
