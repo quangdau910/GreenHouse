@@ -33,7 +33,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:text="Limit Setting"
+            android:text="@string/Limit_Setting"
             android:textSize="22sp"
             android:fontFamily="@font/open_sans_bold"
             />
@@ -42,7 +42,7 @@
     <Spinner
         android:id="@+id/spinnerLimitHouseID"
         android:background="@drawable/custom_spinner_limit_setting"
-        android:layout_width="140dp"
+        android:layout_width="190dp"
         android:layout_height="40dp"
         app:layout_constraintTop_toBottomOf="@+id/tabLayoutLimitSetting"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -166,7 +166,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/open_sans_regular"
-                android:text="Status:"
+                android:text="@string/Status_Setting"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@+id/textViewLimitPercent1Max1"
@@ -305,7 +305,7 @@
                 app:layout_constraintLeft_toRightOf="@+id/textViewLimitPercent1Max2"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:textSize="20sp"
-                android:text="Status:"
+                android:text="@string/Status_Setting"
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/open_sans_regular"
                 />
@@ -442,7 +442,7 @@
                 app:layout_constraintLeft_toRightOf="@+id/textViewLimitPercent1Max3"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:textSize="20sp"
-                android:text="Status:"
+                android:text="@string/Status_Setting"
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/open_sans_regular"
                 />
@@ -579,7 +579,7 @@
                 app:layout_constraintLeft_toRightOf="@+id/textViewLimitPercent1Max4"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:textSize="20sp"
-                android:text="Status:"
+                android:text="@string/Status_Setting"
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/open_sans_regular"
                 />

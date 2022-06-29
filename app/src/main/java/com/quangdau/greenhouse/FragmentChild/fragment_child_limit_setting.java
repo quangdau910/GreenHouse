@@ -100,7 +100,7 @@ public class fragment_child_limit_setting extends Fragment {
         //Setting adapter spinner
         listSpinner = new ArrayList<>();
         for (int i = 0; i < arrAuthority.size(); i++){
-            listSpinner.add(new CategorySpinner(arrAuthority.get(i)));
+            listSpinner.add(new CategorySpinner(getResources().getString(R.string.House_Setting)+" "+(i+1)));
         }
         categorySpinnerAdapter = new CategorySpinnerAdapter(getActivity(), R.layout.spinner_item_selected, listSpinner);
         spinnerHouseID.setAdapter(categorySpinnerAdapter);

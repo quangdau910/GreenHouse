@@ -317,7 +317,7 @@ public class fragment_child_home1 extends Fragment {
     private void parseData(Bundle bundle) {
         if (bundle != null){
             houseID = bundle.getString("houseID");
-            stateFragment = bundle.getString("stateFragment");
+            //stateFragment = bundle.getString("stateFragment");
         }
     }
 

@@ -42,7 +42,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginTop="20dp"
         android:layout_marginStart="20dp"
-        android:text="@string/Button_Limit_Setting"
+        android:text="@string/Limit_Setting"
         android:gravity="center"
         android:textSize="@dimen/text_size_18sp"
         android:textColor="@color/blue_30"

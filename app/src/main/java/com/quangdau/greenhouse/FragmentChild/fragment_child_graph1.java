@@ -1,5 +1,4 @@
 package com.quangdau.greenhouse.FragmentChild;
-
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
@@ -15,10 +14,10 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
@@ -36,15 +35,14 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.ViewPortHandler;
-import com.github.ybq.android.spinkit.SpinKitView;
 import com.quangdau.greenhouse.ApiService.ApiServer;
+import com.quangdau.greenhouse.Other.NetworkConnection;
 import com.quangdau.greenhouse.R;
 import com.quangdau.greenhouse.SharedPreferences.UserPreferences;
 import com.quangdau.greenhouse.Spinner.spinnerLimitSetting.CategorySpinner;
 import com.quangdau.greenhouse.Spinner.spinnerLimitSetting.CategorySpinnerAdapter;
 import com.quangdau.greenhouse.modelsAPI.get_graph.dataReal;
 import com.quangdau.greenhouse.modelsAPI.get_graph.dataGraph;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -52,66 +50,74 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
 public class fragment_child_graph1 extends Fragment {
-    RadioGroup radioGroup1;
+    RadioGroup radioGroup;
     LineChart graph;
-    TextView txtYaxisTitle;
-    ArrayList<Entry> dataVals;
+    TextView txtYAxisTitle;
+    ArrayList<Entry> dataValues;
     ArrayList<ILineDataSet> dataSets;
-    dataGraph  mdataGraph;
-    List<dataReal> mdata;
+    dataGraph mDataGraph;
+    List<dataReal> mData;
     UserPreferences userPreferences;
     String houseID;
-
+    SimpleDateFormat formatTime = null;
     //Spinner
     Spinner spinnerTypeChart;
     CategorySpinnerAdapter categoryTypeAdapter;
-    //spinKet
+    //SpinKet
     Dialog dialog;
-    //variable arraylist get data api
+    //Variable arraylist get data api
     List<dataReal> getApi7D;
     List<dataReal> getApi1M;
-    //boolean data graph 7d 1m
-    public Boolean data7D = false;
-    public Boolean data1M =false;
-
-    //variable value first array
+    //Boolean data graph 7d 1m
+    public Boolean flagData7D = false;
+    public Boolean flagData1M =false;
+    //Variable value first array
     public long valueFirstArray =0;
-    //check button radio set time graph
+    //Check button radio set time graph
     public final String setTime1H = "1h";
     public final String setTime1D = "1d";
     public final String setTime7D = "7d";
     public final String setTime1M = "30d";
     public String setTime = setTime1H;
-    // check type graph
+    //Check type graph
     public final String graphAir = "humidity";
     public final String  graphLand = "soil_moisture1";
     public final String  graphLand2 = "soil_moisture2";
     public final String  graphLand3 = "soil_moisture3";
     public final String  graphLand4 = "soil_moisture4";
     public final String  graphTemperature = "temperature";
-    public String typeGraph = graphAir;
+    public String typeGraph;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle bundle = new Bundle();
+        parseData(bundle);
+        bundle = this.getArguments();
+        parseData(bundle);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_child_graph1,container,false);
         //Assign variables
-        radioGroup1 = (RadioGroup) view.findViewById(R.id.time_check_graph);
-        txtYaxisTitle = (TextView) view.findViewById(R.id.text_tile_yAxis);
-        txtYaxisTitle.setText(getResources().getString(R.string.yAxis_air_humidity));
-        graph = (LineChart) view.findViewById(R.id.graph);
+        radioGroup = view.findViewById(R.id.time_check_graph);
+        txtYAxisTitle = view.findViewById(R.id.text_tile_yAxis);
+        txtYAxisTitle.setText(getResources().getString(R.string.yAxis_humidity));
+        graph = view.findViewById(R.id.graph);
         graph.setTouchEnabled(true);
         userPreferences = new UserPreferences(getActivity());
         //Spinner view
-        spinnerTypeChart =(Spinner) view.findViewById(R.id.typeChart1);
+        spinnerTypeChart = view.findViewById(R.id.typeChart1);
         List<CategorySpinner> list = new ArrayList<>();
-        list.add(new CategorySpinner(getResources().getString(R.string.graph_air_humidity)));
+        list.add(new CategorySpinner(getResources().getString(R.string.graph_humidity)));
         list.add(new CategorySpinner(getResources().getString(R.string.graph_temperature)));
         list.add(new CategorySpinner(getResources().getString(R.string.Soil_Moisture_1)));
         list.add(new CategorySpinner(getResources().getString(R.string.Soil_Moisture_2)));
@@ -122,51 +128,39 @@ public class fragment_child_graph1 extends Fragment {
         spinnerTypeChart.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                flagData1M =false;
+                flagData7D =false;
                 switch (position){
                     case 0:{
                         typeGraph = graphAir;
-                        data1M =false;
-                        data7D =false;
-                        txtYaxisTitle.setText(getResources().getString(R.string.yAxis_air_humidity));
+                        txtYAxisTitle.setText(getResources().getString(R.string.yAxis_humidity));
                         getArrayDataGraph(userPreferences.getToken());
                     }break;
                     case 1:{
                         typeGraph = graphTemperature;
-                        data1M =false;
-                        data7D =false;
-                        txtYaxisTitle.setText(getResources().getString(R.string.yAxis_temperature));
+                        txtYAxisTitle.setText(getResources().getString(R.string.yAxis_temperature));
                         getArrayDataGraph(userPreferences.getToken());
                     }break;
                     case 2:{
                         typeGraph = graphLand;
-                        data1M =false;
-                        data7D =false;
-                        txtYaxisTitle.setText(getResources().getString(R.string.yAxis_land_humidity));
+                        txtYAxisTitle.setText(getResources().getString(R.string.yAxis_soil_moisture));
                         getArrayDataGraph(userPreferences.getToken());
                     }break;
                     case 3:{
                         typeGraph = graphLand2;
-                        data1M =false;
-                        data7D =false;
-                        txtYaxisTitle.setText(getResources().getString(R.string.yAxis_land_humidity));
+                        txtYAxisTitle.setText(getResources().getString(R.string.yAxis_soil_moisture));
                         getArrayDataGraph(userPreferences.getToken());
                     }break;
                     case 4:{
                         typeGraph = graphLand3;
-                        data1M =false;
-                        data7D =false;
-                        txtYaxisTitle.setText(getResources().getString(R.string.yAxis_land_humidity));
+                        txtYAxisTitle.setText(getResources().getString(R.string.yAxis_soil_moisture));
                         getArrayDataGraph(userPreferences.getToken());
                     }break;
                     case 5:{
                         typeGraph = graphLand4;
-                        data1M =false;
-                        data7D =false;
-                        txtYaxisTitle.setText(getResources().getString(R.string.yAxis_land_humidity));
+                        txtYAxisTitle.setText(getResources().getString(R.string.yAxis_soil_moisture));
                         getArrayDataGraph(userPreferences.getToken());
                     }break;
-
-
                 }
 
             }
@@ -177,7 +171,7 @@ public class fragment_child_graph1 extends Fragment {
             }
         });
 
-        //Event click value Chart
+        //Event click value chart
         graph.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
@@ -189,8 +183,8 @@ public class fragment_child_graph1 extends Fragment {
             }
         });
 
-        dataVals = new ArrayList<>();
-        radioGroup1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        dataValues = new ArrayList<>();
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @SuppressLint("NonConstantResourceId")
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -207,8 +201,8 @@ public class fragment_child_graph1 extends Fragment {
                     break;
                     case R.id.graph_7D:{
                         setTime= setTime7D;
-                        if(data7D) {
-                            mdata = getApi7D;
+                        if(flagData7D) {
+                            mData = getApi7D;
                             setDataGraph();
                         }else{
                             getArrayDataGraph(userPreferences.getToken());
@@ -217,8 +211,8 @@ public class fragment_child_graph1 extends Fragment {
                     break;
                     case R.id.graph_1M:{
                         setTime= setTime1M;
-                        if(data1M){
-                            mdata = getApi1M;
+                        if(flagData1M){
+                            mData = getApi1M;
                             setDataGraph();
                         }else{
                             getArrayDataGraph(userPreferences.getToken());
@@ -230,14 +224,7 @@ public class fragment_child_graph1 extends Fragment {
                 }
             }
         });
-
         return view;
-    }
-
-    @Override
-    public void onStart() {
-
-        super.onStart();
     }
 
     public class LineChartXAxisValueFormatter implements IAxisValueFormatter {
@@ -245,40 +232,26 @@ public class fragment_child_graph1 extends Fragment {
         @Override
         public String getFormattedValue(float value, AxisBase axis) {
             long realTime =(long) value+ valueFirstArray;
-            long timeXaxis = realTime*1000l;
-            Date timeMilliseconds = new Date(timeXaxis);
-            //DateFormat dateTimeFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault());
-            SimpleDateFormat formatTime = null;
+            long timeXAxis = realTime*1000L;
+            Date timeMilliseconds = new Date(timeXAxis);
             switch (setTime) {
                 case setTime1H: {
-                    formatTime = new SimpleDateFormat("HH:mm:ss");
-                    formatTime.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+                    setFormatTime("HH:mm:ss","GMT+7");
                 }
                 break;
                 case setTime1D: {
-                    formatTime = new SimpleDateFormat("HH:mm");
-                    formatTime.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+                    setFormatTime("HH:mm","GMT+7");
                 }
                 break;
                 case setTime7D: {
-                    formatTime = new SimpleDateFormat("dd/MM");
-                    formatTime.setTimeZone(TimeZone.getTimeZone("GMT+7"));
-
-
+                    setFormatTime("dd/MM","GMT+7");
                 }
                 break;
                 case setTime1M: {
-                    formatTime = new SimpleDateFormat("dd/MM");
-                    formatTime.setTimeZone(TimeZone.getTimeZone("GMT+7"));
-                }
-                break;
-
+                    setFormatTime("dd/MM","GMT+7");
+                }break;
             }
-
             return formatTime.format(timeMilliseconds);
-
-
-
         }
     }
     private void getArrayDataGraph(String token){
@@ -287,71 +260,71 @@ public class fragment_child_graph1 extends Fragment {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         //lock window layout
         dialog.setCancelable(false);
-        SpinKitView progressBar = dialog.findViewById(R.id.progressBar);
-        //progressBar.setIndeterminateDrawable(new RotatingPlane());
-        dialog.show();
+        NetworkConnection networkConnection = new NetworkConnection(getActivity());
+        if(networkConnection.isNetworkConnected()){
+            dialog.show();
+        }
         ApiServer get = ApiServer.retrofit.create(ApiServer.class);
-        Call<dataGraph> call = get.getGraphData(token,"GetGraphData","house1",typeGraph,setTime);
+        Call<dataGraph> call = get.getGraphData(token,"GetGraphData",houseID,typeGraph,setTime);
         call.enqueue(new Callback<dataGraph>() {
             @Override
             public void onResponse(Call<dataGraph> call, Response<dataGraph> response) {
-                mdata = new ArrayList<>();
-                mdataGraph = response.body();
-                long timeMdata;
-                float valueMdata;
-                for (int i=0; i< mdataGraph.getData().size();i++){
-                    String dateString = mdataGraph.getData().get(i).getTime();
-                    valueMdata = mdataGraph.getData().get(i).getFirst();
-                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'");
-                    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+0"));
-                    Date date = null;
-                    try {
-                        date = dateFormat.parse(dateString);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    timeMdata = date.getTime()/1000l;
-                    mdata.add(new dataReal(timeMdata,valueMdata));
+                if (response.body() != null){
+                    mData = new ArrayList<>();
+                    mDataGraph = response.body();
+                    long timeData;
+                    float valueData;
+                    for (int i = 0; i< mDataGraph.getData().size(); i++){
+                        String dateString = mDataGraph.getData().get(i).getTime();
+                        valueData = mDataGraph.getData().get(i).getFirst();
+                        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'");
+                        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+0"));
+                        Date date = null;
+                        try {
+                            date = dateFormat.parse(dateString);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        timeData = date.getTime()/1000L;
+                        mData.add(new dataReal(timeData,valueData));
 
+                    }
+                    if(setTime.equals(setTime7D) && !flagData7D){
+                        getApi7D = mData;
+                        flagData7D =true;
+                    }
+                    if(setTime.equals(setTime1M) && !flagData1M){
+                        getApi1M = mData;
+                        flagData1M =true;
+                    }
+                    setDataGraph();
+                    dialog.dismiss();
                 }
-                if(setTime.equals(setTime7D) && !data7D){
-                        getApi7D = mdata;
-                        data7D =true;
-                }
-                if(setTime == setTime1M && !data1M){
-                        getApi1M =mdata;
-                        data1M =true;
-                }
-                setDataGraph();
+
             }
 
             @Override
             public void onFailure(Call<dataGraph> call, Throwable t) {
                 Log.e("gh", "Error: " + t);
-
+                dialog.dismiss();
             }
         });
+
     }
     private void setDataGraph() {
-        if (mdata == null) {
-            Log.e("gh","vẽ thất bại");
-            return;
-        }
-        if(mdata!=null) {
-            dataVals.clear();
-            valueFirstArray = mdata.get(0).getTime();
-            for (int i = 0; i < mdata.size(); i++) {
-                long xAxis = mdata.get(i).getTime() - valueFirstArray;
-                float yAxis = mdata.get(i).getValue();
-                dataVals.add(new Entry(xAxis, yAxis));
+            dataValues.clear();
+            valueFirstArray = mData.get(0).getTime();
+            for (int i = 0; i < mData.size(); i++) {
+                long xAxis = mData.get(i).getTime() - valueFirstArray;
+                float yAxis = mData.get(i).getValue();
+                dataValues.add(new Entry(xAxis, yAxis));
             }
             XAxis xAxis = graph.getXAxis();
-            //xAxis.setLabelCount(3,true);
             xAxis.setValueFormatter(new LineChartXAxisValueFormatter());
             xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
             xAxis.setTextSize(12);
             xAxis.setLabelCount(5,true);
-            LineDataSet lineDataSet1 = new LineDataSet(dataVals,"");
+            LineDataSet lineDataSet1 = new LineDataSet(dataValues,"");
             dataSets = new ArrayList<>();
             dataSets.add(lineDataSet1);
             LineData data = new LineData(dataSets);
@@ -370,64 +343,45 @@ public class fragment_child_graph1 extends Fragment {
             Legend legend = graph.getLegend();
             legend.setEnabled(false);
             lineDataSet1.setLineWidth(3);
-            lineDataSet1.setColor(Color.RED);
-            //  lineDataSet1.setDrawFilled(true);
             int colorArray[] = {R.color.green_10};
             lineDataSet1.setColors(colorArray,getActivity());
-
+            lineDataSet1.setDrawCircles(false);
             //hide grid
             graph.getXAxis().setDrawGridLines(false);
             graph.getAxisLeft().setDrawGridLines(false);
             graph.getAxisRight().setDrawGridLines(false);
-
-
             //set point
-            lineDataSet1.setDrawCircles(false);
 
-
-
-            //set No data
-            graph.setNoDataText("No data to Graph");
-            graph.setNoDataTextColor(Color.BLUE);
-            graph.getXAxis().setTextColor(Color.BLACK);
             graph.setScaleYEnabled(false);
             graph.fitScreen();
-            dialog.dismiss();
 
-        }
     }
 
     public class YourMarkerView extends MarkerView {
-        private TextView tvYValue;
-        private TextView tvXValue;
+        TextView tvYValue;
+        TextView tvXValue;
         public YourMarkerView(Context context, int layoutResource) {
             super(context, layoutResource);
-            tvYValue = (TextView) findViewById(R.id.YValue);
-            tvXValue = (TextView) findViewById(R.id.XValue);
+            tvYValue = findViewById(R.id.YValue);
+            tvXValue = findViewById(R.id.XValue);
         }
-        // content (user-interface)
+        //Content (user-interface)
         @Override
         public void refreshContent(Entry e, Highlight highlight) {
             long realTime =((long) e.getX())+valueFirstArray;
-            long timeXaxis = realTime*1000l;
-            Date time = new Date(timeXaxis);
+            long timeXAxis = realTime*1000L;
+            Date time = new Date(timeXAxis);
             SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm:ss");
             formatTime.setTimeZone(TimeZone.getTimeZone("GMT+7"));
-
-
             tvYValue.setText(""+e.getY());
             tvXValue.setText(formatTime.format(time));
-
-            // this will perform necessary layout
             super.refreshContent(e, highlight);
         }
-
         private MPPointF mOffset;
-
         @Override
         public MPPointF getOffset() {
             if(mOffset == null) {
-                // center the marker horizontally and vertically
+                //Center the marker horizontally and vertically
                 mOffset = new MPPointF(-(getWidth()/2), -getHeight());
             }
             return mOffset;
@@ -437,6 +391,16 @@ public class fragment_child_graph1 extends Fragment {
         @Override
         public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
             return "" ;
+        }
+    }
+
+    private void setFormatTime(String dateFormat, String timeZone){
+        formatTime = new SimpleDateFormat(dateFormat);
+        formatTime.setTimeZone(TimeZone.getTimeZone(timeZone));
+    }
+    private void parseData(Bundle bundle) {
+        if (bundle != null){
+            houseID = bundle.getString("houseID");
         }
     }
 }

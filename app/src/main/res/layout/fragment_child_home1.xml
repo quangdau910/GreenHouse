@@ -215,7 +215,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="@string/Air_Humidity"
+                    android:text="@string/Humidity"
                     android:textSize="@dimen/text_size_18sp"
                     app:layout_constraintLeft_toRightOf="@+id/imageViewIcHumidity"
                     app:layout_constraintTop_toTopOf="parent" />

@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
             <item android:id="@+id/humidity_air"
-                android:title="@string/graph_air_humidity"
+                android:title="@string/graph_humidity"
                 app:showAsAction="never"/>
             <item android:id="@+id/humidity_land"
-                android:title="@string/graph_land_humidity"
+                android:title="@string/graph_soil_moisture"
                 app:showAsAction="never"/>
             <item android:id="@+id/temaperature"
                 android:title="@string/graph_temperature"

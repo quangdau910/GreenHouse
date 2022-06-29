@@ -9,7 +9,7 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonLogout"
-        android:layout_width="140dp"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -17,7 +17,7 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/button_logout"
         android:fontFamily="@font/open_sans_bold"
-        android:text="Logout"
+        android:text="@string/logout"
         android:textSize="20sp" />
 
 

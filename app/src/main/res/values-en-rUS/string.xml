@@ -9,44 +9,30 @@
     <string name="nav_account">Account</string>
 
 
-
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
-
-
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
-    <string-array name="spinnerData">
-        <item>house1</item>
-        <item>house2</item>
-    </string-array>
-
-    <!-- Graph-->
-    <string name="graph_air_humidity">Air Humidity</string>
-    <string name="graph_land_humidity">Land Humidity</string>
+    <!-- Fragment Graph-->
+    <string name="graph_humidity">Humidity</string>
+    <string name="graph_soil_moisture">Soil Moisture</string>
     <string name="graph_temperature">Temperature</string>
     <string name="title_xAxis">Time</string>
-    <string name="yAxis_air_humidity">Air Humidity(%)</string>
-    <string name="yAxis_land_humidity">Land Humidity(%)</string>
+    <string name="yAxis_humidity">Humidity(%)</string>
+    <string name="yAxis_soil_moisture">Soil Moisture(%)</string>
     <string name="yAxis_temperature">Temperature(\u2103)</string>
 
+    <!-- Fragment Login -->
+        <!-- Text login -->
+        <string name="Account_password_not_empty">Account and password must not empty!</string>
+        <string name="Account_not_empty">Account must not empty!</string>
+        <string name="Password_not_empty">Password must not empty!</string>
+        <string name="Wrong_account_or_password">Wrong account or password!</string>
+        <string name="No_response_from_server">No response from server!</string>
+        <!-- Hint login -->
+        <string name="Hint_account">Account</string>
+        <string name="Hint_password">Password</string>
+        <string name="Text_Btn_Login">Login</string>
+        <string name="Button_Language">English</string>
 
-    <!-- Text login -->
-    <string name="Account_password_not_empty">Account and password must not empty!</string>
-    <string name="Account_not_empty">Account must not empty!</string>
-    <string name="Password_not_empty">Password must not empty!</string>
-    <string name="Wrong_account_or_password">Wrong account or password!</string>
-    <string name="No_response_from_server">No response from server!</string>
-    <!-- Hint login -->
-    <string name="Hint_account">Account</string>
-    <string name="Hint_password">Password</string>
-    <string name="Text_Btn_Login">Login</string>
-    <string name="Button_Language">English</string>
 
-
-    <!-- Home -->
-    <string name="Air_Humidity">Air Humidity</string>
+    <!-- Fragment Home -->
     <string name="Soil_Moisture_1">Soil Moisture 1</string>
     <string name="Soil_Moisture_2">Soil Moisture 2</string>
     <string name="Soil_Moisture_3">Soil Moisture 3</string>
@@ -55,8 +41,6 @@
     <string name="Light">Light</string>
     <string name="Sensor">Sensor</string>
     <string name="Humidity">Humidity</string>
-
-
     <string name="Device">Device</string>
     <string name="Light1">Light 1</string>
     <string name="Fan1">Fan 1</string>
@@ -71,25 +55,27 @@
     <string name="HOUSE_4">HOUSE 4</string>
     <string name="Vietnamese">Vietnamese</string>
     <string name="English">English</string>
-    <!-- History-->
+    <!-- Fragment History-->
     <string name="Login_History">Login</string>
     <string name="Device_Name">Device Name</string>
     <string name="account_History">account</string>
     <string name="Login_time">Login time</string>
 
 
-    <!-- String-->
+    <!-- Fragment Setting-->
     <string name="Setting">Setting</string>
-    <string name="Button_Limit_Setting">Limit Setting</string>
+    <string name="Limit_Setting">Limit Setting</string>
     <string name="Save_change">Save change</string>
     <string name="Min_Setting">Min:</string>
     <string name="Max_Setting">Max:</string>
     <string name="Status_Setting">Status:</string>
+    <string name="House_Setting">House </string>
 
 
 
     <!-- fragmentAccount-->
     <string name="About_We">About We </string>
+    <string name="logout">Loguot</string>
 
 
 

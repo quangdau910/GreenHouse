@@ -63,7 +63,6 @@ public class activity_login extends AppCompatActivity {
     Language language;
     //Other
     NetworkConnection networkConnection;
-    public int NextLanguage=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
