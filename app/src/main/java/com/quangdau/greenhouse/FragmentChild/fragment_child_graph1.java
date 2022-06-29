@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.fonts.Font;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -62,6 +63,8 @@ public class fragment_child_graph1 extends Fragment {
     ArrayList<Entry> dataValues;
     ArrayList<ILineDataSet> dataSets;
     dataGraph mDataGraph;
+    LineDataSet lineDataSet1;
+
     List<dataReal> mData;
     UserPreferences userPreferences;
     String houseID;
@@ -304,12 +307,14 @@ public class fragment_child_graph1 extends Fragment {
                 }
             });
         }else {
-
+            graph.clear();
+            graph.setNoDataText("No Data");
         }
 
 
     }
     private void setDataGraph() {
+            //Set data graph
             dataValues.clear();
             valueFirstArray = mData.get(0).getTime();
             for (int i = 0; i < mData.size(); i++) {
@@ -317,41 +322,17 @@ public class fragment_child_graph1 extends Fragment {
                 float yAxis = mData.get(i).getValue();
                 dataValues.add(new Entry(xAxis, yAxis));
             }
-            XAxis xAxis = graph.getXAxis();
-            xAxis.setValueFormatter(new LineChartXAxisValueFormatter());
-            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-            xAxis.setTextSize(12);
-            xAxis.setLabelCount(5,true);
-            LineDataSet lineDataSet1 = new LineDataSet(dataValues,"");
+            lineDataSet1 = new LineDataSet(dataValues,"");
             dataSets = new ArrayList<>();
             dataSets.add(lineDataSet1);
             LineData data = new LineData(dataSets);
             data.setValueFormatter(new ValueFormat());
             graph.setData(data);
             graph.invalidate();
-            graph.setDrawGridBackground(false);
-            graph.setDrawBorders(true);
-            graph.setBorderColor(R.color.blue_30);
-            Description description = new Description();
-            description.setText("");
-            graph.setDescription(description);
-            graph.setExtraLeftOffset(20);
-            graph.setExtraRightOffset(10);
-            //Set style line
-            Legend legend = graph.getLegend();
-            legend.setEnabled(false);
-            lineDataSet1.setLineWidth(3);
-            int[] colorArray = {R.color.green_10};
-            lineDataSet1.setColors(colorArray,getActivity());
-            lineDataSet1.setDrawCircles(false);
-            //Hide grid
-            graph.getXAxis().setDrawGridLines(false);
-            graph.getAxisLeft().setDrawGridLines(false);
-            graph.getAxisRight().setDrawGridLines(false);
-            //Set point
-            graph.setScaleYEnabled(false);
-            graph.fitScreen();
+            CustomGraph();
+
     }
+
 
     public class YourMarkerView extends MarkerView {
         TextView tvYValue;
@@ -397,5 +378,36 @@ public class fragment_child_graph1 extends Fragment {
         if (bundle != null){
             houseID = bundle.getString("houseID");
         }
+    }
+    private void CustomGraph() {
+        //Convert XAxis is time
+            XAxis xAxis = graph.getXAxis();
+            xAxis.setValueFormatter(new LineChartXAxisValueFormatter());
+            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+            xAxis.setTextSize(12);
+            xAxis.setLabelCount(5,true);
+        //Custom Line graph
+            lineDataSet1.setLineWidth(3);
+            int[] colorArray = {R.color.green_10};
+            lineDataSet1.setColors(colorArray,getActivity());
+            lineDataSet1.setDrawCircles(false);
+        //Hide description
+            Legend legend = graph.getLegend();
+            legend.setEnabled(false);
+            Description description = new Description();
+            description.setText("");
+            graph.setDescription(description);
+        //Custom border
+            graph.setDrawBorders(true);
+            graph.setBorderColor(R.color.blue_30);
+            graph.setExtraLeftOffset(20);
+            graph.setExtraRightOffset(10);
+        //Hide grid
+            graph.getXAxis().setDrawGridLines(false);
+            graph.getAxisLeft().setDrawGridLines(false);
+            graph.getAxisRight().setDrawGridLines(false);
+        //Lock up vertical
+            graph.setScaleYEnabled(false);
+            graph.fitScreen();
     }
 }
