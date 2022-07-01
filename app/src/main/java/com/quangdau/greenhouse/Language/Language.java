@@ -1,4 +1,4 @@
-package com.quangdau.greenhouse.language;
+package com.quangdau.greenhouse.Language;
 
 import android.content.Context;
 import android.content.SharedPreferences;

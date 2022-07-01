@@ -1,10 +1,14 @@
 package com.quangdau.greenhouse.Other;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import com.quangdau.greenhouse.ApiService.ApiServer;
+import com.quangdau.greenhouse.Services.ServiceRemoveToken;
 import com.quangdau.greenhouse.SharedPreferences.UserPreferences;
+import com.quangdau.greenhouse.activity_pages.activity_login;
 import com.quangdau.greenhouse.modelsAPI.post_renewToken.RenewTokenPost;
 import com.quangdau.greenhouse.modelsAPI.res_renewTokenPost.resRenewTokenPost;
 
@@ -13,7 +17,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RenewToken{
-    private Context context;
+    private final Context context;
     private NetworkConnection networkConnection;
     private UserPreferences userPreferences;
 
@@ -43,6 +47,14 @@ public class RenewToken{
                 @Override
                 public void onFailure(Call<resRenewTokenPost> call, Throwable t) {
                     Log.e("gh", "Renew Token: "+ t);
+                    //Remove token
+                    Intent intentRemoveToken = new Intent(context, ServiceRemoveToken.class);
+                    context.startService(intentRemoveToken);
+                    //Move to activity_login
+                    Intent nextPage = new Intent(context, activity_login.class);
+                    context.startActivity(nextPage);
+                    Activity activity = (Activity) context;
+                    activity.finish();
                 }
             });
         }

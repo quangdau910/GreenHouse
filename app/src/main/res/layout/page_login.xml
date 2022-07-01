@@ -115,7 +115,7 @@
             android:layout_height="60dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/button_login"
-            android:text="@string/Text_Btn_Login"
+            android:text="@string/tv_btn_login"
             android:textColor="@color/blue_30"
             android:textAllCaps="false"
             android:textSize="30sp"

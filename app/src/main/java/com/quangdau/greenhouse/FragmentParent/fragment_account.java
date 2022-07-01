@@ -37,7 +37,9 @@ public class fragment_account extends Fragment {
         buttonLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Remove token
                 getActivity().startService(intentRemoveToken);
+                //Move to activity_login
                 Intent nextPage = new Intent(getActivity(), activity_login.class);
                 startActivity(nextPage);
                 getActivity().finish();
@@ -45,12 +47,8 @@ public class fragment_account extends Fragment {
             }
         });
 
-
         return view;
     }
-
-
-
 
 
     @Override
@@ -63,9 +61,8 @@ public class fragment_account extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.e("gh", "Account: paused");
+        Log.e("gh", "Account: pause");
         userPreferences.setStateFragment(NULL_STATE_FRAGMENT);
-        //removeToken(userPreferences.getToken());
     }
 
     @Override

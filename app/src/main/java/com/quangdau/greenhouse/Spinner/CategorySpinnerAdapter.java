@@ -1,4 +1,4 @@
-package com.quangdau.greenhouse.Spinner.spinnerLimitSetting;
+package com.quangdau.greenhouse.Spinner;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.quangdau.greenhouse.R;
+import com.quangdau.greenhouse.Spinner.CategorySpinner;
 
 import java.util.List;
 

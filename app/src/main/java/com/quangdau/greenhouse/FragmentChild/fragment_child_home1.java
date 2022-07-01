@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -24,7 +23,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.quangdau.greenhouse.ApiService.ApiServer;
@@ -63,15 +61,14 @@ public class fragment_child_home1 extends Fragment {
     boolean flagLight1, flagFan1, flagValve1, flagValve2, flagValve3, flagValve4;
     //Get data through fragment
     Bundle bundle;
-    String houseID, stateFragment;
+    String houseID;
     //Handler post delay
-    Handler mainHandler;
+    Handler handler;
     Runnable runnable;
     //Other
     String dataPort1;
     NetworkConnection networkConnection;
     ToastError toastError;
-    //Handler handler = new Handler(Looper.getMainLooper());
     UserPreferences userPreferences;
     final String STATE_FRAGMENT = "HOME_FRAGMENT";
 
@@ -84,13 +81,13 @@ public class fragment_child_home1 extends Fragment {
             public void run() {
                 if (userPreferences.getStateFragment().equals(STATE_FRAGMENT) && networkConnection.isNetworkConnected()){
                     //Update data from server
-                    getDataApi(userPreferences.getToken());
-                    //Log.e("gh", "getDataRunnable");
+                    getData(userPreferences.getToken());
+                    //Log.e("gh", "Home1 runnable: getRSSI");
                 }
-                mainHandler.postDelayed(this, 500);
+                handler.postDelayed(this, 500);
             }
         };
-        mainHandler = new Handler(Looper.getMainLooper());
+        handler = new Handler(Looper.getMainLooper());
         bundle = this.getArguments();
         parseData(bundle);
     }
@@ -130,11 +127,11 @@ public class fragment_child_home1 extends Fragment {
         imageViewValve3 = view.findViewById(R.id.imageViewDeviceValve3);
         imageViewValve4 = view.findViewById(R.id.imageViewDeviceValve4);
         //Other
-        toastError = new ToastError(getActivity(), getActivity());
+        toastError = new ToastError(getActivity());
         //DefaultUI
         cardViewWeather.setVisibility(View.GONE);
         //Get data
-        //getDataApi(userPreferences.getToken());
+        getData(userPreferences.getToken());
 
         switchLight1.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (switchLight1.isPressed()){
@@ -202,7 +199,7 @@ public class fragment_child_home1 extends Fragment {
     }
 
     //Get data
-    private void getDataApi(String token) {
+    private void getData(String token) {
         if (networkConnection.isNetworkConnected()){
             Switch[] port1 = {switchLight1, switchFan1, switchValve1, switchValve2, switchValve3, switchValve4};
             ApiServer get = ApiServer.retrofit.create(ApiServer.class);
@@ -223,35 +220,22 @@ public class fragment_child_home1 extends Fragment {
 
                 @Override
                 public void onFailure(Call<data> call, Throwable t) {
-                    Log.e("gh", "Error Home1: " + t);
+                    Log.e("gh", "Home1 GetData: " + t);
                 }
             });
         }
     }
-
-    @SuppressLint("SetTextI18n")
-    private void updateUISensor(Response<data> response) {
-        //Log.e("gh", "update ui sensor");
-        textViewTemperatureSensor.setText(response.body().getTemperature() + "");
-        textViewLightSensor.setText(response.body().getLight() + "");
-        textViewHumiditySensor.setText(response.body().getHumidity() + "");
-        textViewSoilMoistureSensor1.setText(response.body().getSoil_moisture1() + "");
-        textViewSoilMoistureSensor2.setText(response.body().getSoil_moisture2() + "");
-        textViewSoilMoistureSensor3.setText(response.body().getSoil_moisture3() + "");
-        textViewSoilMoistureSensor4.setText(response.body().getSoil_moisture4() + "");
-    }
-
 
     private void writeDigital(String houseID, String port, Integer locationBit, Character value){
         if (networkConnection.isNetworkConnected()) {
             Switch[] port1 = {switchLight1, switchFan1, switchValve1, switchValve2, switchValve3, switchValve4};
             StringBuilder tempData = new StringBuilder(dataPort1);
             tempData.setCharAt(7 - locationBit, value);
-            //Check Pump
+            //Check pump
             String dataSend = tempData.toString();
             dataSend = checkPump(dataSend, 2, 5, 6);
             Log.e("gh", "dataSend: " + dataSend);
-            //
+            //Call api
             ApiServer post = ApiServer.retrofit.create(ApiServer.class);
             Call<resWriteDigitalPost> call = post.postWriteDigital(new WriteDigitalPost(userPreferences.getToken(), "WriteDigital", houseID, port, dataSend));
             call.enqueue(new Callback<resWriteDigitalPost>() {
@@ -278,9 +262,9 @@ public class fragment_child_home1 extends Fragment {
 
                 @Override
                 public void onFailure(Call<resWriteDigitalPost> call, Throwable t) {
-                    Log.e("gh", "WriteDigital: " + t);
+                    Log.e("gh", "Home1 WriteDigital: " + t);
                     if (t.getMessage().equals("timeout")){
-                        toastError.makeText("No response from server!");
+                        toastError.makeText(getResources().getString(R.string.no_response_from_server));
                     }
 
                     if (flagLight1) flagLight1 = false;
@@ -294,6 +278,17 @@ public class fragment_child_home1 extends Fragment {
         }
     }
 
+    @SuppressLint("SetTextI18n")
+    private void updateUISensor(Response<data> response) {
+        //Log.e("gh", "update ui sensor");
+        textViewTemperatureSensor.setText(response.body().getTemperature() + "");
+        textViewLightSensor.setText(response.body().getLight() + "");
+        textViewHumiditySensor.setText(response.body().getHumidity() + "");
+        textViewSoilMoistureSensor1.setText(response.body().getSoil_moisture1() + "");
+        textViewSoilMoistureSensor2.setText(response.body().getSoil_moisture2() + "");
+        textViewSoilMoistureSensor3.setText(response.body().getSoil_moisture3() + "");
+        textViewSoilMoistureSensor4.setText(response.body().getSoil_moisture4() + "");
+    }
 
     private void updateUIDevice(String value, Switch[] portDevice){
         if (!flagLight1 && !flagFan1 && !flagValve1 && !flagValve2 && !flagValve3 && !flagValve4){
@@ -323,7 +318,6 @@ public class fragment_child_home1 extends Fragment {
     private void parseData(Bundle bundle) {
         if (bundle != null){
             houseID = bundle.getString("houseID");
-            //stateFragment = bundle.getString("stateFragment");
         }
     }
 
@@ -370,7 +364,7 @@ public class fragment_child_home1 extends Fragment {
                 @Override
                 public void onFailure(Call<weatherDataModel> call, Throwable t) {
                     Log.e("gh", "Home1 Weather: " + t);
-                    toastError.makeText("No response from server!");
+                    toastError.makeText(getResources().getString(R.string.no_response_from_server));
                 }
             });
         }
@@ -393,10 +387,10 @@ public class fragment_child_home1 extends Fragment {
         textViewWeatherName.setText(response.body().getName());
         //Weather Temp
         int tempWeather = (int) Math.rint(response.body().getMain().getTemp() - 273.15);
-        textViewWeatherTemp.setText(getResources().getString(R.string.Temperature)+": " + tempWeather + "\u2103");
+        textViewWeatherTemp.setText(getResources().getString(R.string.temperature)+": " + tempWeather + "\u2103");
         //Humidity
         int humidityWeather = response.body().getMain().getHumidity();
-        textViewWeatherHumidity.setText(getResources().getString(R.string.Humidity)+": " + humidityWeather + "%");
+        textViewWeatherHumidity.setText(getResources().getString(R.string.humidity)+": " + humidityWeather + "%");
     }
 
     private static String getWeatherIcon(int id){
@@ -433,14 +427,14 @@ public class fragment_child_home1 extends Fragment {
         super.onResume();
         Log.e("gh", "home1 resume");
         getCurrentLocation();
-        mainHandler.post(runnable);
+        handler.post(runnable);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         //Log.e("gh", "home1 pause");
-        mainHandler.removeCallbacks(runnable);
+        handler.removeCallbacks(runnable);
     }
 
     @Override

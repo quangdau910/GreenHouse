@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.quangdau.greenhouse.R;
 import com.quangdau.greenhouse.activity_pages.activity_login;
 
 public class NetworkConnection {
@@ -24,8 +25,8 @@ public class NetworkConnection {
     public void checkStatusCode(Integer statusCode){
         switch (statusCode){
             case 401:
-                Log.e("gh", "code 401");
-                Toast.makeText(context, "Please login again!", Toast.LENGTH_SHORT).show();
+                Log.e("gh", "code 401: Unauthorized");
+                Toast.makeText(context, context.getResources().getString(R.string.login_again), Toast.LENGTH_SHORT).show();
                 Intent nextPage = new Intent(context, activity_login.class);
                 context.startActivity(nextPage);
                 ((Activity) context).finish();

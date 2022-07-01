@@ -1,13 +1,36 @@
 <resources>
     <string name="app_name">Farm-IOT</string>
-    <string name="nav_home">Nhà Kính</string>
-    <string name="nav_home1">Nhà Kính 1</string>
-    <string name="nav_home2">Nhà Kính 2</string>
+
+
+    <!-- Bottom navigation -->
     <string name="nav_history">Lịch Sử</string>
     <string name="nav_graph">Biểu Đồ</string>
     <string name="nav_setting">Cài Đặt</string>
     <string name="nav_account">Tài Khoản</string>
 
+    <!-- Tab Title -->
+    <string name="house_1">Nhà Kính 1</string>
+    <string name="house_2">Nhà Kính 2</string>
+
+    <!-- Toast messages-->
+    <string name="no_response_from_server">Không có phản hồi từ máy chủ</string>
+    <string name="network_offline">Không có kết nối internet</string>
+    <string name="network_online">Kết nối trở lại</string>
+    <string name="login_again">Vui lòng đăng nhập lại</string>
+    <string name="data_saved">Lưu thành công</string>
+
+    <!-- Activity Login -->
+    <string name="Vietnamese">Tiếng Việt</string>
+    <string name="English">Tiếng Anh</string>
+    <string name="tv_btn_login">Đăng Nhập</string>
+        <!-- Toast Login -->
+        <string name="empty_account_password">Tài khoản và mật khẩu không được bỏ trống</string>
+        <string name="empty_account">Tài khoản không được bỏ trống</string>
+        <string name="empty_password">Mật khẩu không được bỏ trống</string>
+        <string name="wrong_account_password">Tài khoản hoặc mật khẩu không chính xác</string>
+        <!-- Hint  -->
+        <string name="hint_account">Tài Khoản</string>
+        <string name="hint_password">Mật Khẩu</string>
 
     <!-- Fragment Graph-->
     <string name="graph_humidity">Độ ẩm không khí</string>
@@ -18,64 +41,43 @@
     <string name="yAxis_soil_moisture">Độ ẩm đất(%)</string>
     <string name="yAxis_temperature">Nhiệt độ(\u2103)</string>
 
-
-    <!-- Fragment Login -->
-        <!-- Toast Login -->
-        <string name="Account_password_not_empty">Tài khoản và mật khẩu không được bỏ trống!</string>
-        <string name="Account_not_empty">Tài khoản không được bỏ trống!</string>
-        <string name="Password_not_empty">Mật khẩu không được bỏ trống!</string>
-        <string name="Wrong_account_or_password">Tài khoản hoặc mật khẩu không chính xác!</string>
-        <string name="No_response_from_server">Không có phản hồi từ máy chủ!</string>
-        <!-- Hint Login -->
-        <string name="Hint_account">Tài Khoản</string>
-        <string name="Hint_password">Mật Khẩu</string>
-        <string name="Text_Btn_Login">Đăng Nhập</string>
-        <string name="Button_Language">Tiếng Việt</string>
+    <!-- Fragment Settings-->
+    <string name="setting_title">Cài đặt</string>
+    <string name="limit_setting">Cài đặt ngưỡng</string>
+        <!-- Limit Setting -->
+        <string name="btn_save_change">Lưu thay đổi</string>
+        <string name="min_setting">Thấp:</string>
+        <string name="max_setting">Cao:</string>
+        <string name="status_setting">Chế độ:</string>
+        <string name="house_setting">Nhà kính </string>
 
     <!-- Fragment Home -->
-    <string name="Soil_Moisture_1">Độ Ẩm Đất 1</string>
-    <string name="Soil_Moisture_2">Độ Ẩm Đất 2</string>
-    <string name="Soil_Moisture_3">Độ Ẩm Đất 3</string>
-    <string name="Soil_Moisture_4">Độ Ẩm Đất 4</string>
-    <string name="Temperature">Nhiệt Độ</string>
-    <string name="Light">Ánh Sáng</string>
-    <string name="Sensor">Cảm Biến</string>
-    <string name="Humidity">Độ ẩm</string>
-    <string name="Device">Thiết Bị</string>
-    <string name="Light1">Đèn 1</string>
-    <string name="Fan1">Quạt 1</string>
-    <string name="Valve_1">Van 1</string>
-    <string name="Valve_2">Van 2</string>
-    <string name="Valve_3">Van 3</string>
-    <string name="Valve_4">Van 4</string>
-    <string name="HOUSE_1">Nhà Kính 1</string>
-    <string name="HOUSE_2">Nhà Kính 2</string>
-    <string name="HOUSE_3">Nhà Kính 3</string>
-    <string name="HOUSE_4">Nhà Kính 4</string>
-    <string name="Vietnamese">Tiếng Việt</string>
-    <string name="English">Tiếng Anh</string>
+        <!-- Sensor -->
+        <string name="sensor">Cảm Biến</string>
+        <string name="temperature">Nhiệt Độ</string>
+        <string name="light">Ánh Sáng</string>
+        <string name="humidity">Độ ẩm</string>
+        <string name="soil_moisture_1">Độ Ẩm Đất 1</string>
+        <string name="soil_moisture_2">Độ Ẩm Đất 2</string>
+        <string name="soil_moisture_3">Độ Ẩm Đất 3</string>
+        <string name="soil_moisture_4">Độ Ẩm Đất 4</string>
+        <!-- Device -->
+        <string name="device">Thiết Bị</string>
+        <string name="light1">Đèn 1</string>
+        <string name="fan1">Quạt 1</string>
+        <string name="valve_1">Van 1</string>
+        <string name="valve_2">Van 2</string>
+        <string name="valve_3">Van 3</string>
+        <string name="valve_4">Van 4</string>
 
     <!-- Fragment History-->
-    <string name="Login_History">Đăng nhập</string>
-    <string name="Device_Name">Tên thiết bị</string>
-    <string name="account_History">Tài khoản</string>
-    <string name="Login_time">Thời gian</string>
+    <string name="login_history">Lịch Sử Đăng nhập</string>
+    <string name="device_name">Tên thiết bị</string>
+    <string name="account_history">Tài khoản</string>
+    <string name="login_time">Thời gian</string>
 
-
-    <!-- Fragment String-->
-    <string name="Setting">Cài đặt</string>
-    <string name="Limit_Setting">Cài đặt ngưỡng</string>
-    <string name="Save_change">Lưu thay đổi</string>
-    <string name="Min_Setting">Thấp:</string>
-    <string name="Max_Setting">Cao:</string>
-    <string name="Status_Setting">Chế độ:</string>
-    <string name="House_Setting">Nhà kính </string>
-
-    <!-- fragmentAccount-->
-    <string name="About_We">Về Chúng Tôi </string>
-    <string name="logout">Đăng xuất</string>
-
-
-
+    <!-- Fragment Account-->
+    <string name="about">Về Chúng Tôi </string>
+    <string name="btn_logout">Đăng xuất</string>
 
 </resources>

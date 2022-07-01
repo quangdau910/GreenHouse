@@ -1,4 +1,4 @@
-package com.quangdau.greenhouse.Spinner.spinnerLimitSetting;
+package com.quangdau.greenhouse.Spinner;
 
 public class CategorySpinner {
     private String Text;

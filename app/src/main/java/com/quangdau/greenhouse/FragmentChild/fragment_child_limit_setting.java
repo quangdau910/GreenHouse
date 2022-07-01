@@ -25,8 +25,8 @@ import com.quangdau.greenhouse.Other.NetworkConnection;
 import com.quangdau.greenhouse.Other.ToastError;
 import com.quangdau.greenhouse.R;
 import com.quangdau.greenhouse.SharedPreferences.UserPreferences;
-import com.quangdau.greenhouse.Spinner.spinnerLimitSetting.CategorySpinner;
-import com.quangdau.greenhouse.Spinner.spinnerLimitSetting.CategorySpinnerAdapter;
+import com.quangdau.greenhouse.Spinner.CategorySpinner;
+import com.quangdau.greenhouse.Spinner.CategorySpinnerAdapter;
 import com.quangdau.greenhouse.modelsAPI.get_limitSettings.limitSettingsData;
 import com.quangdau.greenhouse.modelsAPI.get_limitSettings.objGetLimitSettingData;
 import com.quangdau.greenhouse.modelsAPI.post_limitSettings.LimitSettingsPost;
@@ -65,7 +65,6 @@ public class fragment_child_limit_setting extends Fragment {
     ToastError toastError;
     NetworkConnection networkConnection;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +76,6 @@ public class fragment_child_limit_setting extends Fragment {
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_child_limit_setting, container, false);
         //Assign variables
-
         spinnerHouseID = view.findViewById(R.id.spinnerLimitHouseID);
         buttonLimitBack = view.findViewById(R.id.buttonLimitBack);
         fabSaveChange = view.findViewById(R.id.fabLimitSaveChange);
@@ -96,16 +94,16 @@ public class fragment_child_limit_setting extends Fragment {
         flagCheckChangeDataLimitSettings = false;
         bundle = new Bundle();
         userPreferences = new UserPreferences(getActivity());
-        toastError = new ToastError(getActivity(), getActivity());
+        toastError = new ToastError(getActivity());
         networkConnection = new NetworkConnection(getActivity());
-        //View Fragment Settings
+        //View fragmentSettings
         buttonLimitSetting = getActivity().findViewById(R.id.buttonLimitSetting);
         tabLayoutSettings = getActivity().findViewById(R.id.tabLayoutSetting);
         textViewTabLayoutSettings = getActivity().findViewById(R.id.textViewTabLayoutSettings);
         //Setting adapter spinner
         listSpinner = new ArrayList<>();
         for (int i = 0; i < arrAuthority.size(); i++){
-            listSpinner.add(new CategorySpinner(getResources().getString(R.string.House_Setting)+" "+(i+1)));
+            listSpinner.add(new CategorySpinner(getResources().getString(R.string.house_setting)+" "+(i+1)));
         }
         categorySpinnerAdapter = new CategorySpinnerAdapter(getActivity(), R.layout.spinner_item_selected, listSpinner);
         spinnerHouseID.setAdapter(categorySpinnerAdapter);
@@ -226,9 +224,9 @@ public class fragment_child_limit_setting extends Fragment {
                         postLimitSettings.enqueue(new Callback<resLimitSettingsPost>() {
                             @Override
                             public void onResponse(Call<resLimitSettingsPost> call, Response<resLimitSettingsPost> response) {
-                                if (response.body().getResponse().equals("Setting Limit Completed!")){
+                                if (response.body()!= null && response.body().getResponse().equals("SetLimitSettingsData")){
                                     updateUIButtonSaveChange(false);
-                                    Toast.makeText(getActivity(), "Data save changed!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.data_saved), Toast.LENGTH_SHORT).show();
                                 }else {
                                     networkConnection.checkStatusCode(response.code());
                                 }
@@ -237,11 +235,11 @@ public class fragment_child_limit_setting extends Fragment {
                             @Override
                             public void onFailure(Call<resLimitSettingsPost> call, Throwable t) {
                                 Log.e("gh", "LimitSetting: "+ t);
-                                toastError.makeText("No response from server!");
+                                toastError.makeText(getActivity().getResources().getString(R.string.no_response_from_server));
                             }
                         });
                     }else {
-                        toastError.makeText("No internet connection!");
+                        toastError.makeText(getActivity().getResources().getString(R.string.network_offline));
                     }
                     dialog.dismiss();
                 })
@@ -258,6 +256,7 @@ public class fragment_child_limit_setting extends Fragment {
         //Announce fragmentLimitSetting is created
         bundle.putString("fragmentLimitSetting", "fragmentLimitSettingCreatedView");
         getActivity().getSupportFragmentManager().setFragmentResult(REQUEST_KEY, bundle);
+
         return view;
     }
 
@@ -277,7 +276,7 @@ public class fragment_child_limit_setting extends Fragment {
 
             @Override
             public void onFailure(Call<limitSettingsData> call, Throwable t) {
-                toastError.makeText("No response from server!");
+                toastError.makeText(getActivity().getResources().getString(R.string.no_response_from_server));
             }
         });
     }
@@ -306,8 +305,6 @@ public class fragment_child_limit_setting extends Fragment {
                     editTextMax4.setText(objGetLimitSettingData.get(i).getMax().toString());
                     switchStatusSoilMoisture4.setChecked(objGetLimitSettingData.get(i).getStatus());
                     break;
-                default:
-                    break;
             }
         }
     }
@@ -324,17 +321,14 @@ public class fragment_child_limit_setting extends Fragment {
         data.add(dataSoilMoisture4);
         return data;
     }
+
     private String getHouseID(String spinnerSelectedItem){
         switch (spinnerSelectedItem){
             case "House 1":
-                spinnerSelectedItem = "house1";
-                break;
-            case "House 2":
-                spinnerSelectedItem = "house2";
-                break;
             case "Nhà kính 1":
                 spinnerSelectedItem = "house1";
                 break;
+            case "House 2":
             case "Nhà kính 2":
                 spinnerSelectedItem = "house2";
                 break;

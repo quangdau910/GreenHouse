@@ -20,7 +20,7 @@
                 android:id="@+id/textViewDeviceNameHistoryLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/Device_Name"
+                android:text="@string/device_name"
                 android:textSize="22sp"
                 android:paddingLeft="10dp"
                 android:fontFamily="@font/open_sans_bold"
@@ -40,7 +40,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     android:paddingLeft="20dp"
-                    android:text="@string/account_History"
+                    android:text="@string/account_history"
                     android:textSize="18sp"
                     />
                 <TextView
@@ -58,7 +58,7 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@+id/textViewIpHistoryLogin"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    android:text="@string/Login_time"
+                    android:text="@string/login_time"
                     android:textSize="18sp"
                     android:paddingLeft="20dp"
                     />

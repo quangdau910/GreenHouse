@@ -29,9 +29,9 @@ import com.quangdau.greenhouse.Other.NetworkConnection;
 import com.quangdau.greenhouse.Other.ToastError;
 import com.quangdau.greenhouse.SharedPreferences.UserPreferences;
 import com.quangdau.greenhouse.R;
-import com.quangdau.greenhouse.Spinner.spinnerLimitSetting.CategorySpinner;
-import com.quangdau.greenhouse.Spinner.spinnerLimitSetting.CategorySpinnerAdapter;
-import com.quangdau.greenhouse.language.Language;
+import com.quangdau.greenhouse.Spinner.CategorySpinner;
+import com.quangdau.greenhouse.Spinner.CategorySpinnerAdapter;
+import com.quangdau.greenhouse.Language.Language;
 import com.quangdau.greenhouse.modelsAPI.post_authen.AuthenPost;
 import com.quangdau.greenhouse.modelsAPI.res_authenPost.resAuthorityPost;
 
@@ -79,7 +79,7 @@ public class activity_login extends AppCompatActivity {
         //Network connection
         networkConnection = new NetworkConnection(this);
         //Other
-        toastError = new ToastError(this, this);
+        toastError = new ToastError(this);
         //Check permission
         checkPermission();
         //Spinner language
@@ -102,15 +102,15 @@ public class activity_login extends AppCompatActivity {
                     switch (position) {
                         case 0:
                             language.updateLanguage("vi");
-                            hintAccount.setHint(getResources().getString(R.string.Hint_account));
-                            hintPassword.setHint(getResources().getString(R.string.Hint_password));
-                            btnLogin.setText(getResources().getString(R.string.Text_Btn_Login));
+                            hintAccount.setHint(getResources().getString(R.string.hint_account));
+                            hintPassword.setHint(getResources().getString(R.string.hint_password));
+                            btnLogin.setText(getResources().getString(R.string.tv_btn_login));
                             break;
                         case 1:
                             language.updateLanguage("en");
-                            hintAccount.setHint(getResources().getString(R.string.Hint_account));
-                            hintPassword.setHint(getResources().getString(R.string.Hint_password));
-                            btnLogin.setText(getResources().getString(R.string.Text_Btn_Login));
+                            hintAccount.setHint(getResources().getString(R.string.hint_account));
+                            hintPassword.setHint(getResources().getString(R.string.hint_password));
+                            btnLogin.setText(getResources().getString(R.string.tv_btn_login));
                             break;
                     }
                 }
@@ -128,11 +128,11 @@ public class activity_login extends AppCompatActivity {
         //Check empty input
         if (networkConnection.isNetworkConnected()) {
             if (account.length() == 0 && password.length() == 0) {
-                toastError.makeText(getResources().getString(R.string.Account_password_not_empty));
+                toastError.makeText(getResources().getString(R.string.empty_account_password));
             } else if (account.length() == 0) {
-                toastError.makeText(getResources().getString(R.string.Account_not_empty));
+                toastError.makeText(getResources().getString(R.string.empty_account));
             } else if (password.length() == 0) {
-                toastError.makeText(getResources().getString(R.string.Password_not_empty));
+                toastError.makeText(getResources().getString(R.string.empty_password));
             } else {
                 btnLogin.setEnabled(false);
                 ApiServer post = ApiServer.retrofit.create(ApiServer.class);
@@ -149,7 +149,7 @@ public class activity_login extends AppCompatActivity {
                             startActivity(nextPage);
                             finish();
                         } else {
-                            toastError.makeText(getResources().getString(R.string.Wrong_account_or_password));
+                            toastError.makeText(getResources().getString(R.string.wrong_account_password));
                         }
                         btnLogin.setEnabled(true);
                     }
@@ -157,7 +157,7 @@ public class activity_login extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<resAuthorityPost> call, Throwable t) {
                         Log.e("login", "Error Login: " + t);
-                        toastError.makeText(getResources().getString(R.string.No_response_from_server));
+                        toastError.makeText(getResources().getString(R.string.no_response_from_server));
                         btnLogin.setEnabled(true);
                     }
                 });

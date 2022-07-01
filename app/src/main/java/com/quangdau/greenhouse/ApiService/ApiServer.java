@@ -1,5 +1,7 @@
 package com.quangdau.greenhouse.ApiService;
 
+import androidx.annotation.NonNull;
+
 import com.quangdau.greenhouse.modelsAPI.get_graph.dataGraph;
 import com.quangdau.greenhouse.modelsAPI.get_limitSettings.limitSettingsData;
 import com.quangdau.greenhouse.modelsAPI.post_limitSettings.LimitSettingsPost;
@@ -19,7 +21,9 @@ import com.quangdau.greenhouse.modelsAPI.res_writeDigitalPost.resWriteDigitalPos
 import java.util.ArrayList;
 
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;

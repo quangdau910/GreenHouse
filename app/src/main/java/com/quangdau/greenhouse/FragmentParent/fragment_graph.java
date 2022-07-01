@@ -60,11 +60,11 @@ public class fragment_graph extends Fragment {
                 switch (adapter.fragmentTitle.get(position)){
                     case "house1":
                     {
-                        tab.setText(getResources().getString(R.string.HOUSE_1));
+                        tab.setText(getResources().getString(R.string.house_1));
                     }break;
                     case "house2":
                     {
-                        tab.setText(getResources().getString(R.string.HOUSE_2));
+                        tab.setText(getResources().getString(R.string.house_2));
                     }break;
                     default:
                 }

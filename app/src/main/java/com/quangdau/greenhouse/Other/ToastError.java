@@ -12,19 +12,17 @@ import com.quangdau.greenhouse.R;
 
 public class ToastError {
     private Context context;
-    private final Activity mActivity;
     private String text;
 
-    public ToastError(Context context, Activity mActivity) {
+    public ToastError(Context context) {
         this.context = context;
-        this.mActivity = mActivity;
     }
 
-
     public void makeText(String textToast){
+        Activity activity = (Activity) context;
         Toast toast = new Toast(context);
         LayoutInflater inflater =  (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE );
-        View view = inflater.inflate(R.layout.toast_error, mActivity.findViewById(R.id.toastError));
+        View view = inflater.inflate(R.layout.toast_error, activity.findViewById(R.id.toastError));
         TextView txt = view.findViewById(R.id.textViewToast);
         txt.setText(textToast);
         toast.setView(view);
@@ -32,8 +30,5 @@ public class ToastError {
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.show();
     }
-
-
-
 
 }

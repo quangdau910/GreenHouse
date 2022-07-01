@@ -4,13 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".FragmentChild.fragment_child_home1">
+    tools:context=".FragmentChild.fragment_child_home1"
+    android:background="@color/background_color">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewWeather"
-            android:layout_width="370dp"
+            android:layout_width="400dp"
             android:layout_height="150dp"
             app:cardCornerRadius="20dp"
             app:cardElevation="10dp"
@@ -53,7 +54,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/textViewWeatherName"
                     app:layout_constraintLeft_toRightOf="@+id/imageViewWeatherIcon"
                     app:layout_constraintBottom_toTopOf="@+id/textViewWeatherHumidity"
-                    android:text="Temperature: %%"
+                    android:text="Temperature:"
                     android:textSize="18sp"
 
                     />
@@ -73,17 +74,16 @@
             android:id="@+id/textViewLblSensor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/Sensor"
+            android:text="@string/sensor"
             android:textSize="25sp"
             app:layout_constraintTop_toBottomOf="@+id/cardViewWeather"
             app:layout_constraintLeft_toLeftOf="@id/cardViewTemperatureSensor"
-
             android:layout_marginTop="10dp"
             />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewTemperatureSensor"
-            android:layout_width="180dp"
+            android:layout_width="190dp"
             android:layout_height="100dp"
             app:cardCornerRadius="20dp"
             app:cardElevation="10dp"
@@ -102,12 +102,12 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     android:paddingTop="20dp"
-                    android:paddingLeft="2dp"/>
+                    android:paddingStart="2dp"/>
                 <TextView
                     android:id="@+id/textViewLblTemperatureSensor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/Temperature"
+                    android:text="@string/temperature"
                     android:textSize="@dimen/text_size_17sp"
                     android:layout_marginTop="20dp"
                     app:layout_constraintTop_toTopOf="parent"
@@ -135,7 +135,7 @@
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewLightSensor"
-            android:layout_width="180dp"
+            android:layout_width="190dp"
             android:layout_height="100dp"
             app:cardCornerRadius="20dp"
             app:cardElevation="10dp"
@@ -143,7 +143,6 @@
             app:layout_constraintLeft_toRightOf="@id/cardViewTemperatureSensor"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginTop="10dp">
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -161,7 +160,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="@string/Light"
+                    android:text="@string/light"
                     android:textSize="@dimen/text_size_17sp"
                     app:layout_constraintLeft_toRightOf="@+id/imageViewIcLight"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -190,18 +189,13 @@
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewHumiditySensor"
-            android:layout_width="180dp"
+            android:layout_width="190dp"
             android:layout_height="100dp"
             app:cardCornerRadius="20dp"
             app:cardElevation="10dp"
             app:layout_constraintTop_toBottomOf="@+id/cardViewTemperatureSensor"
             app:layout_constraintLeft_toLeftOf="@id/cardViewTemperatureSensor"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="0dp"
-            android:layout_marginRight="0dp"
-            android:layout_marginLeft="0dp"
-            >
-
+            android:layout_marginTop="10dp">
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -221,7 +215,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="@string/Humidity"
+                    android:text="@string/humidity"
                     android:textSize="@dimen/text_size_17sp"
                     app:layout_constraintLeft_toRightOf="@+id/imageViewIcHumidity"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -251,7 +245,7 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewSoilMoistureSensor1"
-            android:layout_width="180dp"
+            android:layout_width="190dp"
             android:layout_height="100dp"
             app:cardCornerRadius="20dp"
             app:cardElevation="10dp"
@@ -277,7 +271,7 @@
                     android:id="@+id/textViewLimitSoilMoisture1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/Soil_Moisture_1"
+                    android:text="@string/soil_moisture_1"
                     android:textSize="@dimen/text_size_17sp"
                     android:layout_marginTop="20dp"
                     app:layout_constraintTop_toTopOf="parent"
@@ -306,7 +300,7 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewSoilMoistureSensor2"
-            android:layout_width="180dp"
+            android:layout_width="190dp"
             android:layout_height="100dp"
             app:cardCornerRadius="20dp"
             app:cardElevation="10dp"
@@ -332,7 +326,7 @@
                     android:id="@+id/textViewLblSoilMoistureSensor2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/Soil_Moisture_2"
+                    android:text="@string/soil_moisture_2"
                     android:textSize="@dimen/text_size_17sp"
                     android:layout_marginTop="20dp"
                     app:layout_constraintTop_toTopOf="parent"
@@ -360,7 +354,7 @@
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewSoilMoistureSensor3"
-            android:layout_width="180dp"
+            android:layout_width="190dp"
             android:layout_height="100dp"
             app:cardCornerRadius="20dp"
             app:cardElevation="10dp"
@@ -382,15 +376,17 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     android:paddingTop="20dp"
                     android:paddingLeft="2dp"/>
+
                 <TextView
                     android:id="@+id/textViewLblSoilMoistureSensor3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/Soil_Moisture_3"
-                    android:textSize="@dimen/text_size_17sp"
                     android:layout_marginTop="20dp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/imageViewIcSoilMoistureSensor3"/>
+                    android:text="@string/soil_moisture_3"
+                    android:textSize="@dimen/text_size_17sp"
+                    app:layout_constraintLeft_toRightOf="@+id/imageViewIcSoilMoistureSensor3"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <TextView
                     android:id="@+id/textViewSoilMoistureSensor3"
                     android:layout_width="wrap_content"
@@ -414,7 +410,7 @@
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewSoilMoistureSensor4"
-            android:layout_width="180dp"
+            android:layout_width="190dp"
             android:layout_height="100dp"
             app:cardCornerRadius="20dp"
             app:cardElevation="10dp"
@@ -440,7 +436,7 @@
                     android:id="@+id/textViewLblSoilMoistureSensor4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/Soil_Moisture_4"
+                    android:text="@string/soil_moisture_4"
                     android:textSize="@dimen/text_size_17sp"
                     android:layout_marginTop="20dp"
                     app:layout_constraintTop_toTopOf="parent"
@@ -471,7 +467,7 @@
             android:id="@+id/textViewLblDevices"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/Device"
+            android:text="@string/device"
             android:textSize="25sp"
             app:layout_constraintTop_toBottomOf="@+id/cardViewSoilMoistureSensor4"
             app:layout_constraintLeft_toLeftOf="@id/cardViewSoilMoistureSensor4"
@@ -480,7 +476,7 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewLight1"
-            android:layout_width="180dp"
+            android:layout_width="190dp"
             android:layout_height="100dp"
             android:layout_marginTop="8dp"
             app:cardCornerRadius="20dp"
@@ -505,7 +501,7 @@
                     android:id="@+id/textViewDeviceLight1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/Light1"
+                    android:text="@string/light1"
                     android:textSize="@dimen/text_size_17sp"
                     app:layout_constraintTop_toBottomOf="@+id/imageViewDeviceLight1"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -528,7 +524,7 @@
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewFan1"
-            android:layout_width="180dp"
+            android:layout_width="190dp"
             android:layout_height="100dp"
             app:cardCornerRadius="20dp"
             app:cardElevation="10dp"
@@ -552,7 +548,7 @@
                     android:id="@+id/textViewDeviceFan1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/Fan1"
+                    android:text="@string/fan1"
                     android:textSize="@dimen/text_size_17sp"
                     app:layout_constraintTop_toBottomOf="@+id/imageViewDeviceFan1"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -576,7 +572,7 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewValve1"
-            android:layout_width="180dp"
+            android:layout_width="190dp"
             android:layout_height="100dp"
             app:cardCornerRadius="20dp"
             app:cardElevation="10dp"
@@ -600,7 +596,7 @@
                     android:id="@+id/textViewDeviceValve1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/Valve_1"
+                    android:text="@string/valve_1"
                     android:textSize="@dimen/text_size_17sp"
                     app:layout_constraintTop_toBottomOf="@+id/imageViewDeviceValve1"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -624,7 +620,7 @@
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewValve2"
-            android:layout_width="180dp"
+            android:layout_width="190dp"
             android:layout_height="100dp"
             app:cardCornerRadius="20dp"
             app:cardElevation="10dp"
@@ -648,7 +644,7 @@
                     android:id="@+id/textViewDeviceValve2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/Valve_2"
+                    android:text="@string/valve_2"
                     android:textSize="@dimen/text_size_17sp"
                     app:layout_constraintTop_toBottomOf="@+id/imageViewDeviceValve2"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -673,7 +669,7 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewValve3"
-            android:layout_width="180dp"
+            android:layout_width="190dp"
             android:layout_height="100dp"
             app:cardCornerRadius="20dp"
             app:cardElevation="10dp"
@@ -699,7 +695,7 @@
                     android:id="@+id/textViewDeviceValve3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/Valve_3"
+                    android:text="@string/valve_3"
                     android:textSize="@dimen/text_size_17sp"
                     app:layout_constraintTop_toBottomOf="@+id/imageViewDeviceValve3"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -723,7 +719,7 @@
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewValve4"
-            android:layout_width="180dp"
+            android:layout_width="190dp"
             android:layout_height="100dp"
             app:cardCornerRadius="20dp"
             app:cardElevation="10dp"
@@ -749,7 +745,7 @@
                     android:id="@+id/textViewDeviceValve4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/Valve_4"
+                    android:text="@string/valve_4"
                     android:textSize="@dimen/text_size_17sp"
                     app:layout_constraintTop_toBottomOf="@+id/imageViewDeviceValve4"
                     app:layout_constraintLeft_toLeftOf="parent"

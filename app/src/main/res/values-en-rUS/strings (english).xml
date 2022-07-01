@@ -1,13 +1,35 @@
 <resources>
     <string name="app_name">Farm-IOT</string>
-    <string name="nav_home">Green House</string>
-    <string name="nav_home1">Green House 1</string>
-    <string name="nav_home2">Green House 2</string>
+
+    <!-- Bottom navigation -->
     <string name="nav_history">History</string>
     <string name="nav_graph">Graph</string>
     <string name="nav_setting">Setting</string>
     <string name="nav_account">Account</string>
 
+    <!-- Tab Title -->
+    <string name="house_1">House 1</string>
+    <string name="house_2">House 2</string>
+
+    <!-- Toast messages-->
+    <string name="no_response_from_server">No response from server</string>
+    <string name="network_offline">No internet connection</string>
+    <string name="network_online">Back online</string>
+    <string name="login_again">Please login again</string>
+    <string name="data_saved">Data save changed</string>
+
+    <!-- Activity Login -->
+    <string name="tv_btn_login">Login</string>
+    <string name="Vietnamese">Vietnamese</string>
+    <string name="English">English</string>
+        <!-- Text login -->
+        <string name="empty_account_password">Account and password must not empty</string>
+        <string name="empty_account">Account must not empty</string>
+        <string name="empty_password">Password must not empty</string>
+        <string name="wrong_account_password">Wrong account or password</string>
+        <!-- Hint login -->
+        <string name="hint_account">Account</string>
+        <string name="hint_password">Password</string>
 
     <!-- Fragment Graph-->
     <string name="graph_humidity">Humidity</string>
@@ -18,67 +40,44 @@
     <string name="yAxis_soil_moisture">Soil Moisture(%)</string>
     <string name="yAxis_temperature">Temperature(\u2103)</string>
 
-    <!-- Fragment Login -->
-        <!-- Text login -->
-        <string name="Account_password_not_empty">Account and password must not empty!</string>
-        <string name="Account_not_empty">Account must not empty!</string>
-        <string name="Password_not_empty">Password must not empty!</string>
-        <string name="Wrong_account_or_password">Wrong account or password!</string>
-        <string name="No_response_from_server">No response from server!</string>
-        <!-- Hint login -->
-        <string name="Hint_account">Account</string>
-        <string name="Hint_password">Password</string>
-        <string name="Text_Btn_Login">Login</string>
-        <string name="Button_Language">English</string>
-
+    <!-- Fragment Settings-->
+    <string name="setting_title">Settings</string>
+    <string name="limit_setting">Limit Setting</string>
+        <!-- Limit Setting -->
+        <string name="btn_save_change">Save change</string>
+        <string name="min_setting">Min:</string>
+        <string name="max_setting">Max:</string>
+        <string name="status_setting">Status:</string>
+        <string name="house_setting">House</string>
 
     <!-- Fragment Home -->
-    <string name="Soil_Moisture_1">Soil Moisture 1</string>
-    <string name="Soil_Moisture_2">Soil Moisture 2</string>
-    <string name="Soil_Moisture_3">Soil Moisture 3</string>
-    <string name="Soil_Moisture_4">Soil Moisture 4</string>
-    <string name="Temperature">Temperature</string>
-    <string name="Light">Light</string>
-    <string name="Sensor">Sensor</string>
-    <string name="Humidity">Humidity</string>
-    <string name="Device">Device</string>
-    <string name="Light1">Light 1</string>
-    <string name="Fan1">Fan 1</string>
-    <string name="Valve_1">Valve 1</string>
-    <string name="Valve_2">Valve 2</string>
-    <string name="Valve_3">Valve 3</string>
-    <string name="Valve_4">Valve 4</string>
+        <!-- Sensor -->
+        <string name="sensor">Sensor</string>
+        <string name="temperature">Temperature</string>
+        <string name="light">Light</string>
+        <string name="humidity">Humidity</string>
+        <string name="soil_moisture_1">Soil Moisture 1</string>
+        <string name="soil_moisture_2">Soil Moisture 2</string>
+        <string name="soil_moisture_3">Soil Moisture 3</string>
+        <string name="soil_moisture_4">Soil Moisture 4</string>
+        <!-- Device -->
+        <string name="device">Device</string>
+        <string name="light1">Light 1</string>
+        <string name="fan1">Fan 1</string>
+        <string name="valve_1">Valve 1</string>
+        <string name="valve_2">Valve 2</string>
+        <string name="valve_3">Valve 3</string>
+        <string name="valve_4">Valve 4</string>
 
-    <string name="HOUSE_1">HOUSE 1</string>
-    <string name="HOUSE_2">HOUSE 2</string>
-    <string name="HOUSE_3">HOUSE 3</string>
-    <string name="HOUSE_4">HOUSE 4</string>
-    <string name="Vietnamese">Vietnamese</string>
-    <string name="English">English</string>
     <!-- Fragment History-->
-    <string name="Login_History">Login</string>
-    <string name="Device_Name">Device Name</string>
-    <string name="account_History">account</string>
-    <string name="Login_time">Login time</string>
+    <string name="login_history">Login</string>
+    <string name="device_name">Device Name</string>
+    <string name="account_history">Account</string>
+    <string name="login_time">Login time</string>
 
-
-    <!-- Fragment Setting-->
-    <string name="Setting">Setting</string>
-    <string name="Limit_Setting">Limit Setting</string>
-    <string name="Save_change">Save change</string>
-    <string name="Min_Setting">Min:</string>
-    <string name="Max_Setting">Max:</string>
-    <string name="Status_Setting">Status:</string>
-    <string name="House_Setting">House </string>
-
-
-
-    <!-- fragmentAccount-->
-    <string name="About_We">About We </string>
-    <string name="logout">Logout</string>
-
-
-
+    <!-- Fragment Account-->
+    <string name="about">About We </string>
+    <string name="btn_logout">Logout</string>
 
 
 

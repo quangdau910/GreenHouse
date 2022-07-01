@@ -23,10 +23,10 @@ public class BroadcastReceiver extends android.content.BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         NetworkConnection networkConnection = new NetworkConnection(context);
         if (!networkConnection.isNetworkConnected()){
-            toastNetworkOffline("Internet disconnected!", context, R.layout.toast_network_offline, R.id.toastNetworkOffline);
+            toastNetworkOffline(context.getResources().getString(R.string.network_offline), context, R.layout.toast_network_offline, R.id.toastNetworkOffline);
             networkDisconnected = true;
         }else if(networkConnection.isNetworkConnected() && networkDisconnected){
-            toastNetworkOffline("Back online!", context, R.layout.toast_network_online, R.id.toastNetworkOnline);
+            toastNetworkOffline(context.getResources().getString(R.string.network_online), context, R.layout.toast_network_online, R.id.toastNetworkOnline);
             networkDisconnected = false;
         }
     }

@@ -28,7 +28,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:text="@string/Setting"
+            android:text="@string/setting_title"
             android:textSize="22sp"
             android:fontFamily="@font/open_sans_bold"
             />
@@ -42,7 +42,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginTop="20dp"
         android:layout_marginStart="20dp"
-        android:text="@string/Limit_Setting"
+        android:text="@string/limit_setting"
         android:gravity="center"
         android:textSize="@dimen/text_size_17sp"
         android:textColor="@color/blue_30"

@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.quangdau.greenhouse.Adapter.RecycleView.HistoryLoginAdapter;
 import com.quangdau.greenhouse.ApiService.ApiServer;
@@ -50,8 +49,10 @@ public class fragment_child_history_login extends Fragment {
         recyclerView = view.findViewById(R.id.recycleViewHistoryLogin);
         userPreferences = new UserPreferences(getActivity());
         networkConnection = new NetworkConnection(getActivity());
-        toastError = new ToastError(getActivity(), getActivity());
+        toastError = new ToastError(getActivity());
+        //Get data
         getDataHistoryLogin();
+
         return view;
     }
 
@@ -76,7 +77,7 @@ public class fragment_child_history_login extends Fragment {
                 }
             });
         }else {
-            toastError.makeText("No connection!");
+            toastError.makeText(getActivity().getResources().getString(R.string.network_offline));
         }
 
     }
