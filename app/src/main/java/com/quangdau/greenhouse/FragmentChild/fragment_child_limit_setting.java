@@ -21,6 +21,8 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.quangdau.greenhouse.ApiService.ApiServer;
+import com.quangdau.greenhouse.Other.NetworkConnection;
+import com.quangdau.greenhouse.Other.ToastError;
 import com.quangdau.greenhouse.R;
 import com.quangdau.greenhouse.SharedPreferences.UserPreferences;
 import com.quangdau.greenhouse.Spinner.spinnerLimitSetting.CategorySpinner;
@@ -60,7 +62,8 @@ public class fragment_child_limit_setting extends Fragment {
     AlertDialog.Builder builder;
     ArrayList<String> arrAuthority;
     UserPreferences userPreferences;
-
+    ToastError toastError;
+    NetworkConnection networkConnection;
 
 
     @Override
@@ -93,6 +96,8 @@ public class fragment_child_limit_setting extends Fragment {
         flagCheckChangeDataLimitSettings = false;
         bundle = new Bundle();
         userPreferences = new UserPreferences(getActivity());
+        toastError = new ToastError(getActivity(), getActivity());
+        networkConnection = new NetworkConnection(getActivity());
         //View Fragment Settings
         buttonLimitSetting = getActivity().findViewById(R.id.buttonLimitSetting);
         tabLayoutSettings = getActivity().findViewById(R.id.tabLayoutSetting);
@@ -107,7 +112,6 @@ public class fragment_child_limit_setting extends Fragment {
         spinnerHouseID.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.e("gh", "spinner: " + categorySpinnerAdapter.getItemSelected());
                 getLimitSettingsData();
             }
 
@@ -215,30 +219,33 @@ public class fragment_child_limit_setting extends Fragment {
         builder.setMessage("Do you want to save change?")
                 .setCancelable(false)
                 .setPositiveButton("Yes", (dialog, which) -> {
-                    LimitSettingsPost mLimitSettingsPost = new LimitSettingsPost(getDataSettingsChange(), categorySpinnerAdapter.getItemSelected(),userPreferences.getToken(), "SetLimitSettingsData");
-                    ApiServer post = ApiServer.retrofit.create(ApiServer.class);
-                    Call <resLimitSettingsPost> postLimitSettings = post.postLimitSettings(mLimitSettingsPost);
-                    postLimitSettings.enqueue(new Callback<resLimitSettingsPost>() {
-                        @Override
-                        public void onResponse(Call<resLimitSettingsPost> call, Response<resLimitSettingsPost> response) {
-                            if (response.body() != null && response.body().getResponse().equals("Setting Limit Completed!")){
-                                updateUIButtonSaveChange(false);
-                                Toast.makeText(getActivity(), "Data save changed!", Toast.LENGTH_SHORT).show();
+                    if (networkConnection.isNetworkConnected()){
+                        LimitSettingsPost mLimitSettingsPost = new LimitSettingsPost(getDataSettingsChange(), getHouseID(categorySpinnerAdapter.getItemSelected()),userPreferences.getToken(), "SetLimitSettingsData");
+                        ApiServer post = ApiServer.retrofit.create(ApiServer.class);
+                        Call <resLimitSettingsPost> postLimitSettings = post.postLimitSettings(mLimitSettingsPost);
+                        postLimitSettings.enqueue(new Callback<resLimitSettingsPost>() {
+                            @Override
+                            public void onResponse(Call<resLimitSettingsPost> call, Response<resLimitSettingsPost> response) {
+                                if (response.body().getResponse().equals("Setting Limit Completed!")){
+                                    updateUIButtonSaveChange(false);
+                                    Toast.makeText(getActivity(), "Data save changed!", Toast.LENGTH_SHORT).show();
+                                }else {
+                                    networkConnection.checkStatusCode(response.code());
+                                }
                             }
-                        }
 
-                        @Override
-                        public void onFailure(Call<resLimitSettingsPost> call, Throwable t) {
-                            Log.e("gh", "LimitSetting: "+ t);
-                            Toast.makeText(getActivity(), "No response from server!", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                            @Override
+                            public void onFailure(Call<resLimitSettingsPost> call, Throwable t) {
+                                Log.e("gh", "LimitSetting: "+ t);
+                                toastError.makeText("No response from server!");
+                            }
+                        });
+                    }else {
+                        toastError.makeText("No internet connection!");
+                    }
                     dialog.dismiss();
                 })
                 .setNegativeButton("No", (dialog, id) -> dialog.dismiss());
-
-
-
         fabSaveChange.setOnClickListener(v -> {
             if (fabSaveChange.isExtended()){
                 //Creating dialog box
@@ -256,19 +263,21 @@ public class fragment_child_limit_setting extends Fragment {
 
     private void getLimitSettingsData(){
         ApiServer get = ApiServer.retrofit.create(ApiServer.class);
-        Call<limitSettingsData> call = get.getLimitSettingsData(userPreferences.getToken(), "GetLimitSettingsData", categorySpinnerAdapter.getItemSelected());
+        Call<limitSettingsData> call = get.getLimitSettingsData(userPreferences.getToken(), "GetLimitSettingsData", getHouseID(categorySpinnerAdapter.getItemSelected()));
         call.enqueue(new Callback<limitSettingsData>() {
             @Override
             public void onResponse(Call<limitSettingsData> call, Response<limitSettingsData> response) {
-                if (response.body() != null){
+                if (response.body().getResponse().equals("GetLimitSettingsData")){
                     updateUILimitSettings(response.body().getData());
                     updateUIButtonSaveChange(false);
+                }else {
+                    networkConnection.checkStatusCode(response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<limitSettingsData> call, Throwable t) {
-                Toast.makeText(getActivity(), "No response from server!", Toast.LENGTH_SHORT).show();
+                toastError.makeText("No response from server!");
             }
         });
     }
@@ -303,7 +312,6 @@ public class fragment_child_limit_setting extends Fragment {
         }
     }
 
-
     private ArrayList<ObjPostLimitSettingData> getDataSettingsChange(){
         ObjPostLimitSettingData dataSoilMoisture1 = new ObjPostLimitSettingData(Integer.parseInt(editTextMin1.getText().toString()), Integer.parseInt(editTextMax1.getText().toString()), switchStatusSoilMoisture1.isChecked(), "soil_moisture1");
         ObjPostLimitSettingData dataSoilMoisture2 = new ObjPostLimitSettingData(Integer.parseInt(editTextMin2.getText().toString()), Integer.parseInt(editTextMax2.getText().toString()), switchStatusSoilMoisture2.isChecked(), "soil_moisture2");
@@ -315,6 +323,23 @@ public class fragment_child_limit_setting extends Fragment {
         data.add(dataSoilMoisture3);
         data.add(dataSoilMoisture4);
         return data;
+    }
+    private String getHouseID(String spinnerSelectedItem){
+        switch (spinnerSelectedItem){
+            case "House 1":
+                spinnerSelectedItem = "house1";
+                break;
+            case "House 2":
+                spinnerSelectedItem = "house2";
+                break;
+            case "Nhà kính 1":
+                spinnerSelectedItem = "house1";
+                break;
+            case "Nhà kính 2":
+                spinnerSelectedItem = "house2";
+                break;
+        }
+        return spinnerSelectedItem;
     }
 
     private void updateUIFragmentSettings(){
@@ -332,9 +357,7 @@ public class fragment_child_limit_setting extends Fragment {
             fabSaveChange.shrink();
             fabSaveChange.setBackgroundTintList(cslFABSaveChangeOff);
             flagCheckChangeDataLimitSettings = false;
-
         }
-
     }
 
     private void parseData(){

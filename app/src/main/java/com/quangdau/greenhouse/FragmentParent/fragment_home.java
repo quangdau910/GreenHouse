@@ -19,6 +19,7 @@ import com.quangdau.greenhouse.Adapter.ViewPager2.HomeAdapter;
 import com.quangdau.greenhouse.ApiService.ApiServer;
 import com.quangdau.greenhouse.FragmentChild.fragment_child_home1;
 import com.quangdau.greenhouse.FragmentChild.fragment_child_home2;
+import com.quangdau.greenhouse.Other.NetworkConnection;
 import com.quangdau.greenhouse.SharedPreferences.UserPreferences;
 import com.quangdau.greenhouse.R;
 import com.quangdau.greenhouse.modelsAPI.get_RSSI.RSSIData;
@@ -37,11 +38,13 @@ public class fragment_home extends Fragment {
     UserPreferences userPreferences;
     HomeAdapter adapter;
     ArrayList<String> arrAuthority;
+    NetworkConnection networkConnection;
     //Handler post delay
     Runnable runnable;
     Handler mainHandler;
     final String STATE_FRAGMENT = "HOME_FRAGMENT";
     final String NULL_STATE_FRAGMENT = "NULL";
+    final long TIME_DELAY = 500;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,6 +54,7 @@ public class fragment_home extends Fragment {
         tabLayout = view.findViewById(R.id.tabLayoutHome);
         viewPager2 = view.findViewById(R.id.viewPager2Home);
         userPreferences = new UserPreferences(getActivity());
+        networkConnection = new NetworkConnection(getActivity());
         //Get arrAuthority
         parseData();
         //Setting adapter
@@ -81,7 +85,6 @@ public class fragment_home extends Fragment {
                     {
                         tab.setText(getResources().getString(R.string.HOUSE_2));
                     }break;
-                    default:
                 }
 
             }
@@ -104,15 +107,14 @@ public class fragment_home extends Fragment {
             }
         });
 
-        //Do something after 1s
+        //Do something after time
         runnable = new Runnable() {
             @Override
             public void run() {
-                if (userPreferences.getStateFragment().equals(STATE_FRAGMENT)){
-                    //Log.e("gh", "getDataRunnable Home");
+                if (userPreferences.getStateFragment().equals(STATE_FRAGMENT) && networkConnection.isNetworkConnected()){
                     getRSSIData(userPreferences.getToken(), adapter.fragmentTitle.get(tabLayout.getSelectedTabPosition()));
                 }
-                mainHandler.postDelayed(this, 1000);
+                mainHandler.postDelayed(this, TIME_DELAY);
             }
         };
         mainHandler = new Handler(Looper.getMainLooper());
@@ -134,16 +136,18 @@ public class fragment_home extends Fragment {
             public void onResponse(Call<RSSIData> call, Response<RSSIData> response) {
                 if (response.body() != null && response.body().getResponse().equals("Response RSSI Data") ){
                     updateRSSIUI(response.body().getData().getValue());
+                }else {
+                    networkConnection.checkStatusCode(response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<RSSIData> call, Throwable t) {
-                Log.e("gh", "Error Home: "+ t);
-
+                Log.e("gh", "Home RSSI: "+ t);
             }
         });
     }
+
     private void updateRSSIUI(Integer value){
         TabLayout.Tab tab = tabLayout.getTabAt(tabLayout.getSelectedTabPosition());
         assert tab != null;
@@ -152,8 +156,6 @@ public class fragment_home extends Fragment {
         if (value > 50 && value <= 75) tab.setIcon(R.drawable.ic_signal_wifi_3_bar);
         if (value > 75 && value <= 100) tab.setIcon(R.drawable.ic_signal_wifi_4_bar);
     }
-
-
 
     @Override
     public void onResume() {

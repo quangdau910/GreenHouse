@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +59,7 @@ public class fragment_history extends Fragment {
     public void onResume() {
         super.onResume();
         userPreferences.setStateFragment(STATE_FRAGMENT);
+        Log.e("gh", "History: resume");
 
     }
 
@@ -65,5 +67,12 @@ public class fragment_history extends Fragment {
     public void onPause() {
         super.onPause();
         userPreferences.setStateFragment(NULL_STATE_FRAGMENT);
+        //Log.e("gh", "History: paused");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.e("gh", "History: destroy");
     }
 }

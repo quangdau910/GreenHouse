@@ -3,7 +3,7 @@ package com.quangdau.greenhouse.ApiService;
 import com.quangdau.greenhouse.modelsAPI.get_graph.dataGraph;
 import com.quangdau.greenhouse.modelsAPI.get_limitSettings.limitSettingsData;
 import com.quangdau.greenhouse.modelsAPI.post_limitSettings.LimitSettingsPost;
-import com.quangdau.greenhouse.modelsAPI.post_logout.LogoutPost;
+import com.quangdau.greenhouse.modelsAPI.post_removeToken.RemoveTokenPost;
 import com.quangdau.greenhouse.modelsAPI.post_renewToken.RenewTokenPost;
 import com.quangdau.greenhouse.modelsAPI.post_writeDigital.WriteDigitalPost;
 import com.quangdau.greenhouse.modelsAPI.get_RSSI.RSSIData;
@@ -12,7 +12,7 @@ import com.quangdau.greenhouse.modelsAPI.post_authen.AuthenPost;
 import com.quangdau.greenhouse.modelsAPI.res_authenPost.resAuthorityPost;
 import com.quangdau.greenhouse.modelsAPI.get_data.data;
 import com.quangdau.greenhouse.modelsAPI.res_limitSettingsPost.resLimitSettingsPost;
-import com.quangdau.greenhouse.modelsAPI.res_logoutPost.resLogoutPost;
+import com.quangdau.greenhouse.modelsAPI.res_removeTokenPost.resRemoveTokenPost;
 import com.quangdau.greenhouse.modelsAPI.res_renewTokenPost.resRenewTokenPost;
 import com.quangdau.greenhouse.modelsAPI.res_writeDigitalPost.resWriteDigitalPost;
 
@@ -72,6 +72,6 @@ public interface ApiServer {
     Call  <resRenewTokenPost> postRenewToken(@Body RenewTokenPost renewTokenPost);
 
     @POST("pi4Server")
-    Call <resLogoutPost> postLogout(@Body LogoutPost logoutPost);
+    Call <resRemoveTokenPost> postLogout(@Body RemoveTokenPost removeTokenPost);
 
 }

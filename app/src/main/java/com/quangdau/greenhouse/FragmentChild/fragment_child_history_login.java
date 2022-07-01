@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.quangdau.greenhouse.Adapter.RecycleView.HistoryLoginAdapter;
 import com.quangdau.greenhouse.ApiService.ApiServer;
 import com.quangdau.greenhouse.Other.NetworkConnection;
+import com.quangdau.greenhouse.Other.ToastError;
 import com.quangdau.greenhouse.SharedPreferences.UserPreferences;
 import com.quangdau.greenhouse.R;
 import com.quangdau.greenhouse.modelsAPI.get_history.historyLoginData;
@@ -34,6 +35,7 @@ public class fragment_child_history_login extends Fragment {
     RecyclerView recyclerView;
     UserPreferences userPreferences;
     NetworkConnection networkConnection;
+    ToastError toastError;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public class fragment_child_history_login extends Fragment {
         recyclerView = view.findViewById(R.id.recycleViewHistoryLogin);
         userPreferences = new UserPreferences(getActivity());
         networkConnection = new NetworkConnection(getActivity());
+        toastError = new ToastError(getActivity(), getActivity());
         getDataHistoryLogin();
         return view;
     }
@@ -60,7 +63,11 @@ public class fragment_child_history_login extends Fragment {
             call.enqueue(new Callback<ArrayList<historyLoginData>>() {
                 @Override
                 public void onResponse(Call<ArrayList<historyLoginData>> call, Response<ArrayList<historyLoginData>> response) {
-                    settingRecycleView(response);
+                    if (response.body() != null){
+                        settingRecycleView(response);
+                    }else {
+                        networkConnection.checkStatusCode(response.code());
+                    }
                 }
 
                 @Override
@@ -69,7 +76,7 @@ public class fragment_child_history_login extends Fragment {
                 }
             });
         }else {
-            Toast.makeText(getActivity(), "No connection!", Toast.LENGTH_SHORT).show();
+            toastError.makeText("No connection!");
         }
 
     }
@@ -80,5 +87,23 @@ public class fragment_child_history_login extends Fragment {
         HistoryLoginAdapter historyLoginAdapter = new HistoryLoginAdapter(getActivity(), data);
         recyclerView.setAdapter(historyLoginAdapter);
         historyLoginAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e("gh", "HistoryLogin: resume");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        //Log.e("gh", "HistoryLogin: paused");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.e("gh", "HistoryLogin: destroy");
     }
 }

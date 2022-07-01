@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.quangdau.greenhouse.ApiService.ApiServer;
 import com.quangdau.greenhouse.ApiService.ApiWeather;
 import com.quangdau.greenhouse.Other.NetworkConnection;
+import com.quangdau.greenhouse.Other.ToastError;
 import com.quangdau.greenhouse.SharedPreferences.UserPreferences;
 import com.quangdau.greenhouse.R;
 import com.quangdau.greenhouse.modelsAPI.post_writeDigital.WriteDigitalPost;
@@ -69,6 +70,7 @@ public class fragment_child_home1 extends Fragment {
     //Other
     String dataPort1;
     NetworkConnection networkConnection;
+    ToastError toastError;
     //Handler handler = new Handler(Looper.getMainLooper());
     UserPreferences userPreferences;
     final String STATE_FRAGMENT = "HOME_FRAGMENT";
@@ -80,7 +82,7 @@ public class fragment_child_home1 extends Fragment {
         runnable = new Runnable() {
             @Override
             public void run() {
-                if (userPreferences.getStateFragment().equals(STATE_FRAGMENT)){
+                if (userPreferences.getStateFragment().equals(STATE_FRAGMENT) && networkConnection.isNetworkConnected()){
                     //Update data from server
                     getDataApi(userPreferences.getToken());
                     //Log.e("gh", "getDataRunnable");
@@ -127,10 +129,12 @@ public class fragment_child_home1 extends Fragment {
         imageViewValve2 = view.findViewById(R.id.imageViewDeviceValve2);
         imageViewValve3 = view.findViewById(R.id.imageViewDeviceValve3);
         imageViewValve4 = view.findViewById(R.id.imageViewDeviceValve4);
+        //Other
+        toastError = new ToastError(getActivity(), getActivity());
         //DefaultUI
         cardViewWeather.setVisibility(View.GONE);
         //Get data
-        getDataApi(userPreferences.getToken());
+        //getDataApi(userPreferences.getToken());
 
         switchLight1.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (switchLight1.isPressed()){
@@ -199,27 +203,30 @@ public class fragment_child_home1 extends Fragment {
 
     //Get data
     private void getDataApi(String token) {
-        //bundle = this.getArguments();
-        Switch[] port1 = {switchLight1, switchFan1, switchValve1, switchValve2, switchValve3, switchValve4};
-        ApiServer get = ApiServer.retrofit.create(ApiServer.class);
-        Call<data> call = get.getData(token, "GetData", houseID);
-        call.enqueue(new Callback<data>() {
-            @Override
-            public void onResponse(Call<data> call, Response<data> response) {
-                if (response.body() != null){
-                    //Assign dataPort
-                    dataPort1 = response.body().getDigitalData().getPort1();
-                    //UpdateUI
-                    updateUISensor(response);
-                    updateUIDevice(response.body().getDigitalData().getPort1(), port1);
+        if (networkConnection.isNetworkConnected()){
+            Switch[] port1 = {switchLight1, switchFan1, switchValve1, switchValve2, switchValve3, switchValve4};
+            ApiServer get = ApiServer.retrofit.create(ApiServer.class);
+            Call<data> call = get.getData(token, "GetData", houseID);
+            call.enqueue(new Callback<data>() {
+                @Override
+                public void onResponse(Call<data> call, Response<data> response) {
+                    if (response.body() != null && response.body().getResponse().equals("GetData")){
+                        //Assign dataPort
+                        dataPort1 = response.body().getDigitalData().getPort1();
+                        //UpdateUI
+                        updateUISensor(response);
+                        updateUIDevice(response.body().getDigitalData().getPort1(), port1);
+                    }else {
+                        networkConnection.checkStatusCode(response.code());
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<data> call, Throwable t) {
-                Log.e("gh", "Error Home1: " + t);
-            }
-        });
+                @Override
+                public void onFailure(Call<data> call, Throwable t) {
+                    Log.e("gh", "Error Home1: " + t);
+                }
+            });
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -250,18 +257,16 @@ public class fragment_child_home1 extends Fragment {
             call.enqueue(new Callback<resWriteDigitalPost>() {
                 @Override
                 public void onResponse(Call<resWriteDigitalPost> call, Response<resWriteDigitalPost> response) {
-                    if (response.body() != null) {
-                        if (response.body().getResponse().equals("Write Completed!")) {
-                            switch (response.body().getPort()) {
-                                case "1":
-                                    dataPort1 = response.body().getValue();
-                                    break;
-                                case "2":
-                                    //Do something
-                                    break;
-                            }
+                    if (response.body() != null && response.body().getResponse().equals("Write Completed!")){
+                        switch (response.body().getPort()) {
+                            case "1":
+                                dataPort1 = response.body().getValue();
+                                break;
+                            case "2":
+                                //Do something
+                                break;
                         }
-                    }
+                    }else networkConnection.checkStatusCode(response.code());
                     if (flagLight1) flagLight1 = false;
                     if (flagFan1) flagFan1 = false;
                     if (flagValve1) flagValve1 = false;
@@ -274,6 +279,10 @@ public class fragment_child_home1 extends Fragment {
                 @Override
                 public void onFailure(Call<resWriteDigitalPost> call, Throwable t) {
                     Log.e("gh", "WriteDigital: " + t);
+                    if (t.getMessage().equals("timeout")){
+                        toastError.makeText("No response from server!");
+                    }
+
                     if (flagLight1) flagLight1 = false;
                     if (flagFan1) flagFan1 = false;
                     if (flagValve1) flagValve1 = false;
@@ -310,7 +319,6 @@ public class fragment_child_home1 extends Fragment {
         if (dataPort.substring(7 - valveEnd, 7 - valveStart + 1).equals("0000")) newDataPort.setCharAt(7 - locationPump, '0');
         return  newDataPort.toString();
     }
-
 
     private void parseData(Bundle bundle) {
         if (bundle != null){
@@ -361,7 +369,8 @@ public class fragment_child_home1 extends Fragment {
                 }
                 @Override
                 public void onFailure(Call<weatherDataModel> call, Throwable t) {
-                    Log.e("gh", "Error get api: " + t);
+                    Log.e("gh", "Home1 Weather: " + t);
+                    toastError.makeText("No response from server!");
                 }
             });
         }
@@ -384,7 +393,7 @@ public class fragment_child_home1 extends Fragment {
         textViewWeatherName.setText(response.body().getName());
         //Weather Temp
         int tempWeather = (int) Math.rint(response.body().getMain().getTemp() - 273.15);
-        textViewWeatherTemp.setText(getResources().getString(R.string.Temperature)+": " + tempWeather + " \u2103");
+        textViewWeatherTemp.setText(getResources().getString(R.string.Temperature)+": " + tempWeather + "\u2103");
         //Humidity
         int humidityWeather = response.body().getMain().getHumidity();
         textViewWeatherHumidity.setText(getResources().getString(R.string.Humidity)+": " + humidityWeather + "%");
@@ -418,12 +427,6 @@ public class fragment_child_home1 extends Fragment {
         }
         return "weather_ic_dunno";
     }
-    private boolean isNetworkConnected(){
-        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
-    }
-
-
 
     @Override
     public void onResume() {
@@ -436,7 +439,7 @@ public class fragment_child_home1 extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.e("gh", "home1 pause");
+        //Log.e("gh", "home1 pause");
         mainHandler.removeCallbacks(runnable);
     }
 

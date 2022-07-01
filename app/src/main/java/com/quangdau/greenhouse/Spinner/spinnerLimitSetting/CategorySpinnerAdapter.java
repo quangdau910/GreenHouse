@@ -1,5 +1,6 @@
 package com.quangdau.greenhouse.Spinner.spinnerLimitSetting;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,13 +21,14 @@ public class CategorySpinnerAdapter extends ArrayAdapter<CategorySpinner> {
         super(context, resource, objects);
     }
 
+    @SuppressLint("ViewHolder")
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.spinner_item_selected,parent,false);
-        TextView tvSelecter = convertView.findViewById(R.id.textViewSelecterSpinner);
+        TextView textViewSelections = convertView.findViewById(R.id.textViewSelecterSpinner);
         CategorySpinner categorySpinner = this.getItem(position);
-        tvSelecter.setText(categorySpinner.getText());
+        textViewSelections.setText(categorySpinner.getText());
         itemPosition = position;
         return convertView;
     }

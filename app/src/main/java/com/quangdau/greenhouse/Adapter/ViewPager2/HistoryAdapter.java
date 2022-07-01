@@ -25,7 +25,6 @@ public class HistoryAdapter extends FragmentStateAdapter {
                         case 1:
                                 //Add new fragment
                                 return null;
-
                         default:
                                 return null;
                 }

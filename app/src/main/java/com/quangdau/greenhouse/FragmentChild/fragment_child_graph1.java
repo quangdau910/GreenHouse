@@ -114,9 +114,10 @@ public class fragment_child_graph1 extends Fragment {
         //Assign variables
         radioGroup = view.findViewById(R.id.time_check_graph);
         txtYAxisTitle = view.findViewById(R.id.text_tile_yAxis);
-        txtYAxisTitle.setText(getResources().getString(R.string.yAxis_humidity));
         graph = view.findViewById(R.id.graph);
+        txtYAxisTitle.setText(getResources().getString(R.string.yAxis_humidity));
         graph.setTouchEnabled(true);
+        dataValues = new ArrayList<>();
         userPreferences = new UserPreferences(getActivity());
         networkConnection = new NetworkConnection(getActivity());
         //Spinner view
@@ -133,41 +134,40 @@ public class fragment_child_graph1 extends Fragment {
         spinnerTypeChart.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                flagData1M =false;
-                flagData7D =false;
+                flagData1M = false;
+                flagData7D = false;
                 switch (position){
-                    case 0:{
+                    case 0:
                         typeGraph = graphAir;
                         txtYAxisTitle.setText(getResources().getString(R.string.yAxis_humidity));
                         getArrayDataGraph(userPreferences.getToken());
-                    }break;
-                    case 1:{
+                        break;
+                    case 1:
                         typeGraph = graphTemperature;
                         txtYAxisTitle.setText(getResources().getString(R.string.yAxis_temperature));
                         getArrayDataGraph(userPreferences.getToken());
-                    }break;
-                    case 2:{
+                        break;
+                    case 2:
                         typeGraph = graphLand;
                         txtYAxisTitle.setText(getResources().getString(R.string.yAxis_soil_moisture));
                         getArrayDataGraph(userPreferences.getToken());
-                    }break;
-                    case 3:{
+                        break;
+                    case 3:
                         typeGraph = graphLand2;
                         txtYAxisTitle.setText(getResources().getString(R.string.yAxis_soil_moisture));
                         getArrayDataGraph(userPreferences.getToken());
-                    }break;
-                    case 4:{
+                        break;
+                    case 4:
                         typeGraph = graphLand3;
                         txtYAxisTitle.setText(getResources().getString(R.string.yAxis_soil_moisture));
                         getArrayDataGraph(userPreferences.getToken());
-                    }break;
-                    case 5:{
+                        break;
+                    case 5:
                         typeGraph = graphLand4;
                         txtYAxisTitle.setText(getResources().getString(R.string.yAxis_soil_moisture));
                         getArrayDataGraph(userPreferences.getToken());
-                    }break;
+                        break;
                 }
-
             }
 
             @Override
@@ -188,23 +188,21 @@ public class fragment_child_graph1 extends Fragment {
             }
         });
 
-        dataValues = new ArrayList<>();
+
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @SuppressLint("NonConstantResourceId")
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId){
-                    case R.id.graph_1H:{
+                    case R.id.graph_1H:
                         setTime = setTime1H;
                         getArrayDataGraph(userPreferences.getToken());
-                    }
-                    break;
-                    case R.id.graph_1D:{
+                        break;
+                    case R.id.graph_1D:
                         setTime = setTime1D;
                         getArrayDataGraph(userPreferences.getToken());
-                    }
-                    break;
-                    case R.id.graph_7D:{
+                        break;
+                    case R.id.graph_7D:
                         setTime= setTime7D;
                         if(flagData7D) {
                             mData = getApi7D;
@@ -212,9 +210,8 @@ public class fragment_child_graph1 extends Fragment {
                         }else{
                             getArrayDataGraph(userPreferences.getToken());
                         }
-                    }
-                    break;
-                    case R.id.graph_1M:{
+                        break;
+                    case R.id.graph_1M:
                         setTime= setTime1M;
                         if(flagData1M){
                             mData = getApi1M;
@@ -222,9 +219,6 @@ public class fragment_child_graph1 extends Fragment {
                         }else{
                             getArrayDataGraph(userPreferences.getToken());
                         }
-                    }
-                    break;
-                    default:
                         break;
                 }
             }
@@ -332,8 +326,6 @@ public class fragment_child_graph1 extends Fragment {
             CustomGraph();
 
     }
-
-
     public class YourMarkerView extends MarkerView {
         TextView tvYValue;
         TextView tvXValue;

@@ -12,14 +12,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.format.Formatter;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +26,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.quangdau.greenhouse.ApiService.ApiServer;
 import com.quangdau.greenhouse.Other.NetworkConnection;
+import com.quangdau.greenhouse.Other.ToastError;
 import com.quangdau.greenhouse.SharedPreferences.UserPreferences;
 import com.quangdau.greenhouse.R;
 import com.quangdau.greenhouse.Spinner.spinnerLimitSetting.CategorySpinner;
@@ -63,6 +61,7 @@ public class activity_login extends AppCompatActivity {
     Language language;
     //Other
     NetworkConnection networkConnection;
+    ToastError toastError;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,17 +76,18 @@ public class activity_login extends AppCompatActivity {
         context = this;
         userPreferences = new UserPreferences(context);
         backPressCheck = false;
+        //Network connection
+        networkConnection = new NetworkConnection(this);
+        //Other
+        toastError = new ToastError(this, this);
         //Check permission
         checkPermission();
-        //spinner Language
+        //Spinner language
         language = new Language(this);
         spinnerLanguage = findViewById(R.id.spinner_Language);
         List<CategorySpinner> list = new ArrayList<>();
         list.add(new CategorySpinner("Việt Nam"));
         list.add(new CategorySpinner("English"));
-        //Network connection
-        networkConnection = new NetworkConnection(this);
-
         categoryLanguageAdapter = new CategorySpinnerAdapter(this,R.layout.item_selected_language,list);
         spinnerLanguage.setAdapter(categoryLanguageAdapter);
         if(language.getLang().equals("en")){
@@ -128,11 +128,11 @@ public class activity_login extends AppCompatActivity {
         //Check empty input
         if (networkConnection.isNetworkConnected()) {
             if (account.length() == 0 && password.length() == 0) {
-                toastNew(getResources().getString(R.string.Account_password_not_empty));
+                toastError.makeText(getResources().getString(R.string.Account_password_not_empty));
             } else if (account.length() == 0) {
-                toastNew(getResources().getString(R.string.Account_not_empty));
+                toastError.makeText(getResources().getString(R.string.Account_not_empty));
             } else if (password.length() == 0) {
-                toastNew(getResources().getString(R.string.Password_not_empty));
+                toastError.makeText(getResources().getString(R.string.Password_not_empty));
             } else {
                 btnLogin.setEnabled(false);
                 ApiServer post = ApiServer.retrofit.create(ApiServer.class);
@@ -149,7 +149,7 @@ public class activity_login extends AppCompatActivity {
                             startActivity(nextPage);
                             finish();
                         } else {
-                            toastNew(getResources().getString(R.string.Wrong_account_or_password));
+                            toastError.makeText(getResources().getString(R.string.Wrong_account_or_password));
                         }
                         btnLogin.setEnabled(true);
                     }
@@ -157,13 +157,13 @@ public class activity_login extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<resAuthorityPost> call, Throwable t) {
                         Log.e("login", "Error Login: " + t);
-                        toastNew(getResources().getString(R.string.No_response_from_server));
+                        toastError.makeText(getResources().getString(R.string.No_response_from_server));
                         btnLogin.setEnabled(true);
                     }
                 });
             }
         }else {
-            toastNew("No connection!");
+            toastError.makeText("No connection!");
             btnLogin.setEnabled(true);
             editTextAccount.setFocusable(true);
             editTextPassword.setFocusable(true);
@@ -171,17 +171,6 @@ public class activity_login extends AppCompatActivity {
 
     }
 
-    private void toastNew(String textToast){
-        Toast toast = new Toast(activity_login.this);
-        LayoutInflater inflater = getLayoutInflater();
-        View view = inflater.inflate(R.layout.toast_error_login, findViewById(R.id.customToast));
-        TextView txt = view.findViewById(R.id.textViewToast);
-        txt.setText(textToast);
-        toast.setView(view);
-        toast.setGravity(Gravity.BOTTOM,0,100);
-        toast.setDuration(Toast.LENGTH_SHORT);
-        toast.show();
-    }
 
     private String getIpAddress(){
         WifiManager wifiMgr = (WifiManager) getSystemService(WIFI_SERVICE);
@@ -192,7 +181,7 @@ public class activity_login extends AppCompatActivity {
 
     private void checkPermission(){
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-            Log.e("gh", "Permission grated!");
+            //Log.e("gh", "Permission grated!");
         }else{
             String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION};
             requestPermissions(permissions, REQUEST_PERMISSION_CODE);
@@ -228,6 +217,6 @@ public class activity_login extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e("gh", "Login: token "+ userPreferences.getToken());
+        //Log.e("gh", "Login: token "+ userPreferences.getToken());
     }
 }

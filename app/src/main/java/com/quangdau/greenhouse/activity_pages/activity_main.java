@@ -18,26 +18,22 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
-import com.quangdau.greenhouse.ApiService.ApiServer;
 import com.quangdau.greenhouse.FragmentParent.fragment_account;
 import com.quangdau.greenhouse.FragmentParent.fragment_graph;
 import com.quangdau.greenhouse.FragmentParent.fragment_history;
 import com.quangdau.greenhouse.FragmentParent.fragment_home;
 import com.quangdau.greenhouse.FragmentParent.fragment_settings;
 import com.quangdau.greenhouse.Other.BroadcastReceiver;
+import com.quangdau.greenhouse.Other.NetworkConnection;
+import com.quangdau.greenhouse.Other.RenewToken;
 import com.quangdau.greenhouse.SharedPreferences.UserPreferences;
 import com.quangdau.greenhouse.R;
-import com.quangdau.greenhouse.modelsAPI.post_logout.LogoutPost;
-import com.quangdau.greenhouse.modelsAPI.post_renewToken.RenewTokenPost;
-import com.quangdau.greenhouse.modelsAPI.res_logoutPost.resLogoutPost;
-import com.quangdau.greenhouse.modelsAPI.res_renewTokenPost.resRenewTokenPost;
 
-import java.time.Instant;
+
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+
 
 public class activity_main extends AppCompatActivity {
     //Declare variables
@@ -60,6 +56,9 @@ public class activity_main extends AppCompatActivity {
     Context context;
     boolean backPressCheck;
     BroadcastReceiver broadcastReceiver;
+    NetworkConnection networkConnection;
+    final long TIME_RENEW_TOKEN = TimeUnit.MINUTES.toMillis(55); //Send RenewToken after 55 minutes (Token exp 1h)
+    RenewToken mRenewToken;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +72,9 @@ public class activity_main extends AppCompatActivity {
         floatingActionButton = findViewById(R.id.fab);
         bottomNavigationView = findViewById(R.id.bottom_nav);
         backPressCheck = false;
-        broadcastReceiver = new BroadcastReceiver();
+        broadcastReceiver = new BroadcastReceiver(this);
+        networkConnection = new NetworkConnection(this);
+        mRenewToken = new RenewToken(this);
         //Get authority
         parseData();
         packedData(fragmentHome);
@@ -81,32 +82,16 @@ public class activity_main extends AppCompatActivity {
         context = this;
         userPreferences = new UserPreferences(context);
         token = userPreferences.getToken();
-        //Setting timer
+        //Setting handler postDelays
         handler = new Handler();
         runnable = new Runnable() {
             @Override
             public void run() {
-                ApiServer post = ApiServer.retrofit.create(ApiServer.class);
-                RenewTokenPost renewTokenPost = new RenewTokenPost(userPreferences.getToken(), "RenewToken");
-                Call <resRenewTokenPost> postRenew = post.postRenewToken(renewTokenPost);
-                postRenew.enqueue(new Callback<resRenewTokenPost>() {
-                    @Override
-                    public void onResponse(Call<resRenewTokenPost> call, Response<resRenewTokenPost> response) {
-                        if (response.body() != null && response.body().getResponse().equals("RenewToken")){
-                            Log.e("gh", "Main oldToken: "+ token);
-                            userPreferences.setToken(response.body().getToken());
-                            Log.e("gh", "Main newToken: "+ response.body().getToken());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<resRenewTokenPost> call, Throwable t) {
-                        Log.e("gh", "Main: "+ t);
-                    }
-                });
+                mRenewToken.renewToken();
+                handler.postDelayed(this, TIME_RENEW_TOKEN);
             }
         };
-        handler.postAtTime(runnable, expTime - 5*60); // Set timer to renew token before 5 min
+        handler.postDelayed(runnable, TIME_RENEW_TOKEN);
         //Setting bottom nav
         bottomNavigationView.setBackground(null);
         bottomNavigationView.getMenu().getItem(2).setEnabled(false);
@@ -147,6 +132,7 @@ public class activity_main extends AppCompatActivity {
             packedData(fragmentHome);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragmentHome).commit();
         });
+
     }
 
     private void parseData(){
@@ -155,17 +141,15 @@ public class activity_main extends AppCompatActivity {
         if (extras != null){
             arrAuthority = extras.getStringArrayList("authority");
             expTime = extras.getLong("expTime");
-            Instant instant = Instant.ofEpochSecond(expTime);
-            Log.e("gh", "Main: "+ expTime);
-            Log.e("gh", "Main: "+ instant);
-            Log.e("gh", "Main: "+ System.currentTimeMillis());
         }
     }
+
     private void packedData(Fragment fragment){
         Bundle bundle = new Bundle();
         bundle.putStringArrayList("arrAuthority",arrAuthority);
         fragment.setArguments(bundle);
     }
+
     @Override
     public void onBackPressed() {
         if (backPressCheck){
@@ -181,34 +165,19 @@ public class activity_main extends AppCompatActivity {
             }
         }, 2000);
     }
-    private void removeToken(String token){
-        userPreferences.setToken("NULL");
-        ApiServer post = ApiServer.retrofit.create(ApiServer.class);
-        LogoutPost logoutPost = new LogoutPost(token);
-        Call<resLogoutPost> postLogout = post.postLogout(logoutPost);
-        postLogout.enqueue(new Callback<resLogoutPost>() {
-            @Override
-            public void onResponse(Call<resLogoutPost> call, Response<resLogoutPost> response) {
-
-            }
-
-            @Override
-            public void onFailure(Call<resLogoutPost> call, Throwable t) {
-
-            }
-        });
-    }
 
     @Override
     protected void onStart() {
         super.onStart();
-        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.EXTRA_NO_CONNECTIVITY);
+        Log.e("gh", "Main: start");
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(broadcastReceiver, intentFilter);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        Log.e("gh", "Main: stop");
         unregisterReceiver(broadcastReceiver);
     }
 
@@ -221,6 +190,7 @@ public class activity_main extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        //Log.e("gh", "Main: paused");
     }
 
     @Override
@@ -228,6 +198,5 @@ public class activity_main extends AppCompatActivity {
         super.onDestroy();
         Log.e("gh", "Main: destroy");
         handler.removeCallbacks(runnable);
-        removeToken(userPreferences.getToken());
     }
 }

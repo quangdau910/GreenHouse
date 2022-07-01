@@ -75,6 +75,10 @@
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/drawable/switch_limit_track.xml" value="0.185" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/drawable/switch_thumb.xml" value="0.136" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/drawable/switch_track.xml" value="0.185" />
+        <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/drawable/toast_error.xml" value="0.2185" />
+        <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/drawable/toast_network_online.xml" value="0.2185" />
+        <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/drawable/toast_nework_connected.xml" value="0.2185" />
+        <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/drawable/toast_nework_offline.xml" value="0.2185" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/drawable/toast_round.xml" value="0.198" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/layout/cardview_history_login.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/layout/fragment_account.xml" value="0.264" />
@@ -101,7 +105,11 @@
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/layout/spinner_limit_item_category.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/layout/spinner_limit_item_selected.xml" value="0.24010416666666667" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/layout/spinner_style.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/layout/toast_error.xml" value="0.15572916666666667" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/layout/toast_error_login.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/layout/toast_network_connected.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/layout/toast_network_offline.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/layout/toast_network_online.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse/app/src/main/res/layout/win_layout_spinkit.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/QuangDau/Desktop/GreenHouse5/app/src/main/res/layout/fragment_graph.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/hihi/Desktop/Android/GreenHouse10/app/src/main/res/drawable/round_title_graph.xml" value="0.134" />
