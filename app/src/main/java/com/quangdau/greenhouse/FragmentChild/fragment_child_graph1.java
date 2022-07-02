@@ -3,6 +3,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -110,15 +111,23 @@ public class fragment_child_graph1 extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_child_graph1,container,false);
+
+        userPreferences = new UserPreferences(getActivity());
+        networkConnection = new NetworkConnection(getActivity());
+
         //Assign variables
         radioGroup = view.findViewById(R.id.time_check_graph);
         txtYAxisTitle = view.findViewById(R.id.text_tile_yAxis);
         graph = view.findViewById(R.id.graph);
+
         txtYAxisTitle.setText(getResources().getString(R.string.yAxis_humidity));
-        graph.setTouchEnabled(true);
+
+        // Custom text no data
+        Paint paint = graph.getPaint(graph.PAINT_INFO);
+        paint.setTextSize(50);
+        graph.setNoDataText("No Data");
+        graph.setNoDataTextColor(getResources().getColor(R.color.blue_30));
         dataValues = new ArrayList<>();
-        userPreferences = new UserPreferences(getActivity());
-        networkConnection = new NetworkConnection(getActivity());
         //Spinner view
         spinnerTypeChart = view.findViewById(R.id.typeChart1);
         List<CategorySpinner> list = new ArrayList<>();
@@ -260,7 +269,8 @@ public class fragment_child_graph1 extends Fragment {
             call.enqueue(new Callback<dataGraph>() {
                 @Override
                 public void onResponse(Call<dataGraph> call, Response<dataGraph> response) {
-                    if (response.body() != null){
+
+                    if (response.body().getData().size()!= 0){
                         mData = new ArrayList<>();
                         mDataGraph = response.body();
                         long timeData;
@@ -291,6 +301,10 @@ public class fragment_child_graph1 extends Fragment {
                         setDataGraph();
                         dialog.dismiss();
                     }
+                    else{
+                        graph.clear();
+                        dialog.dismiss();
+                    }
                 }
 
                 @Override
@@ -301,7 +315,6 @@ public class fragment_child_graph1 extends Fragment {
             });
         }else {
             graph.clear();
-            graph.setNoDataText("No Data");
         }
 
 
