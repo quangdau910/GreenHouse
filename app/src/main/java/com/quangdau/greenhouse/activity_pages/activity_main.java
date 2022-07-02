@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import com.quangdau.greenhouse.FragmentParent.fragment_settings;
 import com.quangdau.greenhouse.Other.BroadcastReceiver;
 import com.quangdau.greenhouse.Other.NetworkConnection;
 import com.quangdau.greenhouse.Other.RenewToken;
+import com.quangdau.greenhouse.Services.ServiceRemoveToken;
 import com.quangdau.greenhouse.SharedPreferences.UserPreferences;
 import com.quangdau.greenhouse.R;
 
@@ -51,6 +53,7 @@ public class activity_main extends AppCompatActivity {
     //Other
     String token;
     ArrayList<String> arrAuthority;
+    Intent intentRemoveToken;
     long expTime;
     UserPreferences userPreferences;
     Context context;
@@ -75,6 +78,7 @@ public class activity_main extends AppCompatActivity {
         broadcastReceiver = new BroadcastReceiver(this);
         networkConnection = new NetworkConnection(this);
         mRenewToken = new RenewToken(this);
+        intentRemoveToken = new Intent(this, ServiceRemoveToken.class);
         //Get authority
         parseData();
         packedData(fragmentHome);
@@ -190,7 +194,9 @@ public class activity_main extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        //Log.e("gh", "Main: paused");
+        Log.e("gh", "Main: paused");
+        finish();
+
     }
 
     @Override
@@ -198,5 +204,6 @@ public class activity_main extends AppCompatActivity {
         super.onDestroy();
         Log.e("gh", "Main: destroy");
         handler.removeCallbacks(runnable);
+        startService(intentRemoveToken);
     }
 }

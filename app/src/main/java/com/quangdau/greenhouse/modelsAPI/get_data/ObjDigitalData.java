@@ -1,6 +1,6 @@
 package com.quangdau.greenhouse.modelsAPI.get_data;
 
-public class objDigitalData {
+public class ObjDigitalData {
     private String port1;
 
     public String getPort1() {

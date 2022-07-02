@@ -27,8 +27,8 @@ import com.quangdau.greenhouse.R;
 import com.quangdau.greenhouse.SharedPreferences.UserPreferences;
 import com.quangdau.greenhouse.Spinner.CategorySpinner;
 import com.quangdau.greenhouse.Spinner.CategorySpinnerAdapter;
-import com.quangdau.greenhouse.modelsAPI.get_limitSettings.limitSettingsData;
-import com.quangdau.greenhouse.modelsAPI.get_limitSettings.objGetLimitSettingData;
+import com.quangdau.greenhouse.modelsAPI.get_limitSettings.LimitSettingsData;
+import com.quangdau.greenhouse.modelsAPI.get_limitSettings.ObjGetLimitSettingData;
 import com.quangdau.greenhouse.modelsAPI.post_limitSettings.LimitSettingsPost;
 import com.quangdau.greenhouse.modelsAPI.post_limitSettings.ObjPostLimitSettingData;
 import com.quangdau.greenhouse.modelsAPI.res_limitSettingsPost.resLimitSettingsPost;
@@ -262,10 +262,10 @@ public class fragment_child_limit_setting extends Fragment {
 
     private void getLimitSettingsData(){
         ApiServer get = ApiServer.retrofit.create(ApiServer.class);
-        Call<limitSettingsData> call = get.getLimitSettingsData(userPreferences.getToken(), "GetLimitSettingsData", getHouseID(categorySpinnerAdapter.getItemSelected()));
-        call.enqueue(new Callback<limitSettingsData>() {
+        Call<LimitSettingsData> call = get.getLimitSettingsData(userPreferences.getToken(), "GetLimitSettingsData", getHouseID(categorySpinnerAdapter.getItemSelected()));
+        call.enqueue(new Callback<LimitSettingsData>() {
             @Override
-            public void onResponse(Call<limitSettingsData> call, Response<limitSettingsData> response) {
+            public void onResponse(Call<LimitSettingsData> call, Response<LimitSettingsData> response) {
                 if (response.body().getResponse().equals("GetLimitSettingsData")){
                     updateUILimitSettings(response.body().getData());
                     updateUIButtonSaveChange(false);
@@ -275,14 +275,14 @@ public class fragment_child_limit_setting extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<limitSettingsData> call, Throwable t) {
+            public void onFailure(Call<LimitSettingsData> call, Throwable t) {
                 toastError.makeText(getActivity().getResources().getString(R.string.no_response_from_server));
             }
         });
     }
 
     @SuppressLint("SetTextI18n")
-    private void updateUILimitSettings(ArrayList<objGetLimitSettingData> objGetLimitSettingData){
+    private void updateUILimitSettings(ArrayList<ObjGetLimitSettingData> objGetLimitSettingData){
         for (int i = 0; i < objGetLimitSettingData.size(); i++){
             switch(objGetLimitSettingData.get(i).getSensor()){
                 case "soil_moisture1":

@@ -10,13 +10,12 @@
     <FrameLayout
         android:id="@+id/fragmentSettingsContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="match_parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/tabLayoutSetting"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="48dp"
         android:background="@color/white_60"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent">
@@ -30,6 +29,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:text="@string/setting_title"
             android:textSize="22sp"
+            android:textAllCaps="true"
             android:fontFamily="@font/open_sans_bold"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>

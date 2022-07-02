@@ -12,7 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.quangdau.greenhouse.R;
-import com.quangdau.greenhouse.modelsAPI.get_history.historyLoginData;
+import com.quangdau.greenhouse.modelsAPI.get_history.ObjHistoryLoginData;
 
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -22,9 +22,9 @@ import java.util.ArrayList;
 
 
 public class HistoryLoginAdapter extends RecyclerView.Adapter<HistoryLoginAdapter.LoginVH> {
-    ArrayList<historyLoginData> loginData;
+    ArrayList<ObjHistoryLoginData> loginData;
     Context context;
-    public HistoryLoginAdapter(Context context, ArrayList<historyLoginData> data) {
+    public HistoryLoginAdapter(Context context, ArrayList<ObjHistoryLoginData> data) {
         this.loginData = data;
         this.context = context;
     }
@@ -40,11 +40,11 @@ public class HistoryLoginAdapter extends RecyclerView.Adapter<HistoryLoginAdapte
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull LoginVH holder, int position) {
-        historyLoginData historyLoginData = loginData.get(position);
-        holder.deviceName.setText(""+ context.getResources().getString(R.string.device_name)+":" + historyLoginData.getDevice_name());
-        holder.account.setText(""+context.getResources().getString(R.string.account_history)+":"+ historyLoginData.getAccount());
-        holder.ip.setText("Ip: "+ historyLoginData.getIp());
-        holder.loginTime.setText(""+context.getResources().getString(R.string.login_time)+":" + formatDate(historyLoginData.getLogin_time()));
+        ObjHistoryLoginData objHistoryLoginData = loginData.get(position);
+        holder.deviceName.setText(""+ context.getResources().getString(R.string.device_name)+":" + objHistoryLoginData.getDevice_name());
+        holder.account.setText(""+context.getResources().getString(R.string.account_history)+":"+ objHistoryLoginData.getAccount());
+        holder.ip.setText("Ip: "+ objHistoryLoginData.getIp());
+        holder.loginTime.setText(""+context.getResources().getString(R.string.login_time)+":" + formatDate(objHistoryLoginData.getLogin_time()));
 
         boolean isExpanded = loginData.get(position).isExpanded();
         holder.expandableLayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
@@ -69,8 +69,8 @@ public class HistoryLoginAdapter extends RecyclerView.Adapter<HistoryLoginAdapte
             loginTime = itemView.findViewById(R.id.textViewLoginTimeHistoryLogin);
 
             deviceName.setOnClickListener(v -> {
-                historyLoginData historyLoginData = loginData.get(getAdapterPosition());
-                historyLoginData.setExpanded(!historyLoginData.isExpanded());
+                ObjHistoryLoginData objHistoryLoginData = loginData.get(getAdapterPosition());
+                objHistoryLoginData.setExpanded(!objHistoryLoginData.isExpanded());
                 notifyItemChanged(getAdapterPosition());
             });
         }

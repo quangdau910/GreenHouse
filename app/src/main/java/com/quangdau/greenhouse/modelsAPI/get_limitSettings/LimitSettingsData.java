@@ -2,9 +2,9 @@ package com.quangdau.greenhouse.modelsAPI.get_limitSettings;
 
 import java.util.ArrayList;
 
-public class limitSettingsData {
+public class LimitSettingsData {
     private String houseID, response;
-    private ArrayList<objGetLimitSettingData> data;
+    private ArrayList<ObjGetLimitSettingData> data;
 
 
     public String getHouseID() {
@@ -15,7 +15,7 @@ public class limitSettingsData {
         return response;
     }
 
-    public ArrayList<objGetLimitSettingData> getData() {
+    public ArrayList<ObjGetLimitSettingData> getData() {
         return data;
     }
 }

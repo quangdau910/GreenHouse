@@ -1,10 +1,10 @@
 package com.quangdau.greenhouse.modelsAPI.get_graph;
 
-public class data {
+public class Data {
     private String time;
     private float first;
 
-    public data(String time, float first) {
+    public Data(String time, float first) {
         this.time = time;
         this.first = first;
     }

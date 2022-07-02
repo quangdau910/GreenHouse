@@ -1,20 +1,20 @@
 package com.quangdau.greenhouse.modelsAPI.weather;
 
-public class weatherDataModel {
-    private arrWeather[] weather;
+public class WeatherDataModel {
+    private ArrWeather[] weather;
     private String name;
-    private objMain main;
-    private objCoord coord;
+    private ObjMain main;
+    private ObjCoord coord;
 
 
 
-    public objCoord getCoord() {
+    public ObjCoord getCoord() {
         return coord;
     }
-    public objMain getMain() {
+    public ObjMain getMain() {
         return main;
     }
-    public arrWeather[] getWeather() {
+    public ArrWeather[] getWeather() {
         return weather;
     }
     public String getName() {

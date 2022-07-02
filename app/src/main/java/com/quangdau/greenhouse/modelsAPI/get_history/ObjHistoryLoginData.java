@@ -1,13 +1,8 @@
 package com.quangdau.greenhouse.modelsAPI.get_history;
 
-import java.sql.Date;
-
-public class historyLoginData {
+public class ObjHistoryLoginData {
     private String account, ip, device_name, login_time;
     private boolean expanded;
-
-
-
 
     public String getAccount() {
         return account;

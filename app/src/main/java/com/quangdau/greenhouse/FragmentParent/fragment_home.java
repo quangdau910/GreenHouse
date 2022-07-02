@@ -39,6 +39,7 @@ public class fragment_home extends Fragment {
     HomeAdapter adapter;
     ArrayList<String> arrAuthority;
     NetworkConnection networkConnection;
+    String timeRSSI;
     //Handler post delay
     Runnable runnable;
     Handler mainHandler;
@@ -68,8 +69,6 @@ public class fragment_home extends Fragment {
                 case 1:
                     adapter.addFragment(new fragment_child_home2(), arrAuthority.get(i));
                     break;
-                default:
-                    break;
             }
         }
         viewPager2.setOffscreenPageLimit(2);
@@ -86,7 +85,6 @@ public class fragment_home extends Fragment {
                         tab.setText(getResources().getString(R.string.house_2));
                     }break;
                 }
-
             }
         }).attach();
 
@@ -111,7 +109,7 @@ public class fragment_home extends Fragment {
         runnable = new Runnable() {
             @Override
             public void run() {
-                if (userPreferences.getStateFragment().equals(STATE_FRAGMENT) && networkConnection.isNetworkConnected()){
+                if (userPreferences.getStateFragment().equals(STATE_FRAGMENT)){
                     getRSSIData(userPreferences.getToken(), adapter.fragmentTitle.get(tabLayout.getSelectedTabPosition()));
                 }
                 mainHandler.postDelayed(this, TIME_DELAY);
@@ -123,38 +121,46 @@ public class fragment_home extends Fragment {
         return view;
     }
 
+    private void getRSSIData(String token, String houseID){
+        if (networkConnection.isNetworkConnected()){
+            ApiServer get = ApiServer.retrofit.create(ApiServer.class);
+            Call<RSSIData> call = get.getRSSIData(token, "GetRSSIData", houseID);
+            call.enqueue(new Callback<RSSIData>() {
+                @Override
+                public void onResponse(Call<RSSIData> call, Response<RSSIData> response) {
+                    if (response.body() != null && response.body().getResponse().equals("Response RSSI Data") ){
+                        timeRSSI = response.body().getData().getTime();
+                        updateRSSIUI(response.body().getData().getValue(), response.body().getData().getTime());
+
+                    }else {
+                        networkConnection.checkStatusCode(response.code());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<RSSIData> call, Throwable t) {
+                    Log.e("gh", "Home RSSI: "+ t);
+                }
+            });
+        }
+    }
+
+    private void updateRSSIUI(Integer value, String time){
+        TabLayout.Tab tab = tabLayout.getTabAt(tabLayout.getSelectedTabPosition());
+        assert tab != null;
+        if (!time.equals(timeRSSI)){
+            if (value >= 0 && value <= 25) tab.setIcon(R.drawable.ic_signal_wifi_1_bar);
+            if (value > 25 && value <= 50) tab.setIcon(R.drawable.ic_signal_wifi_2_bar);
+            if (value > 50 && value <= 75) tab.setIcon(R.drawable.ic_signal_wifi_3_bar);
+            if (value > 75 && value <= 100) tab.setIcon(R.drawable.ic_signal_wifi_4_bar);
+        }else {
+            tab.setIcon(R.drawable.ic_signal_wifi_bad);
+        }
+    }
+
     private void parseData(){
         assert getArguments() != null;
         arrAuthority = getArguments().getStringArrayList("arrAuthority");
-    }
-
-    private void getRSSIData(String token, String houseID){
-        ApiServer get = ApiServer.retrofit.create(ApiServer.class);
-        Call<RSSIData> call = get.getRSSIData(token, "GetRSSIData", houseID);
-        call.enqueue(new Callback<RSSIData>() {
-            @Override
-            public void onResponse(Call<RSSIData> call, Response<RSSIData> response) {
-                if (response.body() != null && response.body().getResponse().equals("Response RSSI Data") ){
-                    updateRSSIUI(response.body().getData().getValue());
-                }else {
-                    networkConnection.checkStatusCode(response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<RSSIData> call, Throwable t) {
-                Log.e("gh", "Home RSSI: "+ t);
-            }
-        });
-    }
-
-    private void updateRSSIUI(Integer value){
-        TabLayout.Tab tab = tabLayout.getTabAt(tabLayout.getSelectedTabPosition());
-        assert tab != null;
-        if (value >= 0 && value <= 25) tab.setIcon(R.drawable.ic_signal_wifi_1_bar);
-        if (value > 25 && value <= 50) tab.setIcon(R.drawable.ic_signal_wifi_2_bar);
-        if (value > 50 && value <= 75) tab.setIcon(R.drawable.ic_signal_wifi_3_bar);
-        if (value > 75 && value <= 100) tab.setIcon(R.drawable.ic_signal_wifi_4_bar);
     }
 
     @Override
@@ -168,7 +174,7 @@ public class fragment_home extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.e("gh", "home paused");
+        Log.e("gh", "home pause");
         userPreferences.setStateFragment(NULL_STATE_FRAGMENT);
         mainHandler.removeCallbacks(runnable);
     }

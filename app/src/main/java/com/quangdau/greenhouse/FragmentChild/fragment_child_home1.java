@@ -32,9 +32,9 @@ import com.quangdau.greenhouse.Other.ToastError;
 import com.quangdau.greenhouse.SharedPreferences.UserPreferences;
 import com.quangdau.greenhouse.R;
 import com.quangdau.greenhouse.modelsAPI.post_writeDigital.WriteDigitalPost;
-import com.quangdau.greenhouse.modelsAPI.get_data.data;
+import com.quangdau.greenhouse.modelsAPI.get_data.Data;
 import com.quangdau.greenhouse.modelsAPI.res_writeDigitalPost.resWriteDigitalPost;
-import com.quangdau.greenhouse.modelsAPI.weather.weatherDataModel;
+import com.quangdau.greenhouse.modelsAPI.weather.WeatherDataModel;
 
 
 import retrofit2.Call;
@@ -203,10 +203,10 @@ public class fragment_child_home1 extends Fragment {
         if (networkConnection.isNetworkConnected()){
             Switch[] port1 = {switchLight1, switchFan1, switchValve1, switchValve2, switchValve3, switchValve4};
             ApiServer get = ApiServer.retrofit.create(ApiServer.class);
-            Call<data> call = get.getData(token, "GetData", houseID);
-            call.enqueue(new Callback<data>() {
+            Call<Data> call = get.getData(token, "GetData", houseID);
+            call.enqueue(new Callback<Data>() {
                 @Override
-                public void onResponse(Call<data> call, Response<data> response) {
+                public void onResponse(Call<Data> call, Response<Data> response) {
                     if (response.body() != null && response.body().getResponse().equals("GetData")){
                         //Assign dataPort
                         dataPort1 = response.body().getDigitalData().getPort1();
@@ -219,7 +219,7 @@ public class fragment_child_home1 extends Fragment {
                 }
 
                 @Override
-                public void onFailure(Call<data> call, Throwable t) {
+                public void onFailure(Call<Data> call, Throwable t) {
                     Log.e("gh", "Home1 GetData: " + t);
                 }
             });
@@ -241,7 +241,7 @@ public class fragment_child_home1 extends Fragment {
             call.enqueue(new Callback<resWriteDigitalPost>() {
                 @Override
                 public void onResponse(Call<resWriteDigitalPost> call, Response<resWriteDigitalPost> response) {
-                    if (response.body() != null && response.body().getResponse().equals("Write Completed!")){
+                    if (response.body() != null && response.body().getResponse().equals("WriteDigital")){
                         switch (response.body().getPort()) {
                             case "1":
                                 dataPort1 = response.body().getValue();
@@ -279,7 +279,7 @@ public class fragment_child_home1 extends Fragment {
     }
 
     @SuppressLint("SetTextI18n")
-    private void updateUISensor(Response<data> response) {
+    private void updateUISensor(Response<Data> response) {
         //Log.e("gh", "update ui sensor");
         textViewTemperatureSensor.setText(response.body().getTemperature() + "");
         textViewLightSensor.setText(response.body().getLight() + "");
@@ -353,16 +353,16 @@ public class fragment_child_home1 extends Fragment {
     private void getWeatherApi() {
         if (networkConnection.isNetworkConnected()){
             ApiWeather getData = ApiWeather.retrofit.create(ApiWeather.class);
-            Call<weatherDataModel> call = getData.getWeather(latitude, longitude, weatherAPPID);
-            call.enqueue(new Callback<weatherDataModel>() {
+            Call<WeatherDataModel> call = getData.getWeather(latitude, longitude, weatherAPPID);
+            call.enqueue(new Callback<WeatherDataModel>() {
                 @Override
-                public void onResponse(Call<weatherDataModel> call, Response<weatherDataModel> response) {
+                public void onResponse(Call<WeatherDataModel> call, Response<WeatherDataModel> response) {
                     if (response.body() != null){
                         updateUIWeather(response);
                     }
                 }
                 @Override
-                public void onFailure(Call<weatherDataModel> call, Throwable t) {
+                public void onFailure(Call<WeatherDataModel> call, Throwable t) {
                     Log.e("gh", "Home1 Weather: " + t);
                     toastError.makeText(getResources().getString(R.string.no_response_from_server));
                 }
@@ -371,7 +371,7 @@ public class fragment_child_home1 extends Fragment {
     }
 
     @SuppressLint("SetTextI18n")
-    private void updateUIWeather(Response<weatherDataModel> response){
+    private void updateUIWeather(Response<WeatherDataModel> response){
         assert response.body() != null;
         //Check Location
         if (response.body().getCoord().getLat() == 0 && response.body().getCoord().getLon() == 0){

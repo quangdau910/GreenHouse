@@ -1,10 +1,10 @@
 package com.quangdau.greenhouse.modelsAPI.get_graph;
 
-public class dataReal {
+public class DataReal {
     private long time;
     private float value;
 
-    public dataReal(long time, float value) {
+    public DataReal(long time, float value) {
         this.time = time;
         this.value = value;
     }

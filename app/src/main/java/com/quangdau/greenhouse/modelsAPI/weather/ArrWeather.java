@@ -1,6 +1,6 @@
 package com.quangdau.greenhouse.modelsAPI.weather;
 
-public class arrWeather {
+public class ArrWeather {
 
     int id;
     private String main, description, icon;

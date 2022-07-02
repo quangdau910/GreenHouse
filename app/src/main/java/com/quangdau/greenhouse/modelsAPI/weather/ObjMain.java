@@ -1,6 +1,6 @@
 package com.quangdau.greenhouse.modelsAPI.weather;
 
-public class objMain {
+public class ObjMain {
     private double temp;
     private int humidity;
 

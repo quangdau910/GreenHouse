@@ -1,11 +1,11 @@
 package com.quangdau.greenhouse.modelsAPI.get_data;
 
-public class data {
+public class Data {
     private double temperature, humidity, soil_moisture1, light, soil_moisture2, soil_moisture3, soil_moisture4;
     private String houseID, response;
-    private objDigitalData digitalData;
+    private ObjDigitalData digitalData;
 
-    public objDigitalData getDigitalData() {
+    public ObjDigitalData getDigitalData() {
         return digitalData;
     }
 

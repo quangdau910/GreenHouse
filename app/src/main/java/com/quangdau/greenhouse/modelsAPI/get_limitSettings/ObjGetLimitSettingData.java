@@ -1,6 +1,6 @@
 package com.quangdau.greenhouse.modelsAPI.get_limitSettings;
 
-public class objGetLimitSettingData {
+public class ObjGetLimitSettingData {
     private String house_id, sensor;
     private Integer min, max;
     private Boolean status;

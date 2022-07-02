@@ -1,29 +1,23 @@
 package com.quangdau.greenhouse.ApiService;
 
-import androidx.annotation.NonNull;
-
-import com.quangdau.greenhouse.modelsAPI.get_graph.dataGraph;
-import com.quangdau.greenhouse.modelsAPI.get_limitSettings.limitSettingsData;
+import com.quangdau.greenhouse.modelsAPI.get_graph.DataGraph;
+import com.quangdau.greenhouse.modelsAPI.get_history.HistoryLoginData;
+import com.quangdau.greenhouse.modelsAPI.get_limitSettings.LimitSettingsData;
 import com.quangdau.greenhouse.modelsAPI.post_limitSettings.LimitSettingsPost;
 import com.quangdau.greenhouse.modelsAPI.post_removeToken.RemoveTokenPost;
 import com.quangdau.greenhouse.modelsAPI.post_renewToken.RenewTokenPost;
 import com.quangdau.greenhouse.modelsAPI.post_writeDigital.WriteDigitalPost;
 import com.quangdau.greenhouse.modelsAPI.get_RSSI.RSSIData;
-import com.quangdau.greenhouse.modelsAPI.get_history.historyLoginData;
 import com.quangdau.greenhouse.modelsAPI.post_authen.AuthenPost;
 import com.quangdau.greenhouse.modelsAPI.res_authenPost.resAuthorityPost;
-import com.quangdau.greenhouse.modelsAPI.get_data.data;
+import com.quangdau.greenhouse.modelsAPI.get_data.Data;
 import com.quangdau.greenhouse.modelsAPI.res_limitSettingsPost.resLimitSettingsPost;
 import com.quangdau.greenhouse.modelsAPI.res_removeTokenPost.resRemoveTokenPost;
 import com.quangdau.greenhouse.modelsAPI.res_renewTokenPost.resRenewTokenPost;
 import com.quangdau.greenhouse.modelsAPI.res_writeDigitalPost.resWriteDigitalPost;
 
-import java.util.ArrayList;
-
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
@@ -40,19 +34,19 @@ public interface ApiServer {
             .build();
 
     @GET("pi4Server")
-    Call <data> getData(@Query("token") String token,
+    Call <Data> getData(@Query("token") String token,
                         @Query("request") String request,
                         @Query("houseID") String houseID);
 
     @GET("pi4Server")
-    Call <dataGraph> getGraphData(@Query("token") String token,
+    Call <DataGraph> getGraphData(@Query("token") String token,
                                   @Query("request") String request,
                                   @Query("houseID") String houseID,
                                   @Query("sensor") String sensor,
                                   @Query("time") String time);
     @GET("pi4Server")
-    Call <ArrayList<historyLoginData>> getHistoryLogin(@Query("token") String token,
-                                                       @Query("request") String request);
+    Call <HistoryLoginData> getHistoryLogin(@Query("token") String token,
+                                            @Query("request") String request);
 
     @GET("pi4Server")
     Call <RSSIData> getRSSIData(@Query("token") String token,
@@ -60,7 +54,7 @@ public interface ApiServer {
                                 @Query("houseID") String houseID);
 
     @GET("pi4Server")
-    Call <limitSettingsData> getLimitSettingsData(@Query("token") String token,
+    Call <LimitSettingsData> getLimitSettingsData(@Query("token") String token,
                                                   @Query("request") String request,
                                                   @Query("houseID") String houseID);
     @POST("pi4Server")

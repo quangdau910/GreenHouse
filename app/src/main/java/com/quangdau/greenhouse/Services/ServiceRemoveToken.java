@@ -38,7 +38,7 @@ public class ServiceRemoveToken extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.e("gh", "Service RemoveToken destroy");
+        //Log.e("gh", "Service RemoveToken destroy");
     }
 
     private void removeToken(String token) {
@@ -51,14 +51,14 @@ public class ServiceRemoveToken extends Service {
                 @Override
                 public void onResponse(Call<resRemoveTokenPost> call, Response<resRemoveTokenPost> response) {
                     if (response.body() != null && response.body().getResponse().equals("RemoveToken")){
-                        Log.e("gh", "Service RemoveToken: response code "+ response.code());
+                        //Log.e("gh", "Service RemoveToken: response code "+ response.code());
                     }
                     stopSelf();
                 }
 
                 @Override
                 public void onFailure(Call<resRemoveTokenPost> call, Throwable t) {
-                    Log.e("gh", "Service RemoveToken: "+ t);
+                    //Log.e("gh", "Service RemoveToken: "+ t);
                     stopSelf();
                 }
             });

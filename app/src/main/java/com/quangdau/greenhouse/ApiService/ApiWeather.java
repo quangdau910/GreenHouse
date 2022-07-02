@@ -1,6 +1,6 @@
 package com.quangdau.greenhouse.ApiService;
 
-import com.quangdau.greenhouse.modelsAPI.weather.weatherDataModel;
+import com.quangdau.greenhouse.modelsAPI.weather.WeatherDataModel;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -15,7 +15,7 @@ public interface ApiWeather {
             .build();
 
     @GET("weather")
-    Call<weatherDataModel> getWeather(@Query("lat") double lat,
+    Call<WeatherDataModel> getWeather(@Query("lat") double lat,
                                       @Query("lon") double lon,
                                       @Query("appid") String appid);
 

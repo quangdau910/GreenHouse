@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
 import android.util.Log;
@@ -19,7 +20,8 @@ import com.quangdau.greenhouse.Other.NetworkConnection;
 import com.quangdau.greenhouse.Other.ToastError;
 import com.quangdau.greenhouse.SharedPreferences.UserPreferences;
 import com.quangdau.greenhouse.R;
-import com.quangdau.greenhouse.modelsAPI.get_history.historyLoginData;
+import com.quangdau.greenhouse.modelsAPI.get_history.ObjHistoryLoginData;
+import com.quangdau.greenhouse.modelsAPI.get_history.HistoryLoginData;
 
 
 import java.util.ArrayList;
@@ -32,6 +34,7 @@ import retrofit2.Response;
 public class fragment_child_history_login extends Fragment {
     //Declare variables
     RecyclerView recyclerView;
+    SwipeRefreshLayout swipeRefreshLayout;
     UserPreferences userPreferences;
     NetworkConnection networkConnection;
     ToastError toastError;
@@ -47,11 +50,16 @@ public class fragment_child_history_login extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_child_history_login, container, false);
         //Assign variables
         recyclerView = view.findViewById(R.id.recycleViewHistoryLogin);
+        swipeRefreshLayout = view.findViewById(R.id.swipeLayoutHistoryLogin);
         userPreferences = new UserPreferences(getActivity());
         networkConnection = new NetworkConnection(getActivity());
         toastError = new ToastError(getActivity());
         //Get data
         getDataHistoryLogin();
+
+        //Setting swipe layout
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.blue_30));
+        swipeRefreshLayout.setOnRefreshListener(this::getDataHistoryLogin);
 
         return view;
     }
@@ -60,35 +68,44 @@ public class fragment_child_history_login extends Fragment {
     private void getDataHistoryLogin(){
         if (networkConnection.isNetworkConnected()){
             ApiServer getData = ApiServer.retrofit.create(ApiServer.class);
-            Call<ArrayList<historyLoginData>> call = getData.getHistoryLogin(userPreferences.getToken(), "GetHistoryLogin");
-            call.enqueue(new Callback<ArrayList<historyLoginData>>() {
+            Call<HistoryLoginData> call = getData.getHistoryLogin(userPreferences.getToken(), "GetHistoryLogin");
+            call.enqueue(new Callback<HistoryLoginData>() {
                 @Override
-                public void onResponse(Call<ArrayList<historyLoginData>> call, Response<ArrayList<historyLoginData>> response) {
-                    if (response.body() != null){
-                        settingRecycleView(response);
+                public void onResponse(Call<HistoryLoginData> call, Response<HistoryLoginData> response) {
+                    if (response.body() != null && response.body().getResponse().equals("GetHistoryLogin")){
+                        settingRecycleView(response.body().getData());
                     }else {
                         networkConnection.checkStatusCode(response.code());
                     }
+                    turnOffRefresh();
                 }
 
                 @Override
-                public void onFailure(Call<ArrayList<historyLoginData>> call, Throwable t) {
+                public void onFailure(Call<HistoryLoginData> call, Throwable t) {
                     Log.e("gh", t.toString());
+                    toastError.makeText(getResources().getString(R.string.no_response_from_server));
+                    turnOffRefresh();
                 }
             });
         }else {
-            toastError.makeText(getActivity().getResources().getString(R.string.network_offline));
+            toastError.makeText(getResources().getString(R.string.network_offline));
         }
 
     }
     @SuppressLint("NotifyDataSetChanged")
-    private void settingRecycleView(Response<ArrayList<historyLoginData>> response){
-        ArrayList<historyLoginData> data = response.body();
+    private void settingRecycleView(ArrayList<ObjHistoryLoginData> data){
+        //ArrayList<ObjHistoryLoginData> data = response.body();
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         HistoryLoginAdapter historyLoginAdapter = new HistoryLoginAdapter(getActivity(), data);
         recyclerView.setAdapter(historyLoginAdapter);
         historyLoginAdapter.notifyDataSetChanged();
     }
+
+
+    private void turnOffRefresh(){
+        if (swipeRefreshLayout.isRefreshing()) swipeRefreshLayout.setRefreshing(false);
+    }
+
 
     @Override
     public void onResume() {

@@ -1,6 +1,6 @@
 package com.quangdau.greenhouse.modelsAPI.weather;
 
-public class objCoord {
+public class ObjCoord {
     private double lon, lat;
 
     public double getLon() {

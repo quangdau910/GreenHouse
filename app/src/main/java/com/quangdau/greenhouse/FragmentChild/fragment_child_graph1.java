@@ -42,8 +42,8 @@ import com.quangdau.greenhouse.R;
 import com.quangdau.greenhouse.SharedPreferences.UserPreferences;
 import com.quangdau.greenhouse.Spinner.CategorySpinner;
 import com.quangdau.greenhouse.Spinner.CategorySpinnerAdapter;
-import com.quangdau.greenhouse.modelsAPI.get_graph.dataReal;
-import com.quangdau.greenhouse.modelsAPI.get_graph.dataGraph;
+import com.quangdau.greenhouse.modelsAPI.get_graph.DataReal;
+import com.quangdau.greenhouse.modelsAPI.get_graph.DataGraph;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -62,10 +62,10 @@ public class fragment_child_graph1 extends Fragment {
     TextView txtYAxisTitle;
     ArrayList<Entry> dataValues;
     ArrayList<ILineDataSet> dataSets;
-    dataGraph mDataGraph;
+    DataGraph mDataGraph;
     LineDataSet lineDataSet1;
 
-    List<dataReal> mData;
+    List<DataReal> mData;
     UserPreferences userPreferences;
     String houseID;
     SimpleDateFormat formatTime = null;
@@ -76,8 +76,8 @@ public class fragment_child_graph1 extends Fragment {
     //SpinKet
     Dialog dialog;
     //Variable arraylist get data api
-    List<dataReal> getApi7D;
-    List<dataReal> getApi1M;
+    List<DataReal> getApi7D;
+    List<DataReal> getApi1M;
     //Boolean data graph 7d 1m
     public Boolean flagData7D = false;
     public Boolean flagData1M =false;
@@ -120,7 +120,7 @@ public class fragment_child_graph1 extends Fragment {
         txtYAxisTitle = view.findViewById(R.id.text_tile_yAxis);
         graph = view.findViewById(R.id.graph);
 
-        txtYAxisTitle.setText(getResources().getString(R.string.yAxis_humidity));
+        //txtYAxisTitle.setText(getResources().getString(R.string.yAxis_humidity));
 
         // Custom text no data
         Paint paint = graph.getPaint(graph.PAINT_INFO);
@@ -265,17 +265,16 @@ public class fragment_child_graph1 extends Fragment {
             //Lock window layout
             dialog.setCancelable(false);
             ApiServer get = ApiServer.retrofit.create(ApiServer.class);
-            Call<dataGraph> call = get.getGraphData(token,"GetGraphData",houseID,typeGraph,setTime);
-            call.enqueue(new Callback<dataGraph>() {
+            Call<DataGraph> call = get.getGraphData(token,"GetGraphData",houseID,typeGraph,setTime);
+            call.enqueue(new Callback<DataGraph>() {
                 @Override
-                public void onResponse(Call<dataGraph> call, Response<dataGraph> response) {
-
-                    if (response.body().getData().size()!= 0){
+                public void onResponse(Call<DataGraph> call, Response<DataGraph> response) {
+                    if (response.body() != null && response.body().getData().size() != 0){
                         mData = new ArrayList<>();
                         mDataGraph = response.body();
                         long timeData;
                         float valueData;
-                        for (int i = 0; i< mDataGraph.getData().size(); i++){
+                        for (int i = 0; i < mDataGraph.getData().size(); i++){
                             String dateString = mDataGraph.getData().get(i).getTime();
                             valueData = mDataGraph.getData().get(i).getFirst();
                             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'");
@@ -287,7 +286,7 @@ public class fragment_child_graph1 extends Fragment {
                                 e.printStackTrace();
                             }
                             timeData = date.getTime()/1000L;
-                            mData.add(new dataReal(timeData,valueData));
+                            mData.add(new DataReal(timeData,valueData));
 
                         }
                         if(setTime.equals(setTime7D) && !flagData7D){
@@ -308,7 +307,7 @@ public class fragment_child_graph1 extends Fragment {
                 }
 
                 @Override
-                public void onFailure(Call<dataGraph> call, Throwable t) {
+                public void onFailure(Call<DataGraph> call, Throwable t) {
                     Log.e("gh", "Error: " + t);
                     dialog.dismiss();
                 }
@@ -335,7 +334,7 @@ public class fragment_child_graph1 extends Fragment {
             data.setValueFormatter(new ValueFormat());
             graph.setData(data);
             graph.invalidate();
-            CustomGraph();
+            SettingUIGraph();
 
     }
     public class YourMarkerView extends MarkerView {
@@ -347,6 +346,7 @@ public class fragment_child_graph1 extends Fragment {
             tvXValue = findViewById(R.id.XValue);
         }
         //Content (user-interface)
+        @SuppressLint("SetTextI18n")
         @Override
         public void refreshContent(Entry e, Highlight highlight) {
             long realTime =((long) e.getX())+valueFirstArray;
@@ -354,7 +354,7 @@ public class fragment_child_graph1 extends Fragment {
             Date time = new Date(timeXAxis);
             SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm:ss");
             formatTime.setTimeZone(TimeZone.getTimeZone("GMT+7"));
-            tvYValue.setText(""+e.getY());
+            tvYValue.setText(""+ e.getY());
             tvXValue.setText(formatTime.format(time));
             super.refreshContent(e, highlight);
         }
@@ -374,16 +374,19 @@ public class fragment_child_graph1 extends Fragment {
             return "" ;
         }
     }
+
     private void setFormatTime(String dateFormat){
         formatTime = new SimpleDateFormat(dateFormat);
         formatTime.setTimeZone(TimeZone.getTimeZone("GMT+7"));
     }
+
     private void parseData(Bundle bundle) {
         if (bundle != null){
             houseID = bundle.getString("houseID");
         }
     }
-    private void CustomGraph() {
+
+    private void SettingUIGraph() {
         //Convert XAxis is time
             XAxis xAxis = graph.getXAxis();
             xAxis.setValueFormatter(new LineChartXAxisValueFormatter());
@@ -413,5 +416,23 @@ public class fragment_child_graph1 extends Fragment {
         //Lock up vertical
             graph.setScaleYEnabled(false);
             graph.fitScreen();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e("gh", "Graph1: resume");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.e("gh", "Graph1: pause");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.e("gh", "Graph1: destroy");
     }
 }

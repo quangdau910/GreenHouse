@@ -12,13 +12,6 @@
     <color name="buttonLogout">#FF4757</color>
     <color name="error">#FF4757</color>
 
-
-
-
-
-
-
-
     <!--Toast network-->
     <color name="toast_network_online">#2ecc71</color>
     <color name="toast_network_offline">#FF4757</color>

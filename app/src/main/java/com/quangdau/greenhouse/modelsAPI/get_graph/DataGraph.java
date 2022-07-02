@@ -2,12 +2,12 @@ package com.quangdau.greenhouse.modelsAPI.get_graph;
 
 import java.util.List;
 
-public class dataGraph {
+public class DataGraph {
     private String houseID;
     private String response;
-    List<data> data;
+    List<Data> data;
 
-    public dataGraph(String houseID, String response, List<com.quangdau.greenhouse.modelsAPI.get_graph.data> data) {
+    public DataGraph(String houseID, String response, List<Data> data) {
         this.houseID = houseID;
         this.response = response;
         this.data = data;
@@ -29,11 +29,11 @@ public class dataGraph {
         this.response = response;
     }
 
-    public List<com.quangdau.greenhouse.modelsAPI.get_graph.data> getData() {
+    public List<Data> getData() {
         return data;
     }
 
-    public void setData(List<com.quangdau.greenhouse.modelsAPI.get_graph.data> data) {
+    public void setData(List<Data> data) {
         this.data = data;
     }
 }

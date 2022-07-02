@@ -11,8 +11,7 @@ import android.widget.Toast;
 import com.quangdau.greenhouse.R;
 
 public class ToastError {
-    private Context context;
-    private String text;
+    private final Context context;
 
     public ToastError(Context context) {
         this.context = context;

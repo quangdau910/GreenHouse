@@ -219,4 +219,11 @@ public class activity_login extends AppCompatActivity {
         super.onResume();
         //Log.e("gh", "Login: token "+ userPreferences.getToken());
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //Log.e("gh", "Login: pause");
+        finish();
+    }
 }
