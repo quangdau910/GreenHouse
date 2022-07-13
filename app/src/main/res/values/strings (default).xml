@@ -40,6 +40,7 @@
     <string name="yAxis_humidity">Độ ẩm không khí(%)</string>
     <string name="yAxis_soil_moisture">Độ ẩm đất(%)</string>
     <string name="yAxis_temperature">Nhiệt độ(\u2103)</string>
+    <string name="no_data">Không có dữ liệu</string>
 
     <!-- Fragment Settings-->
     <string name="setting_title">Cài đặt</string>
@@ -50,6 +51,8 @@
         <string name="max_setting">Cao:</string>
         <string name="status_setting">Chế độ:</string>
         <string name="house_setting">Nhà kính </string>
+        <string name="empty_edit_text_limit_setting">Ngưỡng cài đặt không được bỏ trống</string>
+        <string name="min_larger_max">Ngưỡng cao phải lớn ngưỡng thấp</string>
 
     <!-- Fragment Home -->
         <!-- Sensor -->
@@ -72,12 +75,19 @@
 
     <!-- Fragment History-->
     <string name="login_history">Lịch Sử Đăng nhập</string>
-    <string name="device_name">Tên thiết bị</string>
-    <string name="account_history">Tài khoản</string>
-    <string name="login_time">Thời gian</string>
+        <!-- History Login-->
+        <string name="device_name">"Tên thiết bị: "</string>
+        <string name="ip_address">"Ip: "</string>
+        <string name="history_account">"Tài khoản: "</string>
+        <string name="login_time">"Thời gian: "</string>
+
 
     <!-- Fragment Account-->
-    <string name="about">Về Chúng Tôi </string>
+    <string name="tv_account_information">Thông tin tài khoản</string>
+    <string name="tv_user_name">Tên người dùng:</string>
+    <string name="tv_date_of_birth">Ngày sinh:</string>
+    <string name="tv_email">Email:</string>
+    <string name="tv_country">Quốc gia:</string>
     <string name="btn_logout">Đăng xuất</string>
 
 </resources>

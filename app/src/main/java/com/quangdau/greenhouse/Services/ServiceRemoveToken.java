@@ -43,7 +43,6 @@ public class ServiceRemoveToken extends Service {
 
     private void removeToken(String token) {
         if (networkConnection.isNetworkConnected()){
-            userPreferences.setToken(null);
             ApiServer post = ApiServer.retrofit.create(ApiServer.class);
             RemoveTokenPost removeTokenPost = new RemoveTokenPost(token);
             Call<resRemoveTokenPost> postLogout = post.postLogout(removeTokenPost);
@@ -53,16 +52,19 @@ public class ServiceRemoveToken extends Service {
                     if (response.body() != null && response.body().getResponse().equals("RemoveToken")){
                         //Log.e("gh", "Service RemoveToken: response code "+ response.code());
                     }
+                    userPreferences.setToken(null);
                     stopSelf();
                 }
 
                 @Override
                 public void onFailure(Call<resRemoveTokenPost> call, Throwable t) {
                     //Log.e("gh", "Service RemoveToken: "+ t);
+                    userPreferences.setToken(null);
                     stopSelf();
                 }
             });
         }else{
+            userPreferences.setToken(null);
             stopSelf();
         }
     }

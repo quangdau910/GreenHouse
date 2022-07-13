@@ -181,7 +181,7 @@ public class activity_login extends AppCompatActivity {
 
     private void checkPermission(){
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-            //Log.e("gh", "Permission grated!");
+            Log.e("gh", "Login: Permission grated!");
         }else{
             String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION};
             requestPermissions(permissions, REQUEST_PERMISSION_CODE);
@@ -217,7 +217,7 @@ public class activity_login extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //Log.e("gh", "Login: token "+ userPreferences.getToken());
+        //Log.e("gh", "Login: resume");
     }
 
     @Override

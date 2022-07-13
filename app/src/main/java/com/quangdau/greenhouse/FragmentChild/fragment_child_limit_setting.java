@@ -217,7 +217,7 @@ public class fragment_child_limit_setting extends Fragment {
         builder.setMessage("Do you want to save change?")
                 .setCancelable(false)
                 .setPositiveButton("Yes", (dialog, which) -> {
-                    if (networkConnection.isNetworkConnected()){
+                    if (checkNonNullEditText() && checkMinMaxSettings() && networkConnection.isNetworkConnected()){
                         LimitSettingsPost mLimitSettingsPost = new LimitSettingsPost(getDataSettingsChange(), getHouseID(categorySpinnerAdapter.getItemSelected()),userPreferences.getToken(), "SetLimitSettingsData");
                         ApiServer post = ApiServer.retrofit.create(ApiServer.class);
                         Call <resLimitSettingsPost> postLimitSettings = post.postLimitSettings(mLimitSettingsPost);
@@ -234,19 +234,30 @@ public class fragment_child_limit_setting extends Fragment {
 
                             @Override
                             public void onFailure(Call<resLimitSettingsPost> call, Throwable t) {
-                                Log.e("gh", "LimitSetting: "+ t);
+                                Log.e("gh", "LimitSetting SetLimitSettingsData: "+ t);
                                 toastError.makeText(getActivity().getResources().getString(R.string.no_response_from_server));
                             }
                         });
+
+                    }else if(networkConnection.isNetworkConnected()){
+                        if (!checkNonNullEditText()){
+                            toastError.makeText(getString(R.string.empty_edit_text_limit_setting));
+                            dialog.dismiss();
+
+                        }else {
+                            if (!checkMinMaxSettings()){
+                                toastError.makeText(getString(R.string.min_larger_max));
+                                dialog.dismiss();
+                            }
+                        }
                     }else {
-                        toastError.makeText(getActivity().getResources().getString(R.string.network_offline));
+                        toastError.makeText(getString(R.string.network_offline));
+                        dialog.dismiss();
                     }
-                    dialog.dismiss();
                 })
                 .setNegativeButton("No", (dialog, id) -> dialog.dismiss());
         fabSaveChange.setOnClickListener(v -> {
             if (fabSaveChange.isExtended()){
-                //Creating dialog box
                 AlertDialog alert = builder.create();
                 //Setting the title manually
                 alert.setTitle("Alert");
@@ -322,6 +333,26 @@ public class fragment_child_limit_setting extends Fragment {
         return data;
     }
 
+    private boolean checkMinMaxSettings(){
+        try {
+            boolean temp1, temp2, temp3, temp4;
+            temp1 = Integer.parseInt(editTextMin1.getText().toString()) < Integer.parseInt(editTextMax1.getText().toString());
+            temp2 = Integer.parseInt(editTextMin2.getText().toString()) < Integer.parseInt(editTextMax2.getText().toString());
+            temp3 = Integer.parseInt(editTextMin3.getText().toString()) < Integer.parseInt(editTextMax3.getText().toString());
+            temp4 = Integer.parseInt(editTextMin4.getText().toString()) < Integer.parseInt(editTextMax4.getText().toString());
+            return temp1 && temp2 && temp3 && temp4;
+        }catch (Exception e){
+            Log.e("gh", "LimitSetting checkMinMaxSetting: "+ e);
+            return false;
+        }
+    }
+
+    private boolean checkNonNullEditText(){
+        return editTextMin1.length()!=0 && editTextMin2.length()!=0 && editTextMin3.length()!=0 && editTextMin4.length()!=0
+                && editTextMax1.length()!=0 && editTextMax2.length()!=0 && editTextMax3.length()!=0 && editTextMax4.length()!=0;
+    }
+
+    
     private String getHouseID(String spinnerSelectedItem){
         switch (spinnerSelectedItem){
             case "House 1":
@@ -368,7 +399,7 @@ public class fragment_child_limit_setting extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.e("gh", "limit pause");
+        //Log.e("gh", "limit pause");
         spinnerHouseID.setSelection(0);
 
     }

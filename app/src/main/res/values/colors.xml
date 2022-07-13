@@ -11,6 +11,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="buttonLogout">#FF4757</color>
     <color name="error">#FF4757</color>
+    <color name="buttonLogin">#1EB463</color>
 
     <!--Toast network-->
     <color name="toast_network_online">#2ecc71</color>

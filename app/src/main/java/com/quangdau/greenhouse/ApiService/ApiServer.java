@@ -3,6 +3,7 @@ package com.quangdau.greenhouse.ApiService;
 import com.quangdau.greenhouse.modelsAPI.get_graph.DataGraph;
 import com.quangdau.greenhouse.modelsAPI.get_history.HistoryLoginData;
 import com.quangdau.greenhouse.modelsAPI.get_limitSettings.LimitSettingsData;
+import com.quangdau.greenhouse.modelsAPI.get_userInformation.UserInformation;
 import com.quangdau.greenhouse.modelsAPI.post_limitSettings.LimitSettingsPost;
 import com.quangdau.greenhouse.modelsAPI.post_removeToken.RemoveTokenPost;
 import com.quangdau.greenhouse.modelsAPI.post_renewToken.RenewTokenPost;
@@ -57,6 +58,12 @@ public interface ApiServer {
     Call <LimitSettingsData> getLimitSettingsData(@Query("token") String token,
                                                   @Query("request") String request,
                                                   @Query("houseID") String houseID);
+
+    @GET("pi4Server")
+    Call <UserInformation> getUserInformation(@Query("token") String token,
+                                              @Query("request") String request);
+
+
     @POST("pi4Server")
     Call <resWriteDigitalPost> postWriteDigital(@Body WriteDigitalPost writeDigitalPost);
 

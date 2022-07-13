@@ -45,7 +45,7 @@ public class fragment_home extends Fragment {
     Handler mainHandler;
     final String STATE_FRAGMENT = "HOME_FRAGMENT";
     final String NULL_STATE_FRAGMENT = "NULL";
-    final long TIME_DELAY = 500;
+    final long TIME_DELAY = 500; //500 millis
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -129,9 +129,8 @@ public class fragment_home extends Fragment {
                 @Override
                 public void onResponse(Call<RSSIData> call, Response<RSSIData> response) {
                     if (response.body() != null && response.body().getResponse().equals("Response RSSI Data") ){
-                        timeRSSI = response.body().getData().getTime();
                         updateRSSIUI(response.body().getData().getValue(), response.body().getData().getTime());
-
+                        timeRSSI = response.body().getData().getTime();
                     }else {
                         networkConnection.checkStatusCode(response.code());
                     }
@@ -139,7 +138,7 @@ public class fragment_home extends Fragment {
 
                 @Override
                 public void onFailure(Call<RSSIData> call, Throwable t) {
-                    Log.e("gh", "Home RSSI: "+ t);
+                    Log.e("gh", "Graph RSSI: "+ t);
                 }
             });
         }

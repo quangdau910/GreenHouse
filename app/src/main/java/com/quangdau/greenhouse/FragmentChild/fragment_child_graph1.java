@@ -122,10 +122,10 @@ public class fragment_child_graph1 extends Fragment {
 
         //txtYAxisTitle.setText(getResources().getString(R.string.yAxis_humidity));
 
-        // Custom text no data
+        //Custom text no data
         Paint paint = graph.getPaint(graph.PAINT_INFO);
         paint.setTextSize(50);
-        graph.setNoDataText("No Data");
+        graph.setNoDataText(getResources().getString(R.string.no_data));
         graph.setNoDataTextColor(getResources().getColor(R.color.blue_30));
         dataValues = new ArrayList<>();
         //Spinner view
@@ -315,7 +315,6 @@ public class fragment_child_graph1 extends Fragment {
         }else {
             graph.clear();
         }
-
 
     }
     private void setDataGraph() {

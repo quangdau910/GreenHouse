@@ -173,7 +173,7 @@ public class activity_main extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.e("gh", "Main: start");
+        //Log.e("gh", "Main: start");
         IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(broadcastReceiver, intentFilter);
     }
@@ -181,7 +181,7 @@ public class activity_main extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        Log.e("gh", "Main: stop");
+        //Log.e("gh", "Main: stop");
         unregisterReceiver(broadcastReceiver);
     }
 
@@ -196,7 +196,6 @@ public class activity_main extends AppCompatActivity {
         super.onPause();
         Log.e("gh", "Main: paused");
         finish();
-
     }
 
     @Override

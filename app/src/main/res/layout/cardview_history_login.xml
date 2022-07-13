@@ -40,7 +40,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     android:paddingLeft="20dp"
-                    android:text="@string/account_history"
+                    android:text="@string/history_account"
                     android:textSize="18sp"
                     />
                 <TextView

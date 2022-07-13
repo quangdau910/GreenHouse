@@ -58,7 +58,7 @@ public class fragment_child_home1 extends Fragment {
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     Switch switchLight1, switchFan1, switchValve1, switchValve2, switchValve3, switchValve4;
     ImageView imageViewLight1, imageViewFan1, imageViewValve1, imageViewValve2, imageViewValve3, imageViewValve4;
-    boolean flagLight1, flagFan1, flagValve1, flagValve2, flagValve3, flagValve4;
+    boolean flagUIDevice;
     //Get data through fragment
     Bundle bundle;
     String houseID;
@@ -66,7 +66,7 @@ public class fragment_child_home1 extends Fragment {
     Handler handler;
     Runnable runnable;
     //Other
-    String dataPort1;
+    String dataPort0;
     NetworkConnection networkConnection;
     ToastError toastError;
     UserPreferences userPreferences;
@@ -82,7 +82,7 @@ public class fragment_child_home1 extends Fragment {
                 if (userPreferences.getStateFragment().equals(STATE_FRAGMENT) && networkConnection.isNetworkConnected()){
                     //Update data from server
                     getData(userPreferences.getToken());
-                    //Log.e("gh", "Home1 runnable: getRSSI");
+                    //Log.e("gh", "Home1 runnable: ");
                 }
                 handler.postDelayed(this, 500);
             }
@@ -135,65 +135,58 @@ public class fragment_child_home1 extends Fragment {
 
         switchLight1.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (switchLight1.isPressed()){
-                flagLight1 = true;
                 if (switchLight1.isChecked()){
-                    writeDigital(houseID, "1", 0, '1');
+                    writeDigital(houseID, "0", 0, '0');
                 }else {
-                    writeDigital(houseID, "1", 0, '0');
+                    writeDigital(houseID, "0", 0, '1');
                 }
             }
         });
         switchFan1.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (switchFan1.isPressed()){
-                flagFan1 = true;
                 if (switchFan1.isChecked()){
-                    writeDigital(houseID, "1", 1, '1');
+                    writeDigital(houseID, "0", 1, '0');
                 }else {
-                    writeDigital(houseID, "1", 1, '0');
+                    writeDigital(houseID, "0", 1, '1');
                 }
             }
         });
         switchValve1.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (switchValve1.isPressed()){
-                flagValve1 = true;
                 if (switchValve1.isChecked()){
-                    writeDigital(houseID, "1", 2, '1');
+                    writeDigital(houseID, "0", 2, '0');
                 }else{
-                    writeDigital(houseID, "1", 2, '0');
+                    writeDigital(houseID, "0", 2, '1');
                 }
             }
         });
         switchValve2.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (switchValve2.isPressed()){
-                flagValve2 = true;
                 if (switchValve2.isChecked()){
-                    writeDigital(houseID, "1", 3, '1');
+                    writeDigital(houseID, "0", 3, '0');
                 }else{
-                    writeDigital(houseID, "1", 3, '0');
+                    writeDigital(houseID, "0", 3, '1');
                 }
             }
         });
         switchValve3.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (switchValve3.isPressed()){
-                flagValve3 = true;
                 if (switchValve3.isChecked()){
-                    writeDigital(houseID, "1", 4, '1');
+                    writeDigital(houseID, "0", 4, '0');
                 }else{
-                    writeDigital(houseID, "1", 4, '0');
+                    writeDigital(houseID, "0", 4, '1');
                 }
             }
         });
         switchValve4.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (switchValve4.isPressed()){
-                flagValve4 = true;
                 if (switchValve4.isChecked()){
-                    writeDigital(houseID, "1", 5, '1');
+                    writeDigital(houseID, "0", 5, '0');
                 }else{
-                    writeDigital(houseID, "1", 5, '0');
+                    writeDigital(houseID, "0", 5, '1');
                 }
             }
         });
-
 
         return view;
     }
@@ -201,7 +194,7 @@ public class fragment_child_home1 extends Fragment {
     //Get data
     private void getData(String token) {
         if (networkConnection.isNetworkConnected()){
-            Switch[] port1 = {switchLight1, switchFan1, switchValve1, switchValve2, switchValve3, switchValve4};
+            Switch[] port0 = {switchLight1, switchFan1, switchValve1, switchValve2, switchValve3, switchValve4};
             ApiServer get = ApiServer.retrofit.create(ApiServer.class);
             Call<Data> call = get.getData(token, "GetData", houseID);
             call.enqueue(new Callback<Data>() {
@@ -209,10 +202,10 @@ public class fragment_child_home1 extends Fragment {
                 public void onResponse(Call<Data> call, Response<Data> response) {
                     if (response.body() != null && response.body().getResponse().equals("GetData")){
                         //Assign dataPort
-                        dataPort1 = response.body().getDigitalData().getPort1();
+                        dataPort0 = response.body().getDigitalData().getPort0();
                         //UpdateUI
                         updateUISensor(response);
-                        updateUIDevice(response.body().getDigitalData().getPort1(), port1);
+                        updateUIDevice(dataPort0, port0);
                     }else {
                         networkConnection.checkStatusCode(response.code());
                     }
@@ -227,37 +220,40 @@ public class fragment_child_home1 extends Fragment {
     }
 
     private void writeDigital(String houseID, String port, Integer locationBit, Character value){
+        //Unable switch
+        setSwitchMode(false);
+        flagUIDevice = true;
         if (networkConnection.isNetworkConnected()) {
-            Switch[] port1 = {switchLight1, switchFan1, switchValve1, switchValve2, switchValve3, switchValve4};
-            StringBuilder tempData = new StringBuilder(dataPort1);
+            Switch[] port0 = {switchLight1, switchFan1, switchValve1, switchValve2, switchValve3, switchValve4};
+            StringBuilder tempData = new StringBuilder(dataPort0);
             tempData.setCharAt(7 - locationBit, value);
             //Check pump
             String dataSend = tempData.toString();
             dataSend = checkPump(dataSend, 2, 5, 6);
             Log.e("gh", "dataSend: " + dataSend);
-            //Call api
+            //Call API
             ApiServer post = ApiServer.retrofit.create(ApiServer.class);
             Call<resWriteDigitalPost> call = post.postWriteDigital(new WriteDigitalPost(userPreferences.getToken(), "WriteDigital", houseID, port, dataSend));
             call.enqueue(new Callback<resWriteDigitalPost>() {
                 @Override
                 public void onResponse(Call<resWriteDigitalPost> call, Response<resWriteDigitalPost> response) {
                     if (response.body() != null && response.body().getResponse().equals("WriteDigital")){
+                        Log.e("gh", "response: ");
                         switch (response.body().getPort()) {
-                            case "1":
-                                dataPort1 = response.body().getValue();
+                            case "0":
+                                Log.e("gh", "data port0: "+ response.body().getPort());
+                                Log.e("gh", "value: "+ response.body().getValue());
+                                dataPort0 = response.body().getValue();
                                 break;
-                            case "2":
+                            case "1":
                                 //Do something
                                 break;
                         }
                     }else networkConnection.checkStatusCode(response.code());
-                    if (flagLight1) flagLight1 = false;
-                    if (flagFan1) flagFan1 = false;
-                    if (flagValve1) flagValve1 = false;
-                    if (flagValve2) flagValve2 = false;
-                    if (flagValve3) flagValve3 = false;
-                    if (flagValve4) flagValve4 = false;
-                    updateUIDevice(dataPort1, port1);
+                    //Update UI Devices
+                    flagUIDevice = false;
+                    updateUIDevice(dataPort0, port0);
+                    setSwitchMode(true);
                 }
 
                 @Override
@@ -266,13 +262,9 @@ public class fragment_child_home1 extends Fragment {
                     if (t.getMessage().equals("timeout")){
                         toastError.makeText(getResources().getString(R.string.no_response_from_server));
                     }
-
-                    if (flagLight1) flagLight1 = false;
-                    if (flagFan1) flagFan1 = false;
-                    if (flagValve1) flagValve1 = false;
-                    if (flagValve2) flagValve2 = false;
-                    if (flagValve3) flagValve3 = false;
-                    if (flagValve4) flagValve4 = false;
+                    //Update UI Devices
+                    setSwitchMode(true);
+                    flagUIDevice = false;
                 }
             });
         }
@@ -291,11 +283,11 @@ public class fragment_child_home1 extends Fragment {
     }
 
     private void updateUIDevice(String value, Switch[] portDevice){
-        if (!flagLight1 && !flagFan1 && !flagValve1 && !flagValve2 && !flagValve3 && !flagValve4){
-            for (int i = 0; i < portDevice.length; i++){
-                if (value.charAt(7 - i) == '1') portDevice[i].setChecked(true); else portDevice[i].setChecked(false);
-            }
+        if (!flagUIDevice){
             //Log.e("gh", "update ui device");
+            for (int i = 0; i < portDevice.length; i++){
+                if (value.charAt(7 - i) == '0') portDevice[i].setChecked(true); else portDevice[i].setChecked(false);
+            }
             if (switchLight1.isChecked())imageViewLight1.setImageResource(R.drawable.ic_device_light_on); else imageViewLight1.setImageResource(R.drawable.ic_device_light_off);
             if (switchFan1.isChecked()) imageViewFan1.setImageResource(R.drawable.ic_device_fan_on); else imageViewFan1.setImageResource(R.drawable.ic_device_fan_off);
             if (switchValve1.isChecked()) imageViewValve1.setImageResource(R.drawable.ic_device_valve_on); else imageViewValve1.setImageResource(R.drawable.ic_device_valve_off);
@@ -307,11 +299,13 @@ public class fragment_child_home1 extends Fragment {
     private String checkPump(String dataPort, int valveStart, int valveEnd, int locationPump){
         StringBuilder newDataPort = new StringBuilder(dataPort);
         for (int i = valveStart; i <= valveEnd; i++){
-            if (dataPort.charAt(7 - i) == '1'){
-                newDataPort.setCharAt(7- locationPump, '1');
+            if (dataPort.charAt(7 - i) == '0'){
+                newDataPort.setCharAt(7- locationPump, '0');
             }
         }
-        if (dataPort.substring(7 - valveEnd, 7 - valveStart + 1).equals("0000")) newDataPort.setCharAt(7 - locationPump, '0');
+        if (dataPort.substring(7 - valveEnd, 7 - valveStart + 1).equals("1111")) newDataPort.setCharAt(7 - locationPump, '1');
+        //Bit 7 always 1
+        newDataPort.setCharAt(0, '1');
         return  newDataPort.toString();
     }
 
@@ -392,6 +386,16 @@ public class fragment_child_home1 extends Fragment {
         int humidityWeather = response.body().getMain().getHumidity();
         textViewWeatherHumidity.setText(getResources().getString(R.string.humidity)+": " + humidityWeather + "%");
     }
+
+    private void setSwitchMode(boolean mode){
+        switchLight1.setEnabled(mode);
+        switchFan1.setEnabled(mode);
+        switchValve1.setEnabled(mode);
+        switchValve2.setEnabled(mode);
+        switchValve3.setEnabled(mode);
+        switchValve4.setEnabled(mode);
+    }
+
 
     private static String getWeatherIcon(int id){
         if (id >= 0 && id < 300) {

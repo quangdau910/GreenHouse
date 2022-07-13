@@ -42,7 +42,7 @@ public class fragment_graph extends Fragment {
     //Handler post delay
     Runnable runnable;
     Handler mainHandler;
-    final long TIME_DELAY = 500;
+    final long TIME_DELAY = 500; //500 millis
     final String STATE_FRAGMENT = "GRAPH_FRAGMENT";
     final String NULL_STATE_FRAGMENT = "NULL";
     @Override
@@ -128,9 +128,8 @@ public class fragment_graph extends Fragment {
                 @Override
                 public void onResponse(Call<RSSIData> call, Response<RSSIData> response) {
                     if (response.body() != null && response.body().getResponse().equals("Response RSSI Data") ){
-                        timeRSSI = response.body().getData().getTime();
                         updateRSSIUI(response.body().getData().getValue(), response.body().getData().getTime());
-
+                        timeRSSI = response.body().getData().getTime();
                     }else {
                         networkConnection.checkStatusCode(response.code());
                     }

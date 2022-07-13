@@ -39,6 +39,7 @@
     <string name="yAxis_humidity">Humidity(%)</string>
     <string name="yAxis_soil_moisture">Soil Moisture(%)</string>
     <string name="yAxis_temperature">Temperature(\u2103)</string>
+    <string name="no_data">No Data</string>
 
     <!-- Fragment Settings-->
     <string name="setting_title">Settings</string>
@@ -49,6 +50,8 @@
         <string name="max_setting">Max:</string>
         <string name="status_setting">Status:</string>
         <string name="house_setting">House</string>
+        <string name="empty_edit_text_limit_setting">Limit setting can not be empty</string>
+        <string name="min_larger_max">Max limit must larger than min limit</string>
 
     <!-- Fragment Home -->
         <!-- Sensor -->
@@ -70,13 +73,19 @@
         <string name="valve_4">Valve 4</string>
 
     <!-- Fragment History-->
-    <string name="login_history">Login</string>
-    <string name="device_name">Device Name</string>
-    <string name="account_history">Account</string>
-    <string name="login_time">Login time</string>
+    <string name="login_history">History Login</string>
+        <!--History Login-->
+        <string name="device_name">Device Name:</string>
+        <string name="ip_address">"Ip:"</string>
+        <string name="history_account">Account:</string>
+        <string name="login_time">Login time:</string>
 
     <!-- Fragment Account-->
-    <string name="about">About We </string>
+    <string name="tv_account_information">Account Information</string>
+    <string name="tv_user_name">User Name: </string>
+    <string name="tv_date_of_birth">Date of birth: </string>
+    <string name="tv_email">Email: </string>
+    <string name="tv_country">Country: </string>
     <string name="btn_logout">Logout</string>
 
 
