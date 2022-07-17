@@ -19,6 +19,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
@@ -59,6 +61,7 @@ import retrofit2.Response;
 public class fragment_child_graph1 extends Fragment {
     RadioGroup radioGroup;
     LineChart graph;
+    SwipeRefreshLayout swipeRefreshLayoutGraph;
     TextView txtYAxisTitle;
     ArrayList<Entry> dataValues;
     ArrayList<ILineDataSet> dataSets;
@@ -114,14 +117,15 @@ public class fragment_child_graph1 extends Fragment {
 
         userPreferences = new UserPreferences(getActivity());
         networkConnection = new NetworkConnection(getActivity());
-
+        swipeRefreshLayoutGraph = view.findViewById(R.id.swipeLayoutGraph);
         //Assign variables
         radioGroup = view.findViewById(R.id.time_check_graph);
         txtYAxisTitle = view.findViewById(R.id.text_tile_yAxis);
         graph = view.findViewById(R.id.graph);
 
-        //txtYAxisTitle.setText(getResources().getString(R.string.yAxis_humidity));
-
+        //swipeRefresh
+        swipeRefreshLayoutGraph.setColorSchemeColors(getResources().getColor(R.color.blue_30));
+        swipeRefreshLayoutGraph.setOnRefreshListener(this::swipeRefresh);
         //Custom text no data
         Paint paint = graph.getPaint(graph.PAINT_INFO);
         paint.setTextSize(50);
@@ -231,6 +235,9 @@ public class fragment_child_graph1 extends Fragment {
                 }
             }
         });
+
+
+
         return view;
     }
 
@@ -298,10 +305,12 @@ public class fragment_child_graph1 extends Fragment {
                             flagData1M =true;
                         }
                         setDataGraph();
+                        turnOffRefresh();
                         dialog.dismiss();
                     }
                     else{
                         graph.clear();
+                        turnOffRefresh();
                         dialog.dismiss();
                     }
                 }
@@ -310,6 +319,7 @@ public class fragment_child_graph1 extends Fragment {
                 public void onFailure(Call<DataGraph> call, Throwable t) {
                     Log.e("gh", "Error: " + t);
                     dialog.dismiss();
+                    turnOffRefresh();
                 }
             });
         }else {
@@ -384,7 +394,9 @@ public class fragment_child_graph1 extends Fragment {
             houseID = bundle.getString("houseID");
         }
     }
-
+    private void turnOffRefresh(){
+        if (swipeRefreshLayoutGraph.isRefreshing()) swipeRefreshLayoutGraph.setRefreshing(false);
+    }
     private void SettingUIGraph() {
         //Convert XAxis is time
             XAxis xAxis = graph.getXAxis();
@@ -416,12 +428,16 @@ public class fragment_child_graph1 extends Fragment {
             graph.setScaleYEnabled(false);
             graph.fitScreen();
     }
+    private void swipeRefresh(){
+        getArrayDataGraph(userPreferences.getToken());
+    }
 
     @Override
     public void onResume() {
         super.onResume();
         Log.e("gh", "Graph1: resume");
     }
+
 
     @Override
     public void onPause() {
