@@ -21,10 +21,6 @@ public class fragment_child_timer_setting extends Fragment {
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_child_timer_setting, container, false);
 
-
-
-
-
         return view;
     }
 
