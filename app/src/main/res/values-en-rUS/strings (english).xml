@@ -35,10 +35,12 @@
     <string name="graph_humidity">Humidity</string>
     <string name="graph_soil_moisture">Soil Moisture</string>
     <string name="graph_temperature">Temperature</string>
+    <string name="graph_light">Light</string>
     <string name="title_xAxis">Time</string>
     <string name="yAxis_humidity">Humidity(%)</string>
     <string name="yAxis_soil_moisture">Soil Moisture(%)</string>
     <string name="yAxis_temperature">Temperature(\u2103)</string>
+    <string name="yAxis_light">Light(lux)</string>
     <string name="no_data">No Data</string>
 
     <!-- Fragment Settings-->

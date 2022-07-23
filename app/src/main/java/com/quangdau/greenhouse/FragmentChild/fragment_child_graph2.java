@@ -67,7 +67,6 @@ public class fragment_child_graph2 extends Fragment {
     ArrayList<ILineDataSet> dataSets;
     DataGraph mDataGraph;
     LineDataSet lineDataSet1;
-
     List<DataReal> mData;
     UserPreferences userPreferences;
     String houseID;
@@ -87,19 +86,21 @@ public class fragment_child_graph2 extends Fragment {
     //Variable value first array
     public long valueFirstArray =0;
     //Check button radio set time graph
-    public final String setTime1H = "1h";
-    public final String setTime1D = "1d";
-    public final String setTime7D = "7d";
-    public final String setTime1M = "30d";
+    final String setTime1H = "1h";
+    final String setTime1D = "1d";
+    final String setTime7D = "7d";
+    final String setTime1M = "30d";
     public String setTime = setTime1H;
     //Check type graph
-    public final String graphAir = "humidity";
-    public final String  graphLand = "soil_moisture1";
-    public final String  graphLand2 = "soil_moisture2";
-    public final String  graphLand3 = "soil_moisture3";
-    public final String  graphLand4 = "soil_moisture4";
-    public final String  graphTemperature = "temperature";
-    public String typeGraph;
+    final String graphHumidity = "humidity";
+    final String graphSoilMoisture1 = "soil_moisture1";
+    final String graphSoilMoisture2 = "soil_moisture2";
+    final String graphSoilMoisture3 = "soil_moisture3";
+    final String graphSoilMoisture4 = "soil_moisture4";
+    final String graphTemperature = "temperature";
+    final String graphLight = "light";
+    String typeGraph;
+    boolean fragmentResume = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -115,17 +116,21 @@ public class fragment_child_graph2 extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_child_graph2,container,false);
 
+        //Assign variables
         userPreferences = new UserPreferences(getActivity());
         networkConnection = new NetworkConnection(getActivity());
         swipeRefreshLayoutGraph = view.findViewById(R.id.swipeLayoutGraph);
-        //Assign variables
         radioGroup = view.findViewById(R.id.time_check_graph);
         txtYAxisTitle = view.findViewById(R.id.text_tile_yAxis);
         graph = view.findViewById(R.id.graph);
-
-        //swipeRefresh
+        //Setting swipeLayout
         swipeRefreshLayoutGraph.setColorSchemeColors(getResources().getColor(R.color.blue_30));
         swipeRefreshLayoutGraph.setOnRefreshListener(this::swipeRefresh);
+        //Setting dialog
+        dialog = new Dialog(getActivity());
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.win_layout_spinkit);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         //Custom text no data
         Paint paint = graph.getPaint(graph.PAINT_INFO);
         paint.setTextSize(50);
@@ -137,6 +142,7 @@ public class fragment_child_graph2 extends Fragment {
         List<CategorySpinner> list = new ArrayList<>();
         list.add(new CategorySpinner(getResources().getString(R.string.graph_humidity)));
         list.add(new CategorySpinner(getResources().getString(R.string.graph_temperature)));
+        list.add(new CategorySpinner(getResources().getString(R.string.graph_light)));
         list.add(new CategorySpinner(getResources().getString(R.string.soil_moisture_1)));
         list.add(new CategorySpinner(getResources().getString(R.string.soil_moisture_2)));
         list.add(new CategorySpinner(getResources().getString(R.string.soil_moisture_3)));
@@ -146,39 +152,46 @@ public class fragment_child_graph2 extends Fragment {
         spinnerTypeChart.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                flagData1M = false;
-                flagData7D = false;
-                switch (position){
-                    case 0:
-                        typeGraph = graphAir;
-                        txtYAxisTitle.setText(getResources().getString(R.string.yAxis_humidity));
-                        getArrayDataGraph(userPreferences.getToken());
-                        break;
-                    case 1:
-                        typeGraph = graphTemperature;
-                        txtYAxisTitle.setText(getResources().getString(R.string.yAxis_temperature));
-                        getArrayDataGraph(userPreferences.getToken());
-                        break;
-                    case 2:
-                        typeGraph = graphLand;
-                        txtYAxisTitle.setText(getResources().getString(R.string.yAxis_soil_moisture));
-                        getArrayDataGraph(userPreferences.getToken());
-                        break;
-                    case 3:
-                        typeGraph = graphLand2;
-                        txtYAxisTitle.setText(getResources().getString(R.string.yAxis_soil_moisture));
-                        getArrayDataGraph(userPreferences.getToken());
-                        break;
-                    case 4:
-                        typeGraph = graphLand3;
-                        txtYAxisTitle.setText(getResources().getString(R.string.yAxis_soil_moisture));
-                        getArrayDataGraph(userPreferences.getToken());
-                        break;
-                    case 5:
-                        typeGraph = graphLand4;
-                        txtYAxisTitle.setText(getResources().getString(R.string.yAxis_soil_moisture));
-                        getArrayDataGraph(userPreferences.getToken());
-                        break;
+                if (fragmentResume){
+                    flagData1M = false;
+                    flagData7D = false;
+                    switch (position){
+                        case 0:
+                            typeGraph = graphHumidity;
+                            txtYAxisTitle.setText(getResources().getString(R.string.yAxis_humidity));
+                            getArrayDataGraph(userPreferences.getToken());
+                            break;
+                        case 1:
+                            typeGraph = graphTemperature;
+                            txtYAxisTitle.setText(getResources().getString(R.string.yAxis_temperature));
+                            getArrayDataGraph(userPreferences.getToken());
+                            break;
+                        case 2:
+                            typeGraph = graphLight;
+                            txtYAxisTitle.setText(getResources().getString(R.string.yAxis_light));
+                            getArrayDataGraph(userPreferences.getToken());
+                            break;
+                        case 3:
+                            typeGraph = graphSoilMoisture1;
+                            txtYAxisTitle.setText(getResources().getString(R.string.yAxis_soil_moisture));
+                            getArrayDataGraph(userPreferences.getToken());
+                            break;
+                        case 4:
+                            typeGraph = graphSoilMoisture2;
+                            txtYAxisTitle.setText(getResources().getString(R.string.yAxis_soil_moisture));
+                            getArrayDataGraph(userPreferences.getToken());
+                            break;
+                        case 5:
+                            typeGraph = graphSoilMoisture3;
+                            txtYAxisTitle.setText(getResources().getString(R.string.yAxis_soil_moisture));
+                            getArrayDataGraph(userPreferences.getToken());
+                            break;
+                        case 6:
+                            typeGraph = graphSoilMoisture4;
+                            txtYAxisTitle.setText(getResources().getString(R.string.yAxis_soil_moisture));
+                            getArrayDataGraph(userPreferences.getToken());
+                            break;
+                    }
                 }
             }
 
@@ -199,7 +212,6 @@ public class fragment_child_graph2 extends Fragment {
             public void onNothingSelected() {
             }
         });
-
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @SuppressLint("NonConstantResourceId")
@@ -235,9 +247,6 @@ public class fragment_child_graph2 extends Fragment {
                 }
             }
         });
-
-
-
         return view;
     }
 
@@ -263,14 +272,12 @@ public class fragment_child_graph2 extends Fragment {
             return formatTime.format(timeMilliseconds);
         }
     }
+
     private void getArrayDataGraph(String token){
+        //Log.e("gh", "get data graph");
         if(networkConnection.isNetworkConnected()){
-            dialog = new Dialog(getActivity());
-            dialog.setContentView(R.layout.win_layout_spinkit);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dialog.show();
             //Lock window layout
-            dialog.setCancelable(false);
             ApiServer get = ApiServer.retrofit.create(ApiServer.class);
             Call<DataGraph> call = get.getGraphData(token,"GetGraphData",houseID,typeGraph,setTime);
             call.enqueue(new Callback<DataGraph>() {
@@ -317,7 +324,7 @@ public class fragment_child_graph2 extends Fragment {
 
                 @Override
                 public void onFailure(Call<DataGraph> call, Throwable t) {
-                    Log.e("gh", "Error: " + t);
+                    Log.e("gh", "GetDataGraph: " + t);
                     dialog.dismiss();
                     turnOffRefresh();
                 }
@@ -327,6 +334,7 @@ public class fragment_child_graph2 extends Fragment {
         }
 
     }
+
     private void setDataGraph() {
         //Set data graph
         dataValues.clear();
@@ -346,6 +354,7 @@ public class fragment_child_graph2 extends Fragment {
         SettingUIGraph();
 
     }
+
     public class YourMarkerView extends MarkerView {
         TextView tvYValue;
         TextView tvXValue;
@@ -367,6 +376,7 @@ public class fragment_child_graph2 extends Fragment {
             tvXValue.setText(formatTime.format(time));
             super.refreshContent(e, highlight);
         }
+
         private MPPointF mOffset;
         @Override
         public MPPointF getOffset() {
@@ -389,14 +399,6 @@ public class fragment_child_graph2 extends Fragment {
         formatTime.setTimeZone(TimeZone.getTimeZone("GMT+7"));
     }
 
-    private void parseData(Bundle bundle) {
-        if (bundle != null){
-            houseID = bundle.getString("houseID");
-        }
-    }
-    private void turnOffRefresh(){
-        if (swipeRefreshLayoutGraph.isRefreshing()) swipeRefreshLayoutGraph.setRefreshing(false);
-    }
     private void SettingUIGraph() {
         //Convert XAxis is time
         XAxis xAxis = graph.getXAxis();
@@ -428,26 +430,37 @@ public class fragment_child_graph2 extends Fragment {
         graph.setScaleYEnabled(false);
         graph.fitScreen();
     }
+
     private void swipeRefresh(){
         getArrayDataGraph(userPreferences.getToken());
     }
 
+    private void turnOffRefresh(){
+        if (swipeRefreshLayoutGraph.isRefreshing()) swipeRefreshLayoutGraph.setRefreshing(false);
+    }
+
+    private void parseData(Bundle bundle) {
+        if (bundle != null){
+            houseID = bundle.getString("houseID");
+        }
+    }
     @Override
     public void onResume() {
         super.onResume();
-        Log.e("gh", "Graph1: resume");
+        fragmentResume = true;
+        Log.e("gh", "Graph2: resume");
     }
-
 
     @Override
     public void onPause() {
         super.onPause();
-        Log.e("gh", "Graph1: pause");
+        fragmentResume = false;
+        Log.e("gh", "Graph2: pause");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.e("gh", "Graph1: destroy");
+        Log.e("gh", "Graph2: destroy");
     }
 }

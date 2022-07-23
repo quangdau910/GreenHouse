@@ -36,10 +36,12 @@
     <string name="graph_humidity">Độ ẩm không khí</string>
     <string name="graph_soil_moisture">Độ ẩm đất</string>
     <string name="graph_temperature">Nhiệt độ</string>
+    <string name="graph_light">Ánh sáng</string>
     <string name="title_xAxis">Thời gian</string>
     <string name="yAxis_humidity">Độ ẩm không khí(%)</string>
     <string name="yAxis_soil_moisture">Độ ẩm đất(%)</string>
     <string name="yAxis_temperature">Nhiệt độ(\u2103)</string>
+    <string name="yAxis_light">Ánh sáng(lux)</string>
     <string name="no_data">Không có dữ liệu</string>
 
     <!-- Fragment Settings-->

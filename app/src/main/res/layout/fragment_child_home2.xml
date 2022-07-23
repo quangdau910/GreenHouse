@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".FragmentChild.fragment_child_home1"
+    tools:context=".FragmentChild.fragment_child_home2"
     android:background="@color/background_color">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -32,8 +32,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:src="@drawable/weather_ic_dunno"
-                    />
+                    android:src="@drawable/weather_ic_dunno"/>
                 <TextView
                     android:id="@+id/textViewWeatherName"
                     android:layout_width="wrap_content"
@@ -41,12 +40,10 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/imageViewWeatherIcon"
                     app:layout_constraintBottom_toTopOf="@+id/textViewWeatherTemp"
-                    android:drawableLeft="@drawable/ic_location"
                     android:drawablePadding="2dp"
                     android:text="City Name"
                     android:textSize="25sp"
-
-                    />
+                    app:drawableLeftCompat="@drawable/ic_location"/>
                 <TextView
                     android:id="@+id/textViewWeatherTemp"
                     android:layout_width="wrap_content"
@@ -150,7 +147,7 @@
                     android:id="@+id/imageViewIcLight"
                     android:layout_width="50dp"
                     android:layout_height="90dp"
-                    android:paddingLeft="2dp"
+                    android:paddingStart="2dp"
                     android:paddingTop="20dp"
                     android:src="@drawable/ic_light_sensor"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -204,7 +201,7 @@
                     android:id="@+id/imageViewIcHumidity"
                     android:layout_width="50dp"
                     android:layout_height="90dp"
-                    android:paddingLeft="2dp"
+                    android:paddingStart="2dp"
                     android:paddingTop="20dp"
                     android:src="@drawable/ic_humidity_sensor"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -266,7 +263,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     android:paddingTop="20dp"
-                    android:paddingLeft="2dp"/>
+                    android:paddingStart="2dp"/>
                 <TextView
                     android:id="@+id/textViewLimitSoilMoisture1"
                     android:layout_width="wrap_content"
@@ -321,7 +318,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     android:paddingTop="20dp"
-                    android:paddingLeft="2dp"/>
+                    android:paddingStart="2dp"/>
                 <TextView
                     android:id="@+id/textViewLblSoilMoistureSensor2"
                     android:layout_width="wrap_content"
@@ -375,7 +372,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     android:paddingTop="20dp"
-                    android:paddingLeft="2dp"/>
+                    android:paddingStart="2dp"/>
 
                 <TextView
                     android:id="@+id/textViewLblSoilMoistureSensor3"
@@ -431,7 +428,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     android:paddingTop="20dp"
-                    android:paddingLeft="2dp"/>
+                    android:paddingStart="2dp"/>
                 <TextView
                     android:id="@+id/textViewLblSoilMoistureSensor4"
                     android:layout_width="wrap_content"
@@ -458,8 +455,7 @@
                     android:text= "%"
                     android:textSize="18sp"
                     android:paddingBottom="2dp"
-                    android:fontFamily="@font/open_sans_bold"
-                    />
+                    android:fontFamily="@font/open_sans_bold" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
@@ -495,7 +491,7 @@
                     android:src="@drawable/ic_device_light_off"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp" />
                 <TextView
                     android:id="@+id/textViewDeviceLight1"
@@ -505,7 +501,7 @@
                     android:textSize="@dimen/text_size_17sp"
                     app:layout_constraintTop_toBottomOf="@+id/imageViewDeviceLight1"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"/>
                 <Switch
                     android:id="@+id/switchLight1"
@@ -517,7 +513,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     android:showText="true"
                     android:textSize="18sp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_marginTop="10dp"
                     tools:ignore="UseSwitchCompatOrMaterialXml" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -542,7 +538,7 @@
                     android:src="@drawable/ic_device_fan_off"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp" />
                 <TextView
                     android:id="@+id/textViewDeviceFan1"
@@ -552,7 +548,7 @@
                     android:textSize="@dimen/text_size_17sp"
                     app:layout_constraintTop_toBottomOf="@+id/imageViewDeviceFan1"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"/>
                 <Switch
                     android:id="@+id/switchFan1"
@@ -564,7 +560,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     android:showText="true"
                     android:textSize="18sp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_marginTop="10dp"
                     tools:ignore="UseSwitchCompatOrMaterialXml"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -590,7 +586,7 @@
                     android:src="@drawable/ic_device_valve_off"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp" />
                 <TextView
                     android:id="@+id/textViewDeviceValve1"
@@ -600,7 +596,7 @@
                     android:textSize="@dimen/text_size_17sp"
                     app:layout_constraintTop_toBottomOf="@+id/imageViewDeviceValve1"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"/>
                 <Switch
                     android:id="@+id/switchValve1"
@@ -612,7 +608,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     android:showText="true"
                     android:textSize="18sp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_marginTop="10dp"
                     tools:ignore="UseSwitchCompatOrMaterialXml" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -638,7 +634,7 @@
                     android:src="@drawable/ic_device_valve_off"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp" />
                 <TextView
                     android:id="@+id/textViewDeviceValve2"
@@ -648,7 +644,7 @@
                     android:textSize="@dimen/text_size_17sp"
                     app:layout_constraintTop_toBottomOf="@+id/imageViewDeviceValve2"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"/>
                 <Switch
                     android:id="@+id/switchValve2"
@@ -660,7 +656,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     android:showText="true"
                     android:textSize="18sp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_marginTop="10dp"
                     tools:ignore="UseSwitchCompatOrMaterialXml" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -689,7 +685,7 @@
                     android:src="@drawable/ic_device_valve_off"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp" />
                 <TextView
                     android:id="@+id/textViewDeviceValve3"
@@ -699,7 +695,7 @@
                     android:textSize="@dimen/text_size_17sp"
                     app:layout_constraintTop_toBottomOf="@+id/imageViewDeviceValve3"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"/>
                 <Switch
                     android:id="@+id/switchValve3"
@@ -711,7 +707,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     android:showText="true"
                     android:textSize="18sp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_marginTop="10dp"
                     tools:ignore="UseSwitchCompatOrMaterialXml" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -739,7 +735,7 @@
                     android:src="@drawable/ic_device_valve_off"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp" />
                 <TextView
                     android:id="@+id/textViewDeviceValve4"
@@ -749,7 +745,7 @@
                     android:textSize="@dimen/text_size_17sp"
                     app:layout_constraintTop_toBottomOf="@+id/imageViewDeviceValve4"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"/>
                 <Switch
                     android:id="@+id/switchValve4"
@@ -761,7 +757,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     android:showText="true"
                     android:textSize="18sp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_marginTop="10dp"
                     tools:ignore="UseSwitchCompatOrMaterialXml" />
             </androidx.constraintlayout.widget.ConstraintLayout>
