@@ -28,6 +28,7 @@ import com.github.mikephil.charting.components.IMarker;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -101,6 +102,8 @@ public class fragment_child_graph2 extends Fragment {
     final String graphLight = "light";
     String typeGraph;
     boolean fragmentResume = false;
+    //flag scale Y Axis
+    boolean flagScaleYAxis= false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -160,36 +163,43 @@ public class fragment_child_graph2 extends Fragment {
                         typeGraph = graphHumidity;
                         txtYAxisTitle.setText(getResources().getString(R.string.yAxis_humidity));
                         getArrayDataGraph(userPreferences.getToken());
+                        flagScaleYAxis = true;
                         break;
                     case 1:
                         typeGraph = graphTemperature;
                         txtYAxisTitle.setText(getResources().getString(R.string.yAxis_temperature));
                         getArrayDataGraph(userPreferences.getToken());
+                        flagScaleYAxis = false;
                         break;
                     case 2:
                         typeGraph = graphLight;
                         txtYAxisTitle.setText(getResources().getString(R.string.yAxis_light));
                         getArrayDataGraph(userPreferences.getToken());
+                        flagScaleYAxis =false;
                         break;
                     case 3:
                         typeGraph = graphSoilMoisture1;
                         txtYAxisTitle.setText(getResources().getString(R.string.yAxis_soil_moisture));
                         getArrayDataGraph(userPreferences.getToken());
+                        flagScaleYAxis = true;
                         break;
                     case 4:
                         typeGraph = graphSoilMoisture2;
                         txtYAxisTitle.setText(getResources().getString(R.string.yAxis_soil_moisture));
                         getArrayDataGraph(userPreferences.getToken());
+                        flagScaleYAxis = true;
                         break;
                     case 5:
                         typeGraph = graphSoilMoisture3;
                         txtYAxisTitle.setText(getResources().getString(R.string.yAxis_soil_moisture));
                         getArrayDataGraph(userPreferences.getToken());
+                        flagScaleYAxis = true;
                         break;
                     case 6:
                         typeGraph = graphSoilMoisture4;
                         txtYAxisTitle.setText(getResources().getString(R.string.yAxis_soil_moisture));
                         getArrayDataGraph(userPreferences.getToken());
+                        flagScaleYAxis = true;
                         break;
                 }
             }
@@ -429,6 +439,24 @@ public class fragment_child_graph2 extends Fragment {
         //Lock up vertical
         graph.setScaleYEnabled(false);
         graph.fitScreen();
+        //Scale Y Axis
+        if(flagScaleYAxis){
+            YAxis yAxisRight= graph.getAxisRight();
+            yAxisRight.setAxisMinimum(0);
+            yAxisRight.setAxisMaximum(100);
+            YAxis yAxisLeft= graph.getAxisLeft();
+            yAxisLeft.setAxisMinimum(0);
+            yAxisLeft.setAxisMaximum(100);
+
+        }else {
+            YAxis yAxisRight= graph.getAxisRight();
+            yAxisRight.setAxisMinimum(graph.getYMin());
+            yAxisRight.setAxisMaximum(graph.getYMax());
+            YAxis yAxisLeft= graph.getAxisLeft();
+            yAxisLeft.setAxisMinimum(graph.getYMin());
+            yAxisLeft.setAxisMaximum(graph.getYMax());
+
+        }
     }
 
     private void swipeRefresh(){
