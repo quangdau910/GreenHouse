@@ -42,7 +42,7 @@ public class fragment_graph extends Fragment {
     //Handler post delay
     Runnable runnable;
     Handler mainHandler;
-    final long TIME_DELAY = 500; //500 millis
+    final long TIME_DELAY = 4000; //1000 millis
     final String STATE_FRAGMENT = "GRAPH_FRAGMENT";
     final String NULL_STATE_FRAGMENT = "NULL";
     @Override
@@ -91,7 +91,10 @@ public class fragment_graph extends Fragment {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
+                if (userPreferences.getStateFragment().equals(STATE_FRAGMENT)){
+                    getRSSIData(userPreferences.getToken(), adapter.fragmentTitle.get(tabLayout.getSelectedTabPosition()));
+                    timeRSSI = "0";
+                }
             }
 
             @Override

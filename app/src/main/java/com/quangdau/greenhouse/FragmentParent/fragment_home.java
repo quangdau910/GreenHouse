@@ -45,7 +45,7 @@ public class fragment_home extends Fragment {
     Handler mainHandler;
     final String STATE_FRAGMENT = "HOME_FRAGMENT";
     final String NULL_STATE_FRAGMENT = "NULL";
-    final long TIME_DELAY = 500; //500 millis
+    final long TIME_DELAY = 800; //1000 millis
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -91,7 +91,10 @@ public class fragment_home extends Fragment {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
+                if (userPreferences.getStateFragment().equals(STATE_FRAGMENT)){
+                    getRSSIData(userPreferences.getToken(), adapter.fragmentTitle.get(tabLayout.getSelectedTabPosition()));
+                    timeRSSI = "0";
+                }
             }
 
             @Override

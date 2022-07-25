@@ -152,48 +152,48 @@ public class fragment_child_graph2 extends Fragment {
         spinnerTypeChart.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (fragmentResume){
-                    flagData1M = false;
-                    flagData7D = false;
-                    switch (position){
-                        case 0:
-                            typeGraph = graphHumidity;
-                            txtYAxisTitle.setText(getResources().getString(R.string.yAxis_humidity));
-                            getArrayDataGraph(userPreferences.getToken());
-                            break;
-                        case 1:
-                            typeGraph = graphTemperature;
-                            txtYAxisTitle.setText(getResources().getString(R.string.yAxis_temperature));
-                            getArrayDataGraph(userPreferences.getToken());
-                            break;
-                        case 2:
-                            typeGraph = graphLight;
-                            txtYAxisTitle.setText(getResources().getString(R.string.yAxis_light));
-                            getArrayDataGraph(userPreferences.getToken());
-                            break;
-                        case 3:
-                            typeGraph = graphSoilMoisture1;
-                            txtYAxisTitle.setText(getResources().getString(R.string.yAxis_soil_moisture));
-                            getArrayDataGraph(userPreferences.getToken());
-                            break;
-                        case 4:
-                            typeGraph = graphSoilMoisture2;
-                            txtYAxisTitle.setText(getResources().getString(R.string.yAxis_soil_moisture));
-                            getArrayDataGraph(userPreferences.getToken());
-                            break;
-                        case 5:
-                            typeGraph = graphSoilMoisture3;
-                            txtYAxisTitle.setText(getResources().getString(R.string.yAxis_soil_moisture));
-                            getArrayDataGraph(userPreferences.getToken());
-                            break;
-                        case 6:
-                            typeGraph = graphSoilMoisture4;
-                            txtYAxisTitle.setText(getResources().getString(R.string.yAxis_soil_moisture));
-                            getArrayDataGraph(userPreferences.getToken());
-                            break;
-                    }
+                Log.e("gh", "graph 2 get");
+                flagData1M = false;
+                flagData7D = false;
+                switch (position){
+                    case 0:
+                        typeGraph = graphHumidity;
+                        txtYAxisTitle.setText(getResources().getString(R.string.yAxis_humidity));
+                        getArrayDataGraph(userPreferences.getToken());
+                        break;
+                    case 1:
+                        typeGraph = graphTemperature;
+                        txtYAxisTitle.setText(getResources().getString(R.string.yAxis_temperature));
+                        getArrayDataGraph(userPreferences.getToken());
+                        break;
+                    case 2:
+                        typeGraph = graphLight;
+                        txtYAxisTitle.setText(getResources().getString(R.string.yAxis_light));
+                        getArrayDataGraph(userPreferences.getToken());
+                        break;
+                    case 3:
+                        typeGraph = graphSoilMoisture1;
+                        txtYAxisTitle.setText(getResources().getString(R.string.yAxis_soil_moisture));
+                        getArrayDataGraph(userPreferences.getToken());
+                        break;
+                    case 4:
+                        typeGraph = graphSoilMoisture2;
+                        txtYAxisTitle.setText(getResources().getString(R.string.yAxis_soil_moisture));
+                        getArrayDataGraph(userPreferences.getToken());
+                        break;
+                    case 5:
+                        typeGraph = graphSoilMoisture3;
+                        txtYAxisTitle.setText(getResources().getString(R.string.yAxis_soil_moisture));
+                        getArrayDataGraph(userPreferences.getToken());
+                        break;
+                    case 6:
+                        typeGraph = graphSoilMoisture4;
+                        txtYAxisTitle.setText(getResources().getString(R.string.yAxis_soil_moisture));
+                        getArrayDataGraph(userPreferences.getToken());
+                        break;
                 }
             }
+
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -274,65 +274,66 @@ public class fragment_child_graph2 extends Fragment {
     }
 
     private void getArrayDataGraph(String token){
-        //Log.e("gh", "get data graph");
-        if(networkConnection.isNetworkConnected()){
-            dialog.show();
-            //Lock window layout
-            ApiServer get = ApiServer.retrofit.create(ApiServer.class);
-            Call<DataGraph> call = get.getGraphData(token,"GetGraphData",houseID,typeGraph,setTime);
-            call.enqueue(new Callback<DataGraph>() {
-                @Override
-                public void onResponse(Call<DataGraph> call, Response<DataGraph> response) {
-                    if (response.body() != null && response.body().getData().size() != 0){
-                        mData = new ArrayList<>();
-                        mDataGraph = response.body();
-                        long timeData;
-                        float valueData;
-                        for (int i = 0; i < mDataGraph.getData().size(); i++){
-                            String dateString = mDataGraph.getData().get(i).getTime();
-                            valueData = mDataGraph.getData().get(i).getFirst();
-                            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'");
-                            dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+0"));
-                            Date date = null;
-                            try {
-                                date = dateFormat.parse(dateString);
-                            } catch (ParseException e) {
-                                e.printStackTrace();
+        if (fragmentResume){
+            //Log.e("gh", "get data graph");
+            if(networkConnection.isNetworkConnected()){
+                dialog.show();
+                //Lock window layout
+                ApiServer get = ApiServer.retrofit.create(ApiServer.class);
+                Call<DataGraph> call = get.getGraphData(token,"GetGraphData",houseID,typeGraph,setTime);
+                call.enqueue(new Callback<DataGraph>() {
+                    @Override
+                    public void onResponse(Call<DataGraph> call, Response<DataGraph> response) {
+                        if (response.body() != null && response.body().getData().size() != 0){
+                            mData = new ArrayList<>();
+                            mDataGraph = response.body();
+                            long timeData;
+                            float valueData;
+                            for (int i = 0; i < mDataGraph.getData().size(); i++){
+                                String dateString = mDataGraph.getData().get(i).getTime();
+                                valueData = mDataGraph.getData().get(i).getFirst();
+                                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'");
+                                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+0"));
+                                Date date = null;
+                                try {
+                                    date = dateFormat.parse(dateString);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                                timeData = date.getTime()/1000L;
+                                mData.add(new DataReal(timeData,valueData));
+
                             }
-                            timeData = date.getTime()/1000L;
-                            mData.add(new DataReal(timeData,valueData));
-
+                            if(setTime.equals(setTime7D) && !flagData7D){
+                                getApi7D = mData;
+                                flagData7D =true;
+                            }
+                            if(setTime.equals(setTime1M) && !flagData1M){
+                                getApi1M = mData;
+                                flagData1M =true;
+                            }
+                            setDataGraph();
+                            turnOffRefresh();
+                            dialog.dismiss();
                         }
-                        if(setTime.equals(setTime7D) && !flagData7D){
-                            getApi7D = mData;
-                            flagData7D =true;
+                        else{
+                            graph.clear();
+                            turnOffRefresh();
+                            dialog.dismiss();
                         }
-                        if(setTime.equals(setTime1M) && !flagData1M){
-                            getApi1M = mData;
-                            flagData1M =true;
-                        }
-                        setDataGraph();
-                        turnOffRefresh();
-                        dialog.dismiss();
                     }
-                    else{
-                        graph.clear();
-                        turnOffRefresh();
-                        dialog.dismiss();
-                    }
-                }
 
-                @Override
-                public void onFailure(Call<DataGraph> call, Throwable t) {
-                    Log.e("gh", "GetDataGraph: " + t);
-                    dialog.dismiss();
-                    turnOffRefresh();
-                }
-            });
-        }else {
-            graph.clear();
+                    @Override
+                    public void onFailure(Call<DataGraph> call, Throwable t) {
+                        Log.e("gh", "GetDataGraph: " + t);
+                        dialog.dismiss();
+                        turnOffRefresh();
+                    }
+                });
+            }else {
+                graph.clear();
+            }
         }
-
     }
 
     private void setDataGraph() {
@@ -354,7 +355,6 @@ public class fragment_child_graph2 extends Fragment {
         SettingUIGraph();
 
     }
-
     public class YourMarkerView extends MarkerView {
         TextView tvYValue;
         TextView tvXValue;
@@ -448,6 +448,7 @@ public class fragment_child_graph2 extends Fragment {
     public void onResume() {
         super.onResume();
         fragmentResume = true;
+        getArrayDataGraph(userPreferences.getToken());
         Log.e("gh", "Graph2: resume");
     }
 
