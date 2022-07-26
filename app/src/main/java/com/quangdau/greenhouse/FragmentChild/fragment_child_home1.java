@@ -358,7 +358,7 @@ public class fragment_child_home1 extends Fragment {
                 @Override
                 public void onFailure(Call<WeatherDataModel> call, Throwable t) {
                     Log.e("gh", "Home1 Weather: " + t);
-                    toastError.makeText(getResources().getString(R.string.no_response_from_server));
+                    //toastError.makeText(getResources().getString(R.string.no_response_from_server));
                 }
             });
         }
