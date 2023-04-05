@@ -1,12 +1,14 @@
 # GreenHouse
-![nenTrang1 1](https://user-images.githubusercontent.com/107113303/230139741-c3f3fded-4faa-4821-8f1c-d2e627d7f07c.png)
+
+![nenTrang1 2](https://user-images.githubusercontent.com/107113303/230140251-3bc4f17c-d661-40c8-a74d-c2df69ecb4d7.png)
+
 
 This app is used to control greenhouse system
 Many functions of this app: Monitor and control greenhouse, set limit, identity,...
-Some pictures about this app
 
-![Uploading Screenshot_20220715-140424_Farm-IOT.jpg![Screenshot_20220715-140436_Farm-IOT](https://user-images.githubusercontent.com/107113303/230138861-b6dfc295-4885-4d34-ad1b-51d024116582.jpg)
-…]()
+Some pictures about this app:
+
+![Screenshot_20220715-140424_Farm-IOT](https://user-images.githubusercontent.com/107113303/230140020-06c5898e-12f9-42e5-83dc-6dbc775521cb.jpg)
 
 ![Screenshot_20220714-151115_Farm-IOT](https://user-images.githubusercontent.com/107113303/230139076-4585fce8-85da-4b64-abc5-ebbda44cc225.jpg)
 
